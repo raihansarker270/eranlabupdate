@@ -22,6 +22,8 @@ export const AppContext = React.createContext<{
   setIsWalletModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   currentPage: string;
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
+  isSidebarCollapsed: boolean;
+  setIsSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   isLoggedIn: false,
   user: null,
@@ -32,6 +34,8 @@ export const AppContext = React.createContext<{
   setIsWalletModalOpen: () => {},
   currentPage: 'Home',
   setCurrentPage: () => {},
+  isSidebarCollapsed: false,
+  setIsSidebarCollapsed: () => {},
 });
 
 const App: React.FC = () => {
@@ -40,6 +44,7 @@ const App: React.FC = () => {
   const [balance, setBalance] = useState(125.50);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('Home');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const handleLogin = useCallback(() => {
     setIsLoggedIn(true);
@@ -52,26 +57,27 @@ const App: React.FC = () => {
   }, []);
   
   const renderPage = () => {
+    const pagePadding = "p-4 sm:p-6 lg:p-8";
     switch (currentPage) {
       case 'Home':
-        return <DashboardPage />;
+        return <div className={pagePadding}><DashboardPage /></div>;
       case 'Earn':
-        return <EarnPage />;
+        return <div className={pagePadding}><EarnPage /></div>;
       case 'Tasks':
-        return <TasksPage />;
+        return <div className={pagePadding}><TasksPage /></div>;
       case 'Surveys':
-        return <SurveysPage />;
+        return <div className={pagePadding}><SurveysPage /></div>;
       case 'Boxes':
       case 'Battles':
         // Placeholder for new pages
-        return <div className="text-white text-3xl font-bold p-8">{currentPage} Page</div>;
+        return <div className={`text-white text-3xl font-bold ${pagePadding}`}>{currentPage} Page</div>;
       default:
-        return <DashboardPage />;
+        return <div className={pagePadding}><DashboardPage /></div>;
     }
   };
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage }}>
+    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed }}>
       <div className="flex min-h-screen bg-[#0f172a] text-slate-300">
         <Sidebar isLoggedIn={isLoggedIn} />
         <div className="flex-1 flex flex-col min-w-0">

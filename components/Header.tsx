@@ -1,14 +1,13 @@
-
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../App';
-import { BellIcon, ChevronDownIcon, WalletIcon, LogoutIcon } from './icons/HeaderIcons';
+import { BellIcon, ChevronDownIcon, WalletIcon, LogoutIcon, MenuIcon } from './icons/HeaderIcons';
 
 interface HeaderProps {
     onLogout: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
-    const { user, balance, setIsWalletModalOpen } = useContext(AppContext);
+    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     if (!user) return null;
@@ -16,6 +15,15 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
   return (
     <header className="bg-[#141c2f] p-4 flex items-center justify-between border-b border-slate-700">
         <div className="flex items-center gap-4">
+            {isSidebarCollapsed && (
+                <button 
+                    onClick={() => setIsSidebarCollapsed(false)} 
+                    className="p-2 rounded-md text-slate-400 hover:bg-slate-700 hover:text-white lg:block hidden"
+                    aria-label="Open sidebar"
+                >
+                    <MenuIcon />
+                </button>
+            )}
             <button className="px-4 py-2 bg-slate-700 text-white rounded-lg font-semibold">Earn</button>
             <button className="px-4 py-2 bg-slate-800 text-slate-400 rounded-lg font-semibold">Games</button>
         </div>
