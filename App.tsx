@@ -11,6 +11,7 @@ import { MOCK_USER } from './constants';
 import type { User } from './types';
 import EarnPage from './components/pages/EarnPage';
 import TasksPage from './components/pages/TasksPage';
+import LoggedInHomePage from './components/pages/LoggedInHomePage';
 
 export const AppContext = React.createContext<{
   isLoggedIn: boolean;
@@ -60,6 +61,8 @@ const App: React.FC = () => {
     const pagePadding = "p-4 sm:p-6 lg:p-8";
     switch (currentPage) {
       case 'Home':
+        return <div className={pagePadding}><LoggedInHomePage /></div>;
+      case 'Profile':
         return <div className={pagePadding}><DashboardPage /></div>;
       case 'Earn':
         return <div className={pagePadding}><EarnPage /></div>;
@@ -72,7 +75,7 @@ const App: React.FC = () => {
         // Placeholder for new pages
         return <div className={`text-white text-3xl font-bold ${pagePadding}`}>{currentPage} Page</div>;
       default:
-        return <div className={pagePadding}><DashboardPage /></div>;
+        return <div className={pagePadding}><LoggedInHomePage /></div>;
     }
   };
 

@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
-    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
+    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed, setCurrentPage } = useContext(AppContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     if (!user) return null;
@@ -47,7 +47,14 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                 </button>
                 {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-1 z-10">
-                        <a href="#" className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">Profile</a>
+                        <button 
+                            onClick={() => {
+                                setCurrentPage('Profile');
+                                setIsDropdownOpen(false);
+                            }} 
+                            className="w-full text-left block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">
+                            Profile
+                        </button>
                         <a href="#" className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">Settings</a>
                         <button onClick={onLogout} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-700">
                             <LogoutIcon />

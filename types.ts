@@ -1,3 +1,5 @@
+// FIX: Import `ReactNode` to resolve 'Cannot find namespace 'React'' error.
+import type { ReactNode } from 'react';
 
 export interface User {
   username: string;
@@ -36,7 +38,7 @@ export interface SurveyProvider {
 
 export interface SidebarMenuItem {
   name: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   isHot?: boolean;
   isSpecial?: boolean;
 }
