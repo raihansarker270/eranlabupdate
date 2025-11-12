@@ -9,7 +9,7 @@ import WalletModal from './components/WalletModal';
 import LiveEarningFeed from './components/LiveEarningFeed';
 import { MOCK_USER } from './constants';
 import type { User } from './types';
-import EarnPage from './components/pages/EarnPage';
+import OfferPage from './components/pages/OfferPage';
 import TasksPage from './components/pages/TasksPage';
 import LoggedInHomePage from './components/pages/LoggedInHomePage';
 
@@ -64,8 +64,8 @@ const App: React.FC = () => {
         return <div className={pagePadding}><LoggedInHomePage /></div>;
       case 'Profile':
         return <div className={pagePadding}><DashboardPage /></div>;
-      case 'Earn':
-        return <div className={pagePadding}><EarnPage /></div>;
+      case 'Offer':
+        return <div className={pagePadding}><OfferPage /></div>;
       case 'Tasks':
         return <div className={pagePadding}><TasksPage /></div>;
       case 'Surveys':

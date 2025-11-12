@@ -5,7 +5,7 @@ import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, RewardIcon, AffiliateIcon, Bl
 
 const SIDEBAR_MENU_ITEMS_TOP: SidebarMenuItem[] = [
   { name: 'Home', icon: <HomeIcon /> },
-  { name: 'Earn', icon: <EarnIcon /> },
+  { name: 'Offer', icon: <EarnIcon /> },
   { name: 'Tasks', icon: <TaskIcon /> },
   { name: 'Surveys', icon: <SurveyIcon /> },
 ];
@@ -20,7 +20,7 @@ const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
 
 const Sidebar: React.FC = () => {
     const { currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
-    const [activeTopTab, setActiveTopTab] = useState('Earn');
+    const [activeTopTab, setActiveTopTab] = useState('Offer');
 
 
     const renderMenuItem = (item: SidebarMenuItem) => {
@@ -52,9 +52,9 @@ const Sidebar: React.FC = () => {
         <div className="p-4 flex flex-col flex-1 min-w-[16rem]">
             <div className="flex items-center gap-2 mb-8">
                 <button 
-                    onClick={() => setActiveTopTab('Earn')}
-                    className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-colors ${activeTopTab === 'Earn' ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
-                    Earn
+                    onClick={() => setActiveTopTab('Offer')}
+                    className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-colors ${activeTopTab === 'Offer' ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
+                    Offer
                 </button>
                 <button 
                     onClick={() => setActiveTopTab('Games')}

@@ -119,7 +119,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                         <h4 className="font-semibold text-white mb-4">Menu</h4>
                         <ul className="space-y-2 text-slate-400">
                             <li><a href="#" className="hover:text-white">Home</a></li>
-                            <li><a href="#" className="hover:text-white">Earn</a></li>
+                            <li><a href="#" className="hover:text-white">Offer</a></li>
                             <li><a href="#" className="hover:text-white">Tasks</a></li>
                             <li><a href="#" className="hover:text-white">Surveys</a></li>
                             <li><a href="#" className="hover:text-white">Affiliates</a></li>

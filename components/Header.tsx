@@ -24,7 +24,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                     <MenuIcon />
                 </button>
             )}
-            <button className="px-4 py-2 bg-slate-700 text-white rounded-lg font-semibold">Earn</button>
+            <button className="px-4 py-2 bg-slate-700 text-white rounded-lg font-semibold">Offer</button>
             <button className="px-4 py-2 bg-slate-800 text-slate-400 rounded-lg font-semibold">Games</button>
         </div>
         <div className="flex items-center gap-4">
