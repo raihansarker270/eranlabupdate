@@ -6,19 +6,6 @@ interface HomePageProps {
     onLogin: () => void;
 }
 
-const HomeHeader: React.FC<HomePageProps> = ({ onLogin }) => {
-    return (
-        <header className="absolute top-0 left-0 right-0 p-4 z-10 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-white">EarnLab</h1>
-            <div>
-                <button className="text-white font-semibold py-2 px-4 rounded-lg mr-2">Withdraw</button>
-                <button onClick={onLogin} className="bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-lg mr-2">Sign In</button>
-                <button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Sign Up</button>
-            </div>
-        </header>
-    );
-};
-
 const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
     const [isOpen, setIsOpen] = useState(false);
     return (
@@ -34,19 +21,17 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
     );
 };
 
-const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
+const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   return (
     <div className="bg-[#0b111e] text-slate-300">
-        <HomeHeader onLogin={onLogin} />
-
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1534237716618-64333522b17d?q=80&w=2070&auto=format&fit=crop')" }}>
+        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://i.imgur.com/ODiL3hH.png')" }}>
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
             <div className="relative z-10 text-center text-white p-8 max-w-6xl mx-auto flex items-center gap-16">
                 <div className="flex-1 text-left">
                     <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">Earn rewards. Anywhere, Anytime.</h1>
                     <p className="text-lg md:text-xl mb-8 text-slate-300">EarnLab makes earning money online easy and secure. Complete simple, engaging tasks tailored to your schedule and start earning rewards today – anytime, anywhere.</p>
-                    <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">Get Started</button>
+                    <button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">Get Started</button>
                 </div>
                 <div className="flex-1 bg-slate-900/50 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-slate-700">
                     <h2 className="text-3xl font-bold mb-4">Get Started!</h2>
@@ -68,7 +53,7 @@ const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
             <h2 className="text-4xl font-bold text-white mb-4">Your Simple Path To Extra Income</h2>
             <p className="max-w-3xl mx-auto mb-12 text-slate-400">Complete easy tasks in your spare time and start earning today. Join EarnLab and turn every moment into a rewarding opportunity.</p>
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
-                 {[{img: 'https://i.imgur.com/3Z3QjYl.png', text: 'Easily Sign up'}, {img: 'https://i.imgur.com/5wOaY5s.png', text: 'Complete Tasks'}, {img: 'https://i.imgur.com/lJ4jPyo.png', text: 'Get Paid'}].map((item, i) => (
+                 {[{img: 'https://i.imgur.com/T0bC2zZ.jpeg', text: 'Easily Sign up'}, {img: 'https://i.imgur.com/4l3z4P4.jpeg', text: 'Complete Tasks'}, {img: 'https://i.imgur.com/uJgJa8Z.jpeg', text: 'Get Paid'}].map((item, i) => (
                     <div key={i} className="bg-[#1e293b] rounded-lg overflow-hidden shadow-lg transform hover:-translate-y-2 transition-transform duration-300 relative">
                         <img src={item.img} alt={`Step ${i+1}`} className="w-full h-auto object-cover aspect-[4/5]" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
@@ -182,4 +167,4 @@ const HomePage: React.FC<HomePageProps> = ({ onLogin }) => {
   );
 };
 
-export default HomePage;
+export default HomePageContent;

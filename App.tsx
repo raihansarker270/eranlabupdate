@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import HomePage from './components/pages/HomePage';
+import LoggedOutHeader from './components/LoggedOutHeader';
+import HomePageContent from './components/pages/HomePage';
 import SurveysPage from './components/pages/SurveysPage';
 import DashboardPage from './components/pages/DashboardPage';
 import WalletModal from './components/WalletModal';
@@ -60,6 +61,10 @@ const App: React.FC = () => {
         return <TasksPage />;
       case 'Surveys':
         return <SurveysPage />;
+      case 'Boxes':
+      case 'Battles':
+        // Placeholder for new pages
+        return <div className="text-white text-3xl font-bold p-8">{currentPage} Page</div>;
       default:
         return <DashboardPage />;
     }
@@ -67,21 +72,17 @@ const App: React.FC = () => {
 
   return (
     <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage }}>
-      {isLoggedIn ? (
-        <div className="flex min-h-screen bg-[#0f172a] text-slate-300">
-          <Sidebar />
-          <div className="flex-1 flex flex-col min-w-0">
-            <Header onLogout={handleLogout} />
+      <div className="flex min-h-screen bg-[#0f172a] text-slate-300">
+        <Sidebar isLoggedIn={isLoggedIn} />
+        <div className="flex-1 flex flex-col min-w-0">
+            {isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />}
             <LiveEarningFeed />
-            <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
-              {renderPage()}
+            <main className="flex-1 overflow-y-auto">
+                {isLoggedIn ? renderPage() : <HomePageContent onLogin={handleLogin} />}
             </main>
-          </div>
-          <WalletModal />
         </div>
-      ) : (
-        <HomePage onLogin={handleLogin} />
-      )}
+        {isLoggedIn && <WalletModal />}
+      </div>
     </AppContext.Provider>
   );
 };
