@@ -82,7 +82,7 @@ const App: React.FC = () => {
   return (
     <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed }}>
       <div className="flex min-h-screen bg-[#0f172a] text-slate-300">
-        <Sidebar isLoggedIn={isLoggedIn} />
+        <Sidebar />
         <div className="flex-1 flex flex-col min-w-0">
             {isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />}
             <LiveEarningFeed />

@@ -1,28 +1,13 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../App';
 import type { SidebarMenuItem } from '../types';
-import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, TrophyIcon, RewardIcon, AffiliateIcon, BlogIcon, GuideIcon, SupportIcon, BoxIcon, SwordIcon } from './icons/SidebarIcons';
+import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, RewardIcon, AffiliateIcon, BlogIcon, GuideIcon, SupportIcon } from './icons/SidebarIcons';
 
-const SIDEBAR_MENU_ITEMS_LOGGED_OUT_TOP: SidebarMenuItem[] = [
+const SIDEBAR_MENU_ITEMS_TOP: SidebarMenuItem[] = [
   { name: 'Home', icon: <HomeIcon /> },
   { name: 'Earn', icon: <EarnIcon /> },
   { name: 'Tasks', icon: <TaskIcon /> },
   { name: 'Surveys', icon: <SurveyIcon /> },
-];
-
-const SIDEBAR_MENU_ITEMS_LOGGED_IN_TOP: SidebarMenuItem[] = [
-  { name: 'Home', icon: <HomeIcon /> },
-  { name: 'Boxes', icon: <BoxIcon /> },
-  { name: 'Battles', icon: <SwordIcon />, isHot: true },
-];
-
-const SIDEBAR_MENU_ITEMS_LOGGED_OUT_MIDDLE: SidebarMenuItem[] = [
-  { name: '$3,000 Monthly Race', icon: <TrophyIcon />, isSpecial: true },
-  { name: '$50 Daily Race', icon: <TrophyIcon />, isSpecial: true },
-];
-
-const SIDEBAR_MENU_ITEMS_LOGGED_IN_MIDDLE: SidebarMenuItem[] = [
-  { name: '$10,000 Monthly Race', icon: <TrophyIcon />, isSpecial: true },
 ];
 
 const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
@@ -33,17 +18,9 @@ const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
   { name: 'Live Support', icon: <SupportIcon /> },
 ];
 
-interface SidebarProps {
-    isLoggedIn: boolean;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ isLoggedIn }) => {
+const Sidebar: React.FC = () => {
     const { currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
     const [activeTopTab, setActiveTopTab] = useState('Earn');
-
-
-    const topItems = isLoggedIn ? SIDEBAR_MENU_ITEMS_LOGGED_IN_TOP : SIDEBAR_MENU_ITEMS_LOGGED_OUT_TOP;
-    const middleItems = isLoggedIn ? SIDEBAR_MENU_ITEMS_LOGGED_IN_MIDDLE : SIDEBAR_MENU_ITEMS_LOGGED_OUT_MIDDLE;
 
 
     const renderMenuItem = (item: SidebarMenuItem) => {
@@ -91,10 +68,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isLoggedIn }) => {
 
             <nav className="flex-1 flex flex-col">
                 <ul className="space-y-1">
-                    {topItems.map(renderMenuItem)}
-                </ul>
-                <ul className="space-y-1 mt-4">
-                    {middleItems.map(renderMenuItem)}
+                    {SIDEBAR_MENU_ITEMS_TOP.map(renderMenuItem)}
                 </ul>
                 <div className="border-t border-slate-700 my-4" />
                 <ul className="space-y-1">
