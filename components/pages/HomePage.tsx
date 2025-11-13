@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS } from '../../constants';
 import type { FaqItem } from '../../types';
 import { generateHeroImage, generateHowItWorksImages } from '../../lib/gemini';
+import SignupModal from '../SignupModal';
 
 interface HomePageProps {
     onLogin: () => void;
@@ -106,6 +107,17 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   const [howItWorksImages, setHowItWorksImages] = useState<string[]>(['', '', '']);
   const [isHowItWorksLoading, setIsHowItWorksLoading] = useState(true);
 
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const [email, setEmail] = useState('');
+
+  const handleStartEarning = () => {
+    if (email.trim() && email.includes('@')) {
+        setIsSignupModalOpen(true);
+    } else {
+        alert('Please enter a valid email address.');
+    }
+  };
+
   useEffect(() => {
       const timer = setTimeout(() => setMounted(true), 100);
       return () => clearTimeout(timer);
@@ -160,13 +172,19 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                 <div className={`w-full lg:w-auto lg:flex-1 bg-slate-900/50 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-slate-700 max-w-md transition-all duration-1000 ease-out delay-200 ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
                     <h2 className="text-3xl font-bold mb-4 text-center">Get Started!</h2>
                     <p className="mb-6 text-slate-300 text-center">It's free! Sign up and start to earn money!</p>
-                    <input type="email" placeholder="Email Address" className="w-full bg-slate-800 text-white p-3 rounded-lg mb-4 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-                    <button onClick={onLogin} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg mb-4">Start Earning Now</button>
+                    <input 
+                      type="email" 
+                      placeholder="Email Address" 
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-slate-800 text-white p-3 rounded-lg mb-4 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                    />
+                    <button onClick={handleStartEarning} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg mb-4">Start Earning Now</button>
                     <div className="text-center my-4 text-slate-400 text-sm">or</div>
                     <div className="space-y-3">
-                         <button className="w-full bg-[#4285F4] hover:bg-red-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-google"></i> Sign up via Google</button>
-                         <button className="w-full bg-[#1877F2] hover:bg-blue-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-facebook"></i> Sign up via Facebook</button>
-                         <button className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-steam"></i> Sign up via Steam</button>
+                         <button onClick={onLogin} className="w-full bg-[#4285F4] hover:bg-red-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-google"></i> Sign up via Google</button>
+                         <button onClick={onLogin} className="w-full bg-[#1877F2] hover:bg-blue-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-facebook"></i> Sign up via Facebook</button>
+                         <button onClick={onLogin} className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-steam"></i> Sign up via Steam</button>
                     </div>
                 </div>
             </div>
@@ -265,6 +283,16 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                 </div>
             </div>
         </section>
+
+        <SignupModal
+            isOpen={isSignupModalOpen}
+            onClose={() => setIsSignupModalOpen(false)}
+            initialEmail={email}
+            onSignupSuccess={() => {
+                setIsSignupModalOpen(false);
+                onLogin();
+            }}
+        />
     </div>
   );
 };
