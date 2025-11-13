@@ -13,6 +13,7 @@ import type { User } from './types';
 import OfferPage from './components/pages/OfferPage';
 import TasksPage from './components/pages/TasksPage';
 import LoggedInHomePage from './components/pages/LoggedInHomePage';
+import LoggedOutSidebar from './components/LoggedOutSidebar';
 
 export const AppContext = React.createContext<{
   isLoggedIn: boolean;
@@ -100,7 +101,7 @@ const App: React.FC = () => {
   return (
     <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, theme, setTheme }}>
       <div className="flex min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
-        {isLoggedIn && <Sidebar />}
+        {isLoggedIn ? <Sidebar /> : <LoggedOutSidebar />}
         <div className="flex-1 flex flex-col min-w-0">
             {isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />}
             <LiveEarningFeed />
