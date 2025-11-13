@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FAQ_ITEMS, REWARD_OPTIONS } from '../../constants';
 import type { FaqItem } from '../../types';
+import { generateHeroImage } from '../../lib/gemini';
 
 interface HomePageProps {
     onLogin: () => void;
@@ -100,9 +101,22 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
 
 const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   const [mounted, setMounted] = useState(false);
+  const [heroImageUrl, setHeroImageUrl] = useState('');
+  const [isImageLoading, setIsImageLoading] = useState(true);
+
   useEffect(() => {
       const timer = setTimeout(() => setMounted(true), 100);
       return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const fetchHeroImage = async () => {
+      setIsImageLoading(true);
+      const imageUrl = await generateHeroImage();
+      setHeroImageUrl(imageUrl);
+      setIsImageLoading(false);
+    };
+    fetchHeroImage();
   }, []);
 
   const [howItWorksRef, isHowItWorksInView] = useInView({ threshold: 0.15 });
@@ -113,7 +127,12 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   return (
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300 overflow-x-hidden">
         {/* Hero Section */}
-        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center py-16" style={{ backgroundImage: "url('https://i.imgur.com/ODiL3hH.png')" }}>
+        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center py-16 transition-all duration-500" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : 'none', backgroundColor: '#0f172a' }}>
+            {isImageLoading && (
+                <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
+                </div>
+            )}
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
             <div className="relative z-10 text-white p-8 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
                 <div className="flex-1 text-center lg:text-left">
