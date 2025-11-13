@@ -24,7 +24,6 @@ const LoggedOutHeader: React.FC<LoggedOutHeaderProps> = ({ onLogin }) => {
                  <h1 className="text-2xl font-bold text-slate-900 dark:text-white">EarnLab</h1>
             </div>
              <div className="flex items-center gap-2">
-                <button className="text-slate-800 dark:text-white font-semibold py-2 px-4 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700">Withdraw</button>
                 <button onClick={onLogin} className="bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-lg hover:bg-slate-300">Sign In</button>
                 <button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Sign Up</button>
             </div>
