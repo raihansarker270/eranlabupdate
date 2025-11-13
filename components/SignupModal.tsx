@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface SignupModalProps {
     isOpen: boolean;
@@ -9,6 +9,19 @@ interface SignupModalProps {
 
 const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, initialEmail, onSignupSuccess }) => {
     const [password, setPassword] = useState('');
+    const [isRendered, setIsRendered] = useState(false);
+
+    useEffect(() => {
+        if (isOpen) {
+            setIsRendered(true);
+        }
+    }, [isOpen]);
+
+    const handleTransitionEnd = () => {
+        if (!isOpen) {
+            setIsRendered(false);
+        }
+    };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,19 +34,21 @@ const SignupModal: React.FC<SignupModalProps> = ({ isOpen, onClose, initialEmail
         onSignupSuccess();
     };
 
-    if (!isOpen) {
+    if (!isRendered) {
         return null;
     }
 
     return (
         <div 
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity"
+            className={`fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'opacity-0'}`}
             onClick={onClose}
+            onTransitionEnd={handleTransitionEnd}
             aria-modal="true"
             role="dialog"
         >
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
             <div 
-                className="bg-[#141c2f] text-white p-8 rounded-lg shadow-2xl border border-slate-700 max-w-md w-full m-4"
+                className={`bg-[#141c2f] text-white p-8 rounded-lg shadow-2xl border border-slate-700 max-w-md w-full m-4 transform transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex justify-between items-center mb-6">
