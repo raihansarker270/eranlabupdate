@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../App';
 import type { SidebarMenuItem } from '../types';
 import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, RewardIcon, AffiliateIcon, BlogIcon, GuideIcon, SupportIcon } from './icons/SidebarIcons';
@@ -20,7 +20,6 @@ const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
 
 const Sidebar: React.FC = () => {
     const { currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
-    const [activeTopTab, setActiveTopTab] = useState('Offer');
 
 
     const renderMenuItem = (item: SidebarMenuItem) => {
@@ -50,17 +49,8 @@ const Sidebar: React.FC = () => {
   return (
     <aside className={`bg-[#141c2f] flex-col hidden lg:flex transition-all duration-300 ease-in-out sticky top-0 h-screen overflow-hidden ${isSidebarCollapsed ? 'w-0' : 'w-64'}`}>
         <div className="p-4 flex flex-col flex-1 min-w-[16rem]">
-            <div className="flex items-center gap-2 mb-8">
-                <button 
-                    onClick={() => setActiveTopTab('Offer')}
-                    className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-colors ${activeTopTab === 'Offer' ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
-                    Offer
-                </button>
-                <button 
-                    onClick={() => setActiveTopTab('Games')}
-                    className={`flex-1 py-2 rounded-lg font-semibold text-sm transition-colors ${activeTopTab === 'Games' ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700'}`}>
-                    Games
-                </button>
+            <div className="flex items-center justify-between mb-8">
+                <h1 className="text-2xl font-bold text-white">EarnLab</h1>
                 <button onClick={() => setIsSidebarCollapsed(true)} className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
