@@ -32,6 +32,8 @@ export const AppContext = React.createContext<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  isMobileSidebarOpen: boolean;
+  setIsMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   theme: 'light' | 'dark';
   setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
 }>({
@@ -46,6 +48,8 @@ export const AppContext = React.createContext<{
   setCurrentPage: () => {},
   isSidebarCollapsed: false,
   setIsSidebarCollapsed: () => {},
+  isMobileSidebarOpen: false,
+  setIsMobileSidebarOpen: () => {},
   theme: 'light',
   setTheme: () => {},
 });
@@ -57,6 +61,7 @@ const App: React.FC = () => {
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('Home');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const storedTheme = localStorage.getItem('theme');
     return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'light';
@@ -114,7 +119,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, theme, setTheme }}>
+    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme }}>
       <div className="flex min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
         {isLoggedIn ? <Sidebar /> : <LoggedOutSidebar />}
         <div className="flex-1 flex flex-col min-w-0">

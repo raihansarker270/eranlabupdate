@@ -7,7 +7,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
-    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed, setCurrentPage } = useContext(AppContext);
+    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed, setCurrentPage, setIsMobileSidebarOpen } = useContext(AppContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     if (!user) return null;
@@ -15,10 +15,17 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
   return (
     <header className="bg-white dark:bg-[#141c2f] p-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center gap-4">
+            <button 
+                onClick={() => setIsMobileSidebarOpen(true)}
+                className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 lg:hidden"
+                aria-label="Open menu"
+            >
+                <MenuIcon />
+            </button>
             {isSidebarCollapsed && (
                 <button 
                     onClick={() => setIsSidebarCollapsed(false)} 
-                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white lg:block hidden"
+                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hidden lg:block"
                     aria-label="Open sidebar"
                 >
                     <MenuIcon />
@@ -26,14 +33,14 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             )}
             <h1 className="text-2xl font-bold text-slate-900 dark:text-white hidden lg:block">EarnLab</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
             <div className="flex items-center gap-2 text-green-500 dark:text-green-400 font-bold">
                 <i className="fas fa-dollar-sign"></i>
                 <span>{balance.toFixed(2)}</span>
             </div>
-            <button onClick={() => setIsWalletModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
+            <button onClick={() => setIsWalletModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
                 <WalletIcon />
-                <span>Wallet</span>
+                <span className="hidden sm:inline">Wallet</span>
             </button>
             <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                 <BellIcon />
@@ -41,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             <div className="relative">
                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2">
                     <img src={user.avatarUrl} alt={user.username} className="w-8 h-8 rounded-full" />
-                    <span className="font-semibold text-slate-900 dark:text-white">{user.username}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white hidden sm:block">{user.username}</span>
                     <ChevronDownIcon />
                 </button>
                 {isDropdownOpen && (

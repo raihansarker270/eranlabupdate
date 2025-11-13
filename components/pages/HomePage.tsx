@@ -25,17 +25,17 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   return (
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300">
         {/* Hero Section */}
-        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://i.imgur.com/ODiL3hH.png')" }}>
+        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center py-16" style={{ backgroundImage: "url('https://i.imgur.com/ODiL3hH.png')" }}>
             <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-            <div className="relative z-10 text-center text-white p-8 max-w-6xl mx-auto flex items-center gap-16">
-                <div className="flex-1 text-left">
+            <div className="relative z-10 text-white p-8 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+                <div className="flex-1 text-center lg:text-left">
                     <h1 className="text-5xl md:text-7xl font-bold mb-4 leading-tight">Earn rewards. Anywhere, Anytime.</h1>
                     <p className="text-lg md:text-xl mb-8 text-slate-300">EarnLab makes earning money online easy and secure. Complete simple, engaging tasks tailored to your schedule and start earning rewards today – anytime, anywhere.</p>
                     <button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">Get Started</button>
                 </div>
-                <div className="flex-1 bg-slate-900/50 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-slate-700">
-                    <h2 className="text-3xl font-bold mb-4">Get Started!</h2>
-                    <p className="mb-6 text-slate-300">It's free! Sign up and start to earn money!</p>
+                <div className="w-full lg:w-auto lg:flex-1 bg-slate-900/50 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-slate-700 max-w-md">
+                    <h2 className="text-3xl font-bold mb-4 text-center">Get Started!</h2>
+                    <p className="mb-6 text-slate-300 text-center">It's free! Sign up and start to earn money!</p>
                     <input type="email" placeholder="Email Address" className="w-full bg-slate-800 text-white p-3 rounded-lg mb-4 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                     <button onClick={onLogin} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg mb-4">Start Earning Now</button>
                     <div className="text-center my-4 text-slate-400 text-sm">or</div>

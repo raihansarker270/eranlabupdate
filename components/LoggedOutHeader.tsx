@@ -7,15 +7,22 @@ interface LoggedOutHeaderProps {
 }
 
 const LoggedOutHeader: React.FC<LoggedOutHeaderProps> = ({ onLogin }) => {
-    const { isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
+    const { isSidebarCollapsed, setIsSidebarCollapsed, setIsMobileSidebarOpen } = useContext(AppContext);
 
     return (
         <header className="bg-white dark:bg-[#141c2f] p-4 flex justify-between items-center border-b border-slate-200 dark:border-slate-700">
-            <div>
-                 {isSidebarCollapsed && (
+            <div className="flex items-center gap-4">
+                 <button 
+                    onClick={() => setIsMobileSidebarOpen(true)}
+                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 lg:hidden"
+                    aria-label="Open menu"
+                >
+                    <MenuIcon />
+                </button>
+                {isSidebarCollapsed && (
                     <button 
                         onClick={() => setIsSidebarCollapsed(false)} 
-                        className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white lg:block hidden"
+                        className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hidden lg:block"
                         aria-label="Open sidebar"
                     >
                         <MenuIcon />
