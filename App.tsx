@@ -46,7 +46,7 @@ export const AppContext = React.createContext<{
   setCurrentPage: () => {},
   isSidebarCollapsed: false,
   setIsSidebarCollapsed: () => {},
-  theme: 'dark',
+  theme: 'light',
   setTheme: () => {},
 });
 
@@ -59,7 +59,7 @@ const App: React.FC = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const storedTheme = localStorage.getItem('theme');
-    return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
+    return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'light';
   });
 
   useEffect(() => {
