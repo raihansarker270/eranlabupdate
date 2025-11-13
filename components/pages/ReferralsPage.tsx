@@ -42,7 +42,7 @@ const ReferralsPage: React.FC = () => {
 
             <div className="bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">Invite your friends</h2>
-                <p className="text-slate-500 dark:text-slate-400 mb-6">Share your unique referral link with friends. You'll earn a commission on their earnings for life!</p>
+                <p className="text-slate-500 dark:text-slate-400 mb-6">Share your unique referral link with friends. You'll earn a <span className="font-bold text-green-500 dark:text-green-400">5% commission</span> on their earnings for life!</p>
                 
                 <div className="flex flex-col sm:flex-row items-center gap-4">
                     <input
