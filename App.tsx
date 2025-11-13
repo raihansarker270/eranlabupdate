@@ -15,6 +15,10 @@ import TasksPage from './components/pages/TasksPage';
 import LoggedInHomePage from './components/pages/LoggedInHomePage';
 import LoggedOutSidebar from './components/LoggedOutSidebar';
 import ReferralsPage from './components/pages/ReferralsPage';
+import LeaderboardPage from './components/pages/LeaderboardPage';
+import DailyBonusPage from './components/pages/DailyBonusPage';
+import AchievementsPage from './components/pages/AchievementsPage';
+import ChatPage from './components/pages/ChatPage';
 
 export const AppContext = React.createContext<{
   isLoggedIn: boolean;
@@ -92,6 +96,14 @@ const App: React.FC = () => {
         return <div className={pagePadding}><SurveysPage /></div>;
       case 'Referrals':
         return <div className={pagePadding}><ReferralsPage /></div>;
+      case 'Leaderboard':
+        return <div className={pagePadding}><LeaderboardPage /></div>;
+      case 'Daily Bonus':
+        return <div className={pagePadding}><DailyBonusPage /></div>;
+      case 'Achievements':
+        return <div className={pagePadding}><AchievementsPage /></div>;
+      case 'Chat':
+        return <div className={pagePadding}><ChatPage /></div>;
       case 'Boxes':
       case 'Battles':
         // Placeholder for new pages

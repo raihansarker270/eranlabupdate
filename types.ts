@@ -56,3 +56,30 @@ export interface RewardOption {
   logo: string;
   bgColor: string;
 }
+
+export interface LeaderboardUser {
+  rank: number;
+  user: string;
+  avatar: string;
+  earned: number;
+  level: number;
+}
+
+export interface Achievement {
+  id: number;
+  icon: string;
+  title: string;
+  description: string;
+  xp: number;
+  progress: number;
+  goal: number;
+}
+
+export interface ChatMessage {
+  id: number;
+  user: string;
+  avatar: string;
+  message: string;
+  timestamp: string;
+  isSelf: boolean;
+}

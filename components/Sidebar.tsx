@@ -1,13 +1,20 @@
 import React, { useContext } from 'react';
 import { AppContext } from '../App';
 import type { SidebarMenuItem } from '../types';
-import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, RewardIcon, AffiliateIcon, BlogIcon, GuideIcon, SupportIcon } from './icons/SidebarIcons';
+import { HomeIcon, EarnIcon, TaskIcon, SurveyIcon, RewardIcon, AffiliateIcon, BlogIcon, GuideIcon, SupportIcon, LeaderboardIcon, DailyBonusIcon, AchievementIcon, ChatIcon } from './icons/SidebarIcons';
 
 const SIDEBAR_MENU_ITEMS_TOP: SidebarMenuItem[] = [
   { name: 'Home', icon: <HomeIcon /> },
   { name: 'Offer', icon: <EarnIcon /> },
   { name: 'Tasks', icon: <TaskIcon /> },
   { name: 'Surveys', icon: <SurveyIcon /> },
+];
+
+const SIDEBAR_MENU_ITEMS_COMMUNITY: SidebarMenuItem[] = [
+  { name: 'Leaderboard', icon: <LeaderboardIcon /> },
+  { name: 'Achievements', icon: <AchievementIcon /> },
+  { name: 'Daily Bonus', icon: <DailyBonusIcon />, isSpecial: true },
+  { name: 'Chat', icon: <ChatIcon /> },
 ];
 
 const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
@@ -51,7 +58,7 @@ const Sidebar: React.FC = () => {
     };
 
   return (
-    <aside className={`bg-white dark:bg-[#141c2f] flex-col hidden lg:flex transition-all duration-300 ease-in-out sticky top-0 h-screen overflow-hidden ${isSidebarCollapsed ? 'w-0' : 'w-64'} border-r border-slate-200 dark:border-slate-800`}>
+    <aside className={`bg-white dark:bg-[#141c2f] flex-col hidden lg:flex transition-all duration-300 ease-in-out sticky top-0 h-screen overflow-y-auto ${isSidebarCollapsed ? 'w-0' : 'w-64'} border-r border-slate-200 dark:border-slate-800`}>
         <div className="p-4 flex flex-col flex-1 min-w-[16rem]">
             <div className="flex items-center justify-between mb-8">
                 <h1 className="text-2xl font-bold text-slate-900 dark:text-white">EarnLab</h1>
@@ -63,6 +70,10 @@ const Sidebar: React.FC = () => {
             <nav className="flex-1 flex flex-col">
                 <ul className="space-y-1">
                     {SIDEBAR_MENU_ITEMS_TOP.map(renderMenuItem)}
+                </ul>
+                <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
+                 <ul className="space-y-1">
+                    {SIDEBAR_MENU_ITEMS_COMMUNITY.map(renderMenuItem)}
                 </ul>
                 <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
                 <ul className="space-y-1">

@@ -1,5 +1,5 @@
 
-import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption } from './types';
+import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage } from './types';
 
 export const MOCK_USER: User = {
   username: 'raihansarker',
@@ -61,4 +61,36 @@ export const REWARD_OPTIONS: RewardOption[] = [
     { name: 'Nike', logo: 'fas fa-check-double', bgColor: 'bg-black text-white' },
     { name: 'Roblox', logo: 'fas fa-gamepad', bgColor: 'bg-gray-300 text-black' },
     { name: 'Steam', logo: 'fab fa-steam', bgColor: 'bg-gray-900 text-white' },
+];
+
+export const LEADERBOARD_USERS: LeaderboardUser[] = [
+  { rank: 1, user: 'CryptoKing', avatar: 'https://i.pravatar.cc/32?u=cryptoking', earned: 1450.75, level: 98 },
+  { rank: 2, user: 'Sparkb6', avatar: 'https://i.pravatar.cc/32?u=sparkb6', earned: 1230.50, level: 92 },
+  { rank: 3, user: 'GamerX', avatar: 'https://i.pravatar.cc/32?u=gamerx', earned: 1100.00, level: 89 },
+  { rank: 4, user: 'SoFi Plus', avatar: 'https://i.pravatar.cc/32?u=sofi', earned: 980.25, level: 85 },
+  { rank: 5, user: 'raihansarker', avatar: 'https://i.pravatar.cc/32?u=raihansarker', earned: 850.00, level: 82 },
+  { rank: 6, user: 'Fastslots', avatar: 'https://i.pravatar.cc/32?u=fastslots', earned: 720.80, level: 78 },
+  { rank: 7, user: 'JohnDoe', avatar: 'https://i.pravatar.cc/32?u=johndoe', earned: 610.40, level: 75 },
+  { rank: 8, user: 'JaneSmith', avatar: 'https://i.pravatar.cc/32?u=janesmith', earned: 550.90, level: 71 },
+  { rank: 9, user: 'SurveyFan', avatar: 'https://i.pravatar.cc/32?u=surveyfan', earned: 480.15, level: 68 },
+  { rank: 10, user: 'Newbie', avatar: 'https://i.pravatar.cc/32?u=newbie', earned: 320.00, level: 50 },
+];
+
+export const ACHIEVEMENTS_DATA: Achievement[] = [
+  { id: 1, icon: 'fas fa-rocket', title: 'First Steps', description: 'Complete your first task.', xp: 50, progress: 1, goal: 1 },
+  { id: 2, icon: 'fas fa-clipboard-check', title: 'Survey Taker', description: 'Complete 10 surveys.', xp: 100, progress: 3, goal: 10 },
+  { id: 3, icon: 'fas fa-dollar-sign', title: 'Small Earner', description: 'Earn your first $10.', xp: 150, progress: 10, goal: 10 },
+  { id: 4, icon: 'fas fa-star', title: 'Task Master', description: 'Complete 50 tasks.', xp: 250, progress: 12, goal: 50 },
+  { id: 5, icon: 'fas fa-trophy', title: 'Top 10 Contender', description: 'Reach the top 10 on the weekly leaderboard.', xp: 500, progress: 0, goal: 1 },
+  { id: 6, icon: 'fas fa-users', title: 'Social Butterfly', description: 'Refer 5 friends.', xp: 300, progress: 2, goal: 5 },
+  { id: 7, icon: 'fas fa-gem', title: 'High Roller', description: 'Earn $100 in total.', xp: 1000, progress: 25.5, goal: 100 },
+  { id: 8, icon: 'fas fa-calendar-check', title: 'Consistent Performer', description: 'Log in for 7 consecutive days.', xp: 200, progress: 4, goal: 7 },
+];
+
+export const CHAT_MESSAGES: ChatMessage[] = [
+    { id: 1, user: 'Admin', avatar: 'https://i.pravatar.cc/32?u=admin', message: 'Welcome to the community chat! Please be respectful to others.', timestamp: '10:00 AM', isSelf: false },
+    { id: 2, user: 'GamerX', avatar: 'https://i.pravatar.cc/32?u=gamerx', message: 'Hey everyone! Just completed the Torox offer, it paid out instantly!', timestamp: '10:01 AM', isSelf: false },
+    { id: 3, user: 'raihansarker', avatar: 'https://i.pravatar.cc/32?u=raihansarker', message: 'That\'s awesome! I was thinking of doing that one.', timestamp: '10:02 AM', isSelf: true },
+    { id: 4, user: 'SurveyFan', avatar: 'https://i.pravatar.cc/32?u=surveyfan', message: 'Any good surveys today?', timestamp: '10:03 AM', isSelf: false },
+    { id: 5, user: 'CryptoKing', avatar: 'https://i.pravatar.cc/32?u=cryptoking', message: 'CPX Research is pretty good right now.', timestamp: '10:05 AM', isSelf: false },
 ];
