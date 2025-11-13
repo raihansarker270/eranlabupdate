@@ -50,7 +50,7 @@ const SectionHeader: React.FC<{ title: string, description: string }> = ({ title
 );
 
 const LockIcon: React.FC = () => (
-    <svg className="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+    <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
 );
 
 const StarIcon: React.FC = () => (
@@ -103,19 +103,19 @@ const LoggedInHomePage: React.FC = () => {
             {/* Offer Walls */}
             <section>
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                      {offerWalls.map((wall, index) => (
-                        <div key={index} className={`bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 ${!wall.isLocked && 'hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <div key={index} className={`bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-36 relative overflow-hidden transition-all duration-300 ${!wall.isLocked && 'hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                             {wall.bonus && <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full z-20 ${wall.isLocked ? 'bg-gray-500/30 text-gray-300' : 'bg-green-500/20 text-green-300'}`}>{wall.bonus}</div>}
                             
                             <div className={`relative flex flex-col items-center justify-center flex-1 ${wall.isLocked ? 'opacity-50' : ''}`}>
-                                <img src={wall.logo} alt={wall.name} className="h-8 max-w-full object-contain mb-2" />
+                                <img src={wall.logo} alt={wall.name} className="h-10 max-w-full object-contain mb-2" />
                                 <p className="font-semibold text-white text-sm mt-auto">{wall.name}</p>
                             </div>
                              
                             {wall.isLocked && (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-center z-20 p-2 text-white">
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-sm text-center z-20 p-2 text-white">
                                     <LockIcon />
                                     {wall.unlockRequirement && <p className="mt-1 font-semibold">{wall.unlockRequirement}</p>}
                                 </div>
