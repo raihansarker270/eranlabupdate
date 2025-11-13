@@ -1,14 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../App';
 import { BellIcon, ChevronDownIcon, WalletIcon, LogoutIcon, MenuIcon } from './icons/HeaderIcons';
+import { MoonIcon, SunIcon } from './icons/FooterIcons';
 
 interface HeaderProps {
     onLogout: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onLogout }) => {
-    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed, setCurrentPage, setIsMobileSidebarOpen } = useContext(AppContext);
+    const { user, balance, setIsWalletModalOpen, isSidebarCollapsed, setIsSidebarCollapsed, setCurrentPage, setIsMobileSidebarOpen, theme, setTheme } = useContext(AppContext);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const toggleTheme = () => {
+        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+    };
 
     if (!user) return null;
 
@@ -41,6 +46,13 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             <button onClick={() => setIsWalletModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
                 <WalletIcon />
                 <span className="hidden sm:inline">Wallet</span>
+            </button>
+            <button 
+                onClick={toggleTheme}
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                aria-label="Toggle theme"
+            >
+                {theme === 'light' ? <MoonIcon /> : <SunIcon />}
             </button>
             <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                 <BellIcon />

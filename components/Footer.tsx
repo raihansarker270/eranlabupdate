@@ -1,14 +1,6 @@
-import React, { useContext } from 'react';
-import { AppContext } from '../App';
-import { SunIcon, MoonIcon } from './icons/FooterIcons';
+import React from 'react';
 
 const Footer: React.FC = () => {
-    const { theme, setTheme } = useContext(AppContext);
-
-    const toggleTheme = () => {
-        setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-    };
-
     return (
         <footer className="bg-white dark:bg-[#141c2f] border-t border-slate-200 dark:border-slate-700 py-12 text-slate-600 dark:text-slate-400">
             <div className="container mx-auto px-8">
@@ -19,14 +11,6 @@ const Footer: React.FC = () => {
                             <button className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-slate-200 dark:hover:bg-slate-700">
                                 <span className="font-serif text-lg">A</span>
                                 <span>English</span>
-                            </button>
-                            <button 
-                                onClick={toggleTheme}
-                                className="px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center space-x-2 hover:bg-slate-200 dark:hover:bg-slate-700"
-                                aria-label="Toggle theme"
-                            >
-                                {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-                                <span className="capitalize">{theme === 'light' ? 'Dark' : 'Light'}</span>
                             </button>
                         </div>
                         <div className="p-3 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-between text-sm w-full max-w-xs">

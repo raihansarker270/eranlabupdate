@@ -117,18 +117,25 @@ const App: React.FC = () => {
         return <div className={pagePadding}><LoggedInHomePage /></div>;
     }
   };
+  
+  const headerContent = isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />;
+  const mainContent = isLoggedIn ? renderPage() : <HomePageContent onLogin={handleLogin} />;
 
   return (
     <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme }}>
-      <div className="flex min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
+      <div className="flex h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
         {isLoggedIn ? <Sidebar /> : <LoggedOutSidebar />}
-        <div className="flex-1 flex flex-col min-w-0">
-            {isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />}
-            <LiveEarningFeed />
-            <main className="flex-1 overflow-y-auto">
-                {isLoggedIn ? renderPage() : <HomePageContent onLogin={handleLogin} />}
-            </main>
-            <Footer />
+        <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+            <header className="sticky top-0 z-20 shrink-0">
+                {headerContent}
+                <LiveEarningFeed />
+            </header>
+            <div className="flex-1 flex flex-col">
+              <main className="flex-1">
+                  {mainContent}
+              </main>
+              <Footer />
+            </div>
         </div>
         {isLoggedIn && <WalletModal />}
       </div>
