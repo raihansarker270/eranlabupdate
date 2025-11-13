@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { FAQ_ITEMS, REWARD_OPTIONS } from '../../constants';
 import type { FaqItem } from '../../types';
-import { generateHeroImage } from '../../lib/gemini';
+import { generateHeroImage, generateHowItWorksImages } from '../../lib/gemini';
 
 interface HomePageProps {
     onLogin: () => void;
@@ -102,7 +102,9 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
 const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   const [mounted, setMounted] = useState(false);
   const [heroImageUrl, setHeroImageUrl] = useState('');
-  const [isImageLoading, setIsImageLoading] = useState(true);
+  const [isHeroImageLoading, setIsHeroImageLoading] = useState(true);
+  const [howItWorksImages, setHowItWorksImages] = useState<string[]>(['', '', '']);
+  const [isHowItWorksLoading, setIsHowItWorksLoading] = useState(true);
 
   useEffect(() => {
       const timer = setTimeout(() => setMounted(true), 100);
@@ -110,25 +112,39 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   }, []);
 
   useEffect(() => {
-    const fetchHeroImage = async () => {
-      setIsImageLoading(true);
-      const imageUrl = await generateHeroImage();
-      setHeroImageUrl(imageUrl);
-      setIsImageLoading(false);
+    const fetchImages = async () => {
+      setIsHeroImageLoading(true);
+      setIsHowItWorksLoading(true);
+
+      const [heroUrl, workImages] = await Promise.all([
+        generateHeroImage(),
+        generateHowItWorksImages(),
+      ]);
+      
+      setHeroImageUrl(heroUrl);
+      setIsHeroImageLoading(false);
+      setHowItWorksImages(workImages);
+      setIsHowItWorksLoading(false);
     };
-    fetchHeroImage();
+    fetchImages();
   }, []);
 
   const [howItWorksRef, isHowItWorksInView] = useInView({ threshold: 0.15 });
   const [rewardsRef, isRewardsInView] = useInView({ threshold: 0.15 });
   const [statsRef, isStatsInView] = useInView({ threshold: 0.15 });
   const [faqRef, isFaqInView] = useInView({ threshold: 0.15 });
+  
+  const howItWorksItems = [
+    { text: 'Easily Sign up' },
+    { text: 'Complete Tasks' },
+    { text: 'Get Paid' }
+  ];
 
   return (
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300 overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center py-16 transition-all duration-500" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : 'none', backgroundColor: '#0f172a' }}>
-            {isImageLoading && (
+            {isHeroImageLoading && (
                 <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
                     <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
                 </div>
@@ -160,9 +176,13 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
             <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Your Simple Path To Extra Income</h2>
             <p className="max-w-3xl mx-auto mb-12 text-slate-600 dark:text-slate-400">Complete easy tasks in your spare time and start earning today. Join EarnLab and turn every moment into a rewarding opportunity.</p>
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
-                 {[{img: 'https://i.imgur.com/T0bC2zZ.jpeg', text: 'Easily Sign up'}, {img: 'https://i.imgur.com/4l3z4P4.jpeg', text: 'Complete Tasks'}, {img: 'https://i.imgur.com/uJgJa8Z.jpeg', text: 'Get Paid'}].map((item, i) => (
+                 {howItWorksItems.map((item, i) => (
                     <div key={i} className={`bg-white dark:bg-[#1e293b] rounded-lg overflow-hidden shadow-lg relative transition-all duration-500 ease-out hover:-translate-y-2 ${isHowItWorksInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${i * 150}ms` }}>
-                        <img src={item.img} alt={`Step ${i+1}`} className="w-full h-auto object-cover aspect-[4/5]" />
+                        {isHowItWorksLoading ? (
+                            <div className="aspect-[4/5] w-full bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
+                        ) : (
+                            <img src={howItWorksImages[i]} alt={item.text} className="w-full h-auto object-cover aspect-[4/5]" />
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                             <h3 className="text-2xl font-bold text-white">{item.text}</h3>
                         </div>
