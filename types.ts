@@ -16,6 +16,9 @@ export interface User {
   totalWagered: number;
   totalProfit: number;
   totalWithdrawn: number;
+  totalReferrals: number;
+  referralEarnings: number;
+  referralLink: string;
 }
 
 export interface EarningFeedItem {

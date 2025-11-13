@@ -11,15 +11,19 @@ const SIDEBAR_MENU_ITEMS: SidebarMenuItem[] = [
 ];
 
 const LoggedOutSidebar: React.FC = () => {
-    const { isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
+    const { currentPage, isSidebarCollapsed, setIsSidebarCollapsed } = useContext(AppContext);
 
     const renderMenuItem = (item: SidebarMenuItem) => {
-        // NOTE: In logged-out state, currentPage is always 'Home', so no item will be active.
-        // Clicks on these items will not navigate to different pages in the current app structure.
+        const isActive = currentPage === item.name;
+        const baseClasses = `w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium`;
+        const stateClasses = isActive
+            ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold'
+            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700';
+
         return (
             <li key={item.name}>
                 <button
-                    className="w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700"
+                    className={`${baseClasses} ${stateClasses}`}
                 >
                     <div className="flex items-center space-x-3">
                         {item.icon}

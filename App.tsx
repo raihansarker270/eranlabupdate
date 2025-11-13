@@ -14,6 +14,7 @@ import OfferPage from './components/pages/OfferPage';
 import TasksPage from './components/pages/TasksPage';
 import LoggedInHomePage from './components/pages/LoggedInHomePage';
 import LoggedOutSidebar from './components/LoggedOutSidebar';
+import ReferralsPage from './components/pages/ReferralsPage';
 
 export const AppContext = React.createContext<{
   isLoggedIn: boolean;
@@ -89,6 +90,8 @@ const App: React.FC = () => {
         return <div className={pagePadding}><TasksPage /></div>;
       case 'Surveys':
         return <div className={pagePadding}><SurveysPage /></div>;
+      case 'Referrals':
+        return <div className={pagePadding}><ReferralsPage /></div>;
       case 'Boxes':
       case 'Battles':
         // Placeholder for new pages

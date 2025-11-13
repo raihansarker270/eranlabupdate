@@ -12,7 +12,7 @@ const SIDEBAR_MENU_ITEMS_TOP: SidebarMenuItem[] = [
 
 const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
   { name: 'Rewards', icon: <RewardIcon /> },
-  { name: 'Affiliates', icon: <AffiliateIcon /> },
+  { name: 'Referrals', icon: <AffiliateIcon /> },
   { name: 'Blog', icon: <BlogIcon /> },
   { name: 'Guides', icon: <GuideIcon /> },
   { name: 'Live Support', icon: <SupportIcon /> },
@@ -24,18 +24,21 @@ const Sidebar: React.FC = () => {
 
     const renderMenuItem = (item: SidebarMenuItem) => {
         const isActive = currentPage === item.name;
-        let specialClass = 'hover:bg-slate-100 dark:hover:bg-slate-700';
-        if (item.isSpecial) {
-             specialClass = 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/50 hover:bg-yellow-400/20';
-        }
-        const activeClass = isActive && !item.isSpecial ? 'bg-blue-600 text-white' : '';
         const baseClasses = `w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium`;
-        const textClass = isActive ? '' : 'text-slate-700 dark:text-slate-300';
+        
+        let stateClasses = 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700';
+
+        if (item.isSpecial) {
+            stateClasses = 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/50 hover:bg-yellow-400/20';
+        } else if (isActive) {
+            stateClasses = 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold';
+        }
+
         return (
             <li key={item.name}>
                 <button
                     onClick={() => setCurrentPage(item.name)}
-                    className={`${baseClasses} ${specialClass} ${activeClass} ${textClass}`}
+                    className={`${baseClasses} ${stateClasses}`}
                 >
                     <div className="flex items-center space-x-3">
                         {item.icon}

@@ -16,6 +16,9 @@ export const MOCK_USER: User = {
   totalWagered: 0.00,
   totalProfit: 0.00,
   totalWithdrawn: 50.00,
+  totalReferrals: 15,
+  referralEarnings: 25.75,
+  referralLink: 'https://earnlab.com/ref/raihansarker',
 };
 
 export const EARNING_FEED_ITEMS: EarningFeedItem[] = [
