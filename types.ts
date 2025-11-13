@@ -83,3 +83,9 @@ export interface ChatMessage {
   timestamp: string;
   isSelf: boolean;
 }
+
+export interface Testimonial {
+  text: string;
+  author: string;
+  rating: number;
+}

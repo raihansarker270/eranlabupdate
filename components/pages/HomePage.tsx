@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FAQ_ITEMS, REWARD_OPTIONS } from '../../constants';
+import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS } from '../../constants';
 import type { FaqItem } from '../../types';
 import { generateHeroImage, generateHowItWorksImages } from '../../lib/gemini';
 
@@ -131,6 +131,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
 
   const [howItWorksRef, isHowItWorksInView] = useInView({ threshold: 0.15 });
   const [rewardsRef, isRewardsInView] = useInView({ threshold: 0.15 });
+  const [testimonialsRef, isTestimonialsInView] = useInView({ threshold: 0.15 });
   const [statsRef, isStatsInView] = useInView({ threshold: 0.15 });
   const [faqRef, isFaqInView] = useInView({ threshold: 0.15 });
   
@@ -204,8 +205,38 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
             </div>
         </section>
         
+        {/* Testimonials Section */}
+        <section ref={testimonialsRef} className="py-20 bg-slate-50 dark:bg-[#141c2f]">
+            <div className="container mx-auto px-8 text-center">
+                <span className="text-sm font-bold text-yellow-500 bg-yellow-500/10 px-3 py-1 rounded-full">Customer Reviews</span>
+                <h2 className="text-4xl font-bold text-slate-900 dark:text-white mt-4 mb-12">Everybody loves EarnLab</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+                    {TESTIMONIALS.map((testimonial, i) => (
+                        <div 
+                            key={i} 
+                            className={`bg-white dark:bg-[#1e293b] p-8 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 relative flex flex-col transition-all duration-500 ease-out hover:-translate-y-2 ${isTestimonialsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} 
+                            style={{ transitionDelay: `${i * 150}ms` }}
+                        >
+                            <i className="fas fa-quote-left text-6xl text-teal-400 opacity-20 absolute top-6 left-6"></i>
+                            <div className="relative z-10 flex flex-col flex-grow">
+                                <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow">{testimonial.text}</p>
+                                <div className="mt-auto">
+                                    <p className="font-bold text-slate-800 dark:text-white">{testimonial.author}</p>
+                                    <div className="flex items-center mt-2">
+                                        {[...Array(testimonial.rating)].map((_, starIndex) => (
+                                            <i key={starIndex} className="fas fa-star text-yellow-400"></i>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </section>
+        
         {/* Stats Section */}
-        <section ref={statsRef} className="py-20 bg-slate-50 dark:bg-[#141c2f] text-center">
+        <section ref={statsRef} className="py-20 bg-white dark:bg-[#0f172a] text-center">
              <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Join The EarnLab Success Story</h2>
              <p className="max-w-3xl mx-auto mb-12 text-slate-600 dark:text-slate-400">Be part of our growing community and start earning effortlessly. See how thousands are turning simple tasks into real money.</p>
              <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
@@ -226,7 +257,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
         </section>
 
         {/* FAQ Section */}
-        <section ref={faqRef} className={`py-20 bg-white dark:bg-[#0f172a] transition-opacity duration-1000 ${isFaqInView ? 'opacity-100' : 'opacity-0'}`}>
+        <section ref={faqRef} className={`py-20 bg-slate-50 dark:bg-[#141c2f] transition-opacity duration-1000 ${isFaqInView ? 'opacity-100' : 'opacity-0'}`}>
             <div className="container mx-auto px-8 max-w-4xl">
                 <h2 className="text-4xl font-bold text-slate-900 dark:text-white text-center mb-12">Your EarnLab Questions Answered</h2>
                 <div className="bg-white dark:bg-[#1e293b] rounded-lg shadow-lg border border-slate-200 dark:border-slate-800">

@@ -1,5 +1,6 @@
 
-import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage } from './types';
+
+import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial } from './types';
 
 export const MOCK_USER: User = {
   username: 'raihansarker',
@@ -93,4 +94,22 @@ export const CHAT_MESSAGES: ChatMessage[] = [
     { id: 3, user: 'raihansarker', avatar: 'https://i.pravatar.cc/32?u=raihansarker', message: 'That\'s awesome! I was thinking of doing that one.', timestamp: '10:02 AM', isSelf: true },
     { id: 4, user: 'SurveyFan', avatar: 'https://i.pravatar.cc/32?u=surveyfan', message: 'Any good surveys today?', timestamp: '10:03 AM', isSelf: false },
     { id: 5, user: 'CryptoKing', avatar: 'https://i.pravatar.cc/32?u=cryptoking', message: 'CPX Research is pretty good right now.', timestamp: '10:05 AM', isSelf: false },
+];
+
+export const TESTIMONIALS: Testimonial[] = [
+  {
+    text: "I'm really happy with the service! I've already received several €5 vouchers, and the compensation is always fair and processed without delay.",
+    author: 'Tracy A.',
+    rating: 5,
+  },
+  {
+    text: "I Love EarnLab. They have new surveys every day and they pay you instantly. Its easily one of the best services out there!",
+    author: 'And B.',
+    rating: 5,
+  },
+  {
+    text: 'Payouts are very fast, and contact is always friendly and satisfactory. They respond very quickly to inquiries, and a good solution is always found. Thank you, and keep up the good work!',
+    author: 'Gerd T.',
+    rating: 5,
+  },
 ];
