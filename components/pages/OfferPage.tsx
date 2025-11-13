@@ -19,10 +19,10 @@ const offerWalls = [
 const SectionHeader: React.FC<{ title: string, description: string }> = ({ title, description }) => (
     <div className="flex justify-between items-center mb-6">
         <div>
-            <h2 className="text-2xl font-bold text-white">{title}</h2>
-            <p className="text-slate-400">{description}</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-500 dark:text-slate-400">{description}</p>
         </div>
-        <a href="#" className="text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
+        <a href="#" className="text-blue-500 dark:text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
     </div>
 );
 
@@ -38,13 +38,13 @@ const OfferPage: React.FC = () => {
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                      {offerWalls.map((wall, index) => (
-                        <div key={index} className={`bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-40 relative overflow-hidden transition-all duration-300 ${!wall.isLocked && 'hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-40 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                             {wall.bonus && <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full z-20 ${wall.isLocked ? 'bg-gray-500/30 text-gray-300' : 'bg-green-500/20 text-green-300'}`}>{wall.bonus}</div>}
                             
                             <div className={`relative flex flex-col items-center justify-center w-full h-full ${wall.isLocked ? 'opacity-50' : ''}`}>
                                  <img src={wall.logo} alt={wall.name} className="h-12 max-w-[90%] object-contain" />
-                                <p className="font-semibold text-white text-sm mt-3">{wall.name}</p>
+                                <p className="font-semibold text-slate-900 dark:text-white text-sm mt-3">{wall.name}</p>
                             </div>
                              
                             {wall.isLocked && (

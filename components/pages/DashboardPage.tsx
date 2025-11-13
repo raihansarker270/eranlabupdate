@@ -12,8 +12,8 @@ const DashboardPage: React.FC = () => {
     const renderTabContent = () => {
         return (
              <div className="overflow-x-auto">
-                 <table className="w-full text-sm text-left text-slate-400">
-                     <thead className="text-xs text-slate-400 uppercase bg-slate-900/50">
+                 <table className="w-full text-sm text-left text-slate-600 dark:text-slate-400">
+                     <thead className="text-xs text-slate-700 dark:text-slate-400 uppercase bg-slate-100 dark:bg-slate-900/50">
                          <tr>
                              <th scope="col" className="px-6 py-3">{activeTab}</th>
                              <th scope="col" className="px-6 py-3">ID</th>
@@ -25,7 +25,7 @@ const DashboardPage: React.FC = () => {
                          </tr>
                      </thead>
                      <tbody>
-                        <tr className="border-t border-slate-700">
+                        <tr className="border-t border-slate-200 dark:border-slate-700">
                             <td colSpan={7} className="text-center py-12">
                                 No items.
                             </td>
@@ -33,8 +33,8 @@ const DashboardPage: React.FC = () => {
                      </tbody>
                  </table>
                  <div className="flex justify-center items-center p-4">
-                     <button className="text-slate-500 mx-2" disabled>&lt;</button>
-                     <button className="text-slate-500 mx-2" disabled>&gt;</button>
+                     <button className="text-slate-400 dark:text-slate-500 mx-2" disabled>&lt;</button>
+                     <button className="text-slate-400 dark:text-slate-500 mx-2" disabled>&gt;</button>
                  </div>
              </div>
         )
@@ -43,25 +43,25 @@ const DashboardPage: React.FC = () => {
     return (
         <div className="space-y-8">
             {/* User Profile Section */}
-            <div className="bg-[#1e293b] p-6 rounded-lg">
+            <div className="bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800">
                 <div className="flex flex-col md:flex-row items-start gap-6">
                     <img src={user.avatarUrl} alt={user.username} className="w-24 h-24 rounded-lg" />
                     <div className="flex-1">
                         <div className="flex items-center justify-between">
-                            <h2 className="text-2xl font-bold text-white">{user.username}</h2>
-                            <span className="bg-slate-700 text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold">{user.rank}</span>
+                            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{user.username}</h2>
+                            <span className="bg-slate-100 dark:bg-slate-700 text-yellow-500 dark:text-yellow-400 px-3 py-1 rounded-full text-sm font-semibold">{user.rank}</span>
                         </div>
-                        <p className="text-slate-400 text-sm">Joined {user.joinedDate}</p>
-                        <div className="flex flex-wrap gap-4 text-xs text-slate-400 mt-2">
-                            <span className="bg-slate-800 px-2 py-1 rounded">ID: {user.id}</span>
-                            <span className="bg-slate-800 px-2 py-1 rounded">Earn ID: {user.earnId}</span>
+                        <p className="text-slate-500 dark:text-slate-400 text-sm">Joined {user.joinedDate}</p>
+                        <div className="flex flex-wrap gap-4 text-xs text-slate-500 dark:text-slate-400 mt-2">
+                            <span className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">ID: {user.id}</span>
+                            <span className="bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded">Earn ID: {user.earnId}</span>
                         </div>
                         <div className="mt-4">
                             <div className="flex justify-between text-sm mb-1">
-                                <span className="text-slate-400">0 XP</span>
-                                <span className="text-white">{user.xpToNextLevel.toLocaleString()} XP to next level</span>
+                                <span className="text-slate-500 dark:text-slate-400">0 XP</span>
+                                <span className="text-slate-900 dark:text-white">{user.xpToNextLevel.toLocaleString()} XP to next level</span>
                             </div>
-                            <div className="w-full bg-slate-700 rounded-full h-2.5">
+                            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2.5">
                                 <div className="bg-blue-600 h-2.5 rounded-full" style={{ width: `${xpPercentage}%` }}></div>
                             </div>
                         </div>
@@ -80,11 +80,11 @@ const DashboardPage: React.FC = () => {
             </div>
 
             {/* Activity Tabs Section */}
-             <div className="bg-[#1e293b] rounded-lg">
-                 <div className="p-2 border-b border-slate-700">
+             <div className="bg-white dark:bg-[#1e293b] rounded-lg border border-slate-200 dark:border-slate-800">
+                 <div className="p-2 border-b border-slate-200 dark:border-slate-700">
                      <div className="flex items-center space-x-2 overflow-x-auto">
                         {['Tasks', 'Settings', 'Transactions', 'Deposits', 'Withdrawals', 'Openings', 'Battles'].map(tab => (
-                            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 text-sm font-semibold rounded-md ${activeTab === tab ? 'bg-slate-700 text-white' : 'text-slate-400 hover:bg-slate-800'}`}>
+                            <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 text-sm font-semibold rounded-md ${activeTab === tab ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
                                 {tab}
                             </button>
                         ))}
@@ -105,13 +105,13 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ title, value, icon }) => {
     return (
-        <div className="bg-[#1e293b] p-6 rounded-lg flex items-center gap-4">
-            <div className="bg-slate-700 text-blue-400 w-12 h-12 rounded-full flex items-center justify-center">
+        <div className="bg-white dark:bg-[#1e293b] p-6 rounded-lg flex items-center gap-4 border border-slate-200 dark:border-slate-800">
+            <div className="bg-slate-100 dark:bg-slate-700 text-blue-500 dark:text-blue-400 w-12 h-12 rounded-full flex items-center justify-center">
                 <i className={`${icon} text-xl`}></i>
             </div>
             <div>
-                <p className="text-slate-400 text-sm">{title}</p>
-                <p className="text-xl font-bold text-white">{value}</p>
+                <p className="text-slate-500 dark:text-slate-400 text-sm">{title}</p>
+                <p className="text-xl font-bold text-slate-900 dark:text-white">{value}</p>
             </div>
         </div>
     )

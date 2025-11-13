@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import LoggedOutHeader from './components/LoggedOutHeader';
@@ -7,6 +7,7 @@ import SurveysPage from './components/pages/SurveysPage';
 import DashboardPage from './components/pages/DashboardPage';
 import WalletModal from './components/WalletModal';
 import LiveEarningFeed from './components/LiveEarningFeed';
+import Footer from './components/Footer';
 import { MOCK_USER } from './constants';
 import type { User } from './types';
 import OfferPage from './components/pages/OfferPage';
@@ -25,6 +26,8 @@ export const AppContext = React.createContext<{
   setCurrentPage: React.Dispatch<React.SetStateAction<string>>;
   isSidebarCollapsed: boolean;
   setIsSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  theme: 'light' | 'dark';
+  setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
 }>({
   isLoggedIn: false,
   user: null,
@@ -37,6 +40,8 @@ export const AppContext = React.createContext<{
   setCurrentPage: () => {},
   isSidebarCollapsed: false,
   setIsSidebarCollapsed: () => {},
+  theme: 'dark',
+  setTheme: () => {},
 });
 
 const App: React.FC = () => {
@@ -46,6 +51,19 @@ const App: React.FC = () => {
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState('Home');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const storedTheme = localStorage.getItem('theme');
+    return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const handleLogin = useCallback(() => {
     setIsLoggedIn(true);
@@ -73,22 +91,23 @@ const App: React.FC = () => {
       case 'Boxes':
       case 'Battles':
         // Placeholder for new pages
-        return <div className={`text-white text-3xl font-bold ${pagePadding}`}>{currentPage} Page</div>;
+        return <div className={`text-slate-900 dark:text-white text-3xl font-bold ${pagePadding}`}>{currentPage} Page</div>;
       default:
         return <div className={pagePadding}><LoggedInHomePage /></div>;
     }
   };
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed }}>
-      <div className="flex min-h-screen bg-[#0f172a] text-slate-300">
-        <Sidebar />
+    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, theme, setTheme }}>
+      <div className="flex min-h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
+        {isLoggedIn && <Sidebar />}
         <div className="flex-1 flex flex-col min-w-0">
             {isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader onLogin={handleLogin} />}
             <LiveEarningFeed />
             <main className="flex-1 overflow-y-auto">
                 {isLoggedIn ? renderPage() : <HomePageContent onLogin={handleLogin} />}
             </main>
+            <Footer />
         </div>
         {isLoggedIn && <WalletModal />}
       </div>

@@ -24,17 +24,18 @@ const Sidebar: React.FC = () => {
 
     const renderMenuItem = (item: SidebarMenuItem) => {
         const isActive = currentPage === item.name;
-        let specialClass = 'hover:bg-slate-700';
+        let specialClass = 'hover:bg-slate-100 dark:hover:bg-slate-700';
         if (item.isSpecial) {
              specialClass = 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/50 hover:bg-yellow-400/20';
         }
         const activeClass = isActive && !item.isSpecial ? 'bg-blue-600 text-white' : '';
-
+        const baseClasses = `w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium`;
+        const textClass = isActive ? '' : 'text-slate-700 dark:text-slate-300';
         return (
             <li key={item.name}>
                 <button
                     onClick={() => setCurrentPage(item.name)}
-                    className={`w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${specialClass} ${activeClass}`}
+                    className={`${baseClasses} ${specialClass} ${activeClass} ${textClass}`}
                 >
                     <div className="flex items-center space-x-3">
                         {item.icon}
@@ -47,11 +48,11 @@ const Sidebar: React.FC = () => {
     };
 
   return (
-    <aside className={`bg-[#141c2f] flex-col hidden lg:flex transition-all duration-300 ease-in-out sticky top-0 h-screen overflow-hidden ${isSidebarCollapsed ? 'w-0' : 'w-64'}`}>
+    <aside className={`bg-white dark:bg-[#141c2f] flex-col hidden lg:flex transition-all duration-300 ease-in-out sticky top-0 h-screen overflow-hidden ${isSidebarCollapsed ? 'w-0' : 'w-64'} border-r border-slate-200 dark:border-slate-800`}>
         <div className="p-4 flex flex-col flex-1 min-w-[16rem]">
             <div className="flex items-center justify-between mb-8">
-                <h1 className="text-2xl font-bold text-white">EarnLab</h1>
-                <button onClick={() => setIsSidebarCollapsed(true)} className="p-2 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700">
+                <h1 className="text-2xl font-bold text-slate-900 dark:text-white">EarnLab</h1>
+                <button onClick={() => setIsSidebarCollapsed(true)} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                 </button>
             </div>
@@ -60,7 +61,7 @@ const Sidebar: React.FC = () => {
                 <ul className="space-y-1">
                     {SIDEBAR_MENU_ITEMS_TOP.map(renderMenuItem)}
                 </ul>
-                <div className="border-t border-slate-700 my-4" />
+                <div className="border-t border-slate-200 dark:border-slate-700 my-4" />
                 <ul className="space-y-1">
                     {SIDEBAR_MENU_ITEMS_BOTTOM.map(renderMenuItem)}
                 </ul>

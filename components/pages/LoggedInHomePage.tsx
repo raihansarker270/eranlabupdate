@@ -42,10 +42,10 @@ const surveyWalls = [
 const SectionHeader: React.FC<{ title: string, description: string }> = ({ title, description }) => (
     <div className="flex justify-between items-center mb-6">
         <div>
-            <h2 className="text-2xl font-bold text-white">{title}</h2>
-            <p className="text-slate-400">{description}</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h2>
+            <p className="text-slate-500 dark:text-slate-400">{description}</p>
         </div>
-        <a href="#" className="text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
+        <a href="#" className="text-blue-500 dark:text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
     </div>
 );
 
@@ -72,11 +72,11 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Featured Tasks" description="Featured tasks are the best tasks to complete, with the highest rewards" />
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                     {featuredTasks.map((task, index) => (
-                        <div key={index} className="bg-[#1e293b] rounded-lg overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform">
+                        <div key={index} className="bg-white dark:bg-[#1e293b] rounded-lg overflow-hidden group cursor-pointer hover:-translate-y-1 transition-transform border border-slate-200 dark:border-slate-800">
                             <img src={task.image} alt={task.title} className="w-full aspect-[4/3] object-cover" />
                             <div className="p-3">
-                                <h3 className="font-semibold text-white truncate group-hover:text-blue-400">{task.title}</h3>
-                                <p className="text-sm text-slate-400 truncate">{task.description}</p>
+                                <h3 className="font-semibold text-slate-900 dark:text-white truncate group-hover:text-blue-500 dark:group-hover:text-blue-400">{task.title}</h3>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 truncate">{task.description}</p>
                             </div>
                         </div>
                     ))}
@@ -88,12 +88,12 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Featured Surveys" description="Explore our handpicked selection of surveys just for you" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-4">
                     {featuredSurveys.map((survey, index) => (
-                         <div key={index} className="bg-[#1e293b] rounded-lg p-4 flex flex-col items-start group cursor-pointer hover:-translate-y-1 transition-transform">
-                             <div className="w-full aspect-square bg-[#132841] rounded-lg flex items-center justify-center mb-3">
-                                 <i className="fas fa-clipboard-list text-4xl text-blue-400"></i>
+                         <div key={index} className="bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-start group cursor-pointer hover:-translate-y-1 transition-transform border border-slate-200 dark:border-slate-800">
+                             <div className="w-full aspect-square bg-slate-100 dark:bg-[#132841] rounded-lg flex items-center justify-center mb-3">
+                                 <i className="fas fa-clipboard-list text-4xl text-blue-500 dark:text-blue-400"></i>
                              </div>
-                             <h3 className="font-semibold text-white group-hover:text-blue-400">{survey.title}</h3>
-                             <p className="text-sm text-slate-400">{survey.duration}</p>
+                             <h3 className="font-semibold text-slate-900 dark:text-white group-hover:text-blue-500 dark:group-hover:text-blue-400">{survey.title}</h3>
+                             <p className="text-sm text-slate-500 dark:text-slate-400">{survey.duration}</p>
                              <div className="self-end mt-auto pt-2"><StarIcon /></div>
                          </div>
                     ))}
@@ -105,13 +105,13 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                      {offerWalls.map((wall, index) => (
-                        <div key={index} className={`bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-36 relative overflow-hidden transition-all duration-300 ${!wall.isLocked && 'hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-36 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                             {wall.bonus && <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full z-20 ${wall.isLocked ? 'bg-gray-500/30 text-gray-300' : 'bg-green-500/20 text-green-300'}`}>{wall.bonus}</div>}
                             
                             <div className={`relative flex flex-col items-center justify-center flex-1 ${wall.isLocked ? 'opacity-50' : ''}`}>
                                 <img src={wall.logo} alt={wall.name} className="h-10 max-w-full object-contain mb-2" />
-                                <p className="font-semibold text-white text-sm mt-auto">{wall.name}</p>
+                                <p className="font-semibold text-slate-900 dark:text-white text-sm mt-auto">{wall.name}</p>
                             </div>
                              
                             {wall.isLocked && (
@@ -130,12 +130,12 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Survey Walls" description="Each survey wall contains hundreds of surveys to complete" />
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
                      {surveyWalls.map((wall, index) => (
-                        <div key={index} className={`bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 ${!wall.isLocked && 'hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                              {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                              
                              <div className={`relative flex flex-col items-center justify-center flex-1 ${wall.isLocked ? 'opacity-50' : ''}`}>
                                  <img src={wall.logo} alt={wall.name} className="h-8 max-w-full object-contain mb-2" />
-                                 <p className="font-semibold text-white text-sm mt-auto">{wall.name}</p>
+                                 <p className="font-semibold text-slate-900 dark:text-white text-sm mt-auto">{wall.name}</p>
                              </div>
                              
                              {wall.isLocked && (

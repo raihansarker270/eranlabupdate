@@ -13,21 +13,21 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
     if (!user) return null;
 
   return (
-    <header className="bg-[#141c2f] p-4 flex items-center justify-between border-b border-slate-700">
+    <header className="bg-white dark:bg-[#141c2f] p-4 flex items-center justify-between border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center gap-4">
             {isSidebarCollapsed && (
                 <button 
                     onClick={() => setIsSidebarCollapsed(false)} 
-                    className="p-2 rounded-md text-slate-400 hover:bg-slate-700 hover:text-white lg:block hidden"
+                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white lg:block hidden"
                     aria-label="Open sidebar"
                 >
                     <MenuIcon />
                 </button>
             )}
-            <h1 className="text-2xl font-bold text-white">EarnLab</h1>
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white hidden lg:block">EarnLab</h1>
         </div>
         <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-green-400 font-bold">
+            <div className="flex items-center gap-2 text-green-500 dark:text-green-400 font-bold">
                 <i className="fas fa-dollar-sign"></i>
                 <span>{balance.toFixed(2)}</span>
             </div>
@@ -35,27 +35,27 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                 <WalletIcon />
                 <span>Wallet</span>
             </button>
-            <button className="text-slate-400 hover:text-white">
+            <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
                 <BellIcon />
             </button>
             <div className="relative">
                 <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2">
                     <img src={user.avatarUrl} alt={user.username} className="w-8 h-8 rounded-full" />
-                    <span className="font-semibold text-white">{user.username}</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">{user.username}</span>
                     <ChevronDownIcon />
                 </button>
                 {isDropdownOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-slate-800 rounded-lg shadow-lg py-1 z-10">
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-slate-800 rounded-lg shadow-lg py-1 z-10 border border-slate-200 dark:border-slate-700">
                         <button 
                             onClick={() => {
                                 setCurrentPage('Profile');
                                 setIsDropdownOpen(false);
                             }} 
-                            className="w-full text-left block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">
+                            className="w-full text-left block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">
                             Profile
                         </button>
-                        <a href="#" className="block px-4 py-2 text-sm text-slate-300 hover:bg-slate-700">Settings</a>
-                        <button onClick={onLogout} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:bg-slate-700">
+                        <a href="#" className="block px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700">Settings</a>
+                        <button onClick={onLogout} className="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-red-500 dark:text-red-400 hover:bg-slate-100 dark:hover:bg-slate-700">
                             <LogoutIcon />
                             <span>Logout</span>
                         </button>
