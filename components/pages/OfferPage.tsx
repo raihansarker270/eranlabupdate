@@ -55,7 +55,7 @@ const OfferPage: React.FC = () => {
                      {offerWalls.map((wall, index) => (
                         <a 
                             key={index}
-                            href={wall.isLocked ? '#' : `/?page=${getPageKey(wall.name)}&view=dedicated`}
+                            href={wall.isLocked ? '#' : `/${getPageKey(wall.name)}`}
                             target={wall.isLocked ? '_self' : '_blank'}
                             rel="noopener noreferrer"
                             onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}

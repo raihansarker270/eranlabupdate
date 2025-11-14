@@ -9,12 +9,8 @@ const getPageKey = (name: string): string => {
         'CPX Research': 'CPX',
         'Adscend Media Surveys': 'AdscendSurveys',
         'BitLabs Surveys': 'BitLabs',
-        'Adscend Media': 'Adscend',
-        'MM Wall': 'MMWall',
-        'Time Wall': 'TimeWall',
-        'Aye-T Studios': 'AyeTStudios',
-        'Hang My Ads': 'HangMyAds',
-        'AdGate Media': 'AdGate',
+        'inBrain': 'inBrain',
+        'TheoremReach': 'TheoremReach',
     };
     return mapping[name] || name.replace(/\s+/g, '');
 };
@@ -64,7 +60,7 @@ const SurveysPage: React.FC = () => {
 const SurveyProviderCard: React.FC<{provider: SurveyProvider}> = ({ provider }) => {
     return (
         <a 
-            href={provider.isLocked ? '#' : `/?page=${getPageKey(provider.name)}&view=dedicated`}
+            href={provider.isLocked ? '#' : `/${getPageKey(provider.name)}`}
             target={provider.isLocked ? '_self' : '_blank'}
             rel="noopener noreferrer"
             onClick={(e) => { if (provider.isLocked) e.preventDefault(); }}

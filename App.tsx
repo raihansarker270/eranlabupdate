@@ -95,11 +95,6 @@ export const AppContext = React.createContext<{
   setIsSupportChatModalOpen: () => {},
 });
 
-const getPageFromURL = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('page');
-};
-
 const PageLoader: React.FC = () => (
     <div className="flex items-center justify-center h-full w-full p-8">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
@@ -152,13 +147,25 @@ const App: React.FC = () => {
   const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [signupInitialEmail, setSignupInitialEmail] = useState('');
-  const [currentPage, setCurrentPage] = useState(getPageFromURL() || 'Home');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const storedTheme = localStorage.getItem('theme');
     return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
   });
+
+  const pageKeyFromPath = window.location.pathname.substring(1);
+  const isDedicatedView = pageComponentsMap.hasOwnProperty(pageKeyFromPath);
+
+  const determinePage = useCallback(() => {
+    if (isDedicatedView) {
+      return pageKeyFromPath;
+    }
+    const params = new URLSearchParams(window.location.search);
+    return params.get('page') || 'Home';
+  }, [isDedicatedView, pageKeyFromPath]);
+
+  const [currentPage, setCurrentPage] = useState(determinePage());
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (theme === 'dark') {
@@ -169,26 +176,18 @@ const App: React.FC = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
   
-  const urlParams = new URLSearchParams(window.location.search);
-  const isDedicatedView = urlParams.get('view') === 'dedicated';
-
   useEffect(() => {
     const handlePopState = () => {
-      // Re-check URL params on back/forward navigation
-      const newParams = new URLSearchParams(window.location.search);
-      const newPage = newParams.get('page') || 'Home';
-      setCurrentPage(newPage);
-      // This will cause a re-render, and isDedicatedView will be re-evaluated
+      setCurrentPage(determinePage());
     };
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, []);
+  }, [determinePage]);
 
   if (isDedicatedView) {
-      const pageName = urlParams.get('page');
-      const ComponentToRender = pageName ? pageComponentsMap[pageName] : null;
+      const ComponentToRender = pageComponentsMap[currentPage];
 
       if (!ComponentToRender) {
           return (
@@ -212,6 +211,7 @@ const App: React.FC = () => {
   const setCurrentPageAndUpdateUrl = (pageName: string) => {
     setCurrentPage(pageName);
     const url = new URL(window.location.href);
+    url.pathname = '/'; // Keep main app on root path
     if (pageName === 'Home') {
         url.searchParams.delete('page');
     } else {
