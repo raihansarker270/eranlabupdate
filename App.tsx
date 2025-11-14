@@ -101,7 +101,7 @@ const getPageFromURL = () => {
 };
 
 const PageLoader: React.FC = () => (
-    <div className="flex items-center justify-center h-full w-full">
+    <div className="flex items-center justify-center h-full w-full p-8">
         <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
     </div>
 );
@@ -132,16 +132,37 @@ const App: React.FC = () => {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPage(getPageFromURL() || 'Home');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const setCurrentPageAndUpdateUrl = (pageName: string) => {
+    setCurrentPage(pageName);
+    const url = new URL(window.location.href);
+    if (pageName === 'Home') {
+        url.searchParams.delete('page');
+    } else {
+        url.searchParams.set('page', pageName);
+    }
+    window.history.pushState({ page: pageName }, '', url);
+  };
+
   const handleLogin = useCallback(() => {
     setIsLoggedIn(true);
-    setCurrentPage('Home');
+    setCurrentPageAndUpdateUrl('Home');
     setIsSigninModalOpen(false);
     setIsSignupModalOpen(false);
   }, []);
 
   const handleLogout = useCallback(() => {
     setIsLoggedIn(false);
-    setCurrentPage('Home'); // Reset to home on logout
+    setCurrentPageAndUpdateUrl('Home');
   }, []);
 
   const openSignupModal = (email = '') => {
@@ -160,7 +181,7 @@ const App: React.FC = () => {
   };
   
  const pageComponents: { [key: string]: React.ReactNode } = {
-    'Home': <LoggedInHomePage />,
+    'Home': isLoggedIn ? <LoggedInHomePage /> : <HomePageContent />,
     'Profile': <DashboardPage />,
     'Offer': <OfferPage />,
     'Tasks': <TasksPage />,
@@ -195,29 +216,21 @@ const App: React.FC = () => {
 
   const renderPage = () => {
     const pagePadding = "p-4 sm:p-6 lg:p-8";
-    const Component = pageComponents[currentPage] || <LoggedInHomePage />;
+    const Component = pageComponents[currentPage] || pageComponents['Home'];
     return <div className={pagePadding}>{Component}</div>;
   };
   
-  const appContextValue = { isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, setIsSigninModalOpen, isSignupModalOpen, openSignupModal, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen };
-  const pageFromUrl = getPageFromURL();
+  const appContextValue = { 
+      isLoggedIn, user, balance, setBalance, setIsLoggedIn, 
+      isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, 
+      setIsSigninModalOpen, isSignupModalOpen, openSignupModal, 
+      currentPage, setCurrentPage: setCurrentPageAndUpdateUrl, isSidebarCollapsed, 
+      setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, 
+      theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen 
+  };
 
-  if (pageFromUrl) {
-    // Render dedicated page view (no layout)
-    return (
-      <AppContext.Provider value={appContextValue}>
-        <div className="bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300 min-h-screen">
-          <Suspense fallback={<PageLoader />}>
-            {isLoggedIn ? renderPage() : <HomePageContent />}
-          </Suspense>
-        </div>
-      </AppContext.Provider>
-    );
-  }
-
-  // Render full app view
   const headerContent = isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader />;
-  const mainContent = isLoggedIn ? renderPage() : <HomePageContent />;
+  const mainContent = renderPage();
 
   return (
     <AppContext.Provider value={appContextValue}>
