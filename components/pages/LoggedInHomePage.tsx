@@ -217,7 +217,7 @@ const LoggedInHomePage: React.FC = () => {
                      {offerWalls.map((wall, index) => (
                         <a 
                             key={index}
-                            href={wall.isLocked ? '#' : `/#/${encodeURIComponent(wall.name)}`}
+                            href={wall.isLocked ? '#' : `/#/${encodeURIComponent(wall.name.replace(/\s/g, ''))}`}
                             target={wall.isLocked ? '_self' : '_blank'}
                             rel="noopener noreferrer"
                             onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
@@ -248,7 +248,7 @@ const LoggedInHomePage: React.FC = () => {
                      {surveyWalls.map((wall, index) => (
                         <a 
                             key={index}
-                            href={wall.isLocked ? '#' : `/#/${encodeURIComponent(wall.name)}`}
+                            href={wall.isLocked ? '#' : `/#/${encodeURIComponent(wall.name.replace(/\s/g, ''))}`}
                             target={wall.isLocked ? '_self' : '_blank'}
                             rel="noopener noreferrer"
                             onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}

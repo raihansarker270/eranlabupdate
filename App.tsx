@@ -149,9 +149,17 @@ const pageComponentsMap: { [key: string]: React.ReactNode } = {
     'Battles': <div className="text-slate-900 dark:text-white text-3xl font-bold">Battles Page</div>,
 };
 
+// Create a lookup map to find the original page name (with spaces) from a URL-friendly version (without spaces)
+const pageKeyLookup = Object.keys(pageComponentsMap).reduce((lookup, key) => {
+    const keyWithoutSpaces = key.replace(/\s/g, '');
+    lookup[keyWithoutSpaces] = key;
+    return lookup;
+}, {} as Record<string, string>);
+
 
 const App: React.FC = () => {
-  const dedicatedPageName = getPageFromHash();
+  const dedicatedPageNameFromHash = getPageFromHash();
+  const dedicatedPageName = dedicatedPageNameFromHash ? pageKeyLookup[dedicatedPageNameFromHash] : null;
   const isDedicatedView = !!dedicatedPageName;
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -181,7 +189,8 @@ const App: React.FC = () => {
   
   useEffect(() => {
     const handlePopState = () => {
-      const dedicatedPage = getPageFromHash();
+      const pageFromHash = getPageFromHash();
+      const dedicatedPage = pageFromHash ? pageKeyLookup[pageFromHash] : null;
       if (dedicatedPage) {
           setCurrentPage(dedicatedPage);
       } else {
