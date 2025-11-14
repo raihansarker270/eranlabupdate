@@ -48,7 +48,7 @@ const SurveysPage: React.FC = () => {
 const SurveyProviderCard: React.FC<{provider: SurveyProvider}> = ({ provider }) => {
     return (
         <a 
-            href={provider.isLocked ? '#' : `/?page=${encodeURIComponent(provider.name)}&view=dedicated`}
+            href={provider.isLocked ? '#' : `/#/${encodeURIComponent(provider.name)}`}
             target={provider.isLocked ? '_self' : '_blank'}
             rel="noopener noreferrer"
             onClick={(e) => { if (provider.isLocked) e.preventDefault(); }}
