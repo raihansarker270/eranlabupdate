@@ -43,12 +43,12 @@ const Sidebar: React.FC = () => {
         const isActive = currentPage === item.name;
         const baseClasses = `w-full flex items-center justify-between text-left px-4 py-3 rounded-lg transition-colors duration-200 font-medium`;
         
-        let stateClasses = 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700';
+        let stateClasses = 'text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-white';
 
         if (item.isSpecial) {
             stateClasses = 'bg-yellow-400/10 text-yellow-400 border border-yellow-400/50 hover:bg-yellow-400/20';
         } else if (isActive) {
-            stateClasses = 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-semibold';
+            stateClasses = 'bg-slate-100 text-slate-900 dark:bg-[#1e293b] dark:text-white font-semibold';
         }
 
         return (
@@ -84,7 +84,7 @@ const Sidebar: React.FC = () => {
           <div className="p-4 flex flex-col flex-1 min-w-[16rem] h-full overflow-y-auto">
               <div className="flex items-center justify-between mb-8">
                   <h1 className="text-2xl font-bold text-slate-900 dark:text-white">EarnLab</h1>
-                  <button onClick={handleClose} className="p-2 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700">
+                  <button onClick={handleClose} className="p-2 rounded-lg bg-slate-100 text-slate-500 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:hover:bg-slate-700">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                   </button>
               </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { AppContext } from '../../App';
-import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS, FEATURED_OFFERS, HOW_IT_WORKS_IMAGES } from '../../constants';
+import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS, FEATURED_OFFERS } from '../../constants';
 import type { FaqItem } from '../../types';
 
 // Custom hook to detect when an element is in view
@@ -94,6 +94,82 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
     );
 };
 
+const HighestPayoutsIcon = () => (
+  <div className="w-16 h-16 bg-green-500/10 rounded-lg flex items-center justify-center">
+    <svg className="w-8 h-8 text-green-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 28H24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M10 28V22H22V28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 22V16H20V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16 16V4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 8L16 4L20 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </div>
+);
+
+const InstantCashoutsIcon = () => (
+  <div className="w-16 h-16 bg-green-500/10 rounded-lg flex items-center justify-center">
+    <svg className="w-8 h-8 text-green-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 10H24C26.2091 10 28 11.7909 28 14V22C28 24.2091 26.2091 26 24 26H8C5.79086 26 4 24.2091 4 22V10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16 14V22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="16" cy="18" r="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22 6L28 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22 12H28" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M25 9V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </div>
+);
+
+const DailyBonusesIcon = () => (
+  <div className="w-16 h-16 bg-green-500/10 rounded-lg flex items-center justify-center">
+    <svg className="w-8 h-8 text-green-400" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 14H28V28H4V14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M16 28V14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M28 14H4C4 9 8 4 16 4C24 4 28 9 28 14Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  </div>
+);
+
+const earningMethods = [
+  {
+    title: 'Play games',
+    description: 'In order to attract more players, gaming companies want to pay you to play their games, let\'s play!',
+    earnLabel: 'Earn per game',
+    earnAmount: '$1.00 - $120.00',
+    images: ['https://i.imgur.com/G5s4e6A.png'],
+  },
+  {
+    title: 'Complete offers',
+    description: 'Get to know new companies by trying their apps while you earn money. It\'s time to get paid for using apps!',
+    earnLabel: 'Earn per app',
+    earnAmount: '$1.00 - $75.00',
+    images: ['https://i.imgur.com/YggyL4g.png'],
+  },
+  {
+    title: 'Join surveys',
+    description: 'Companies need your opinion to create better products and services. That\'s why they pay for your feedback.',
+    earnLabel: 'Earn per 5-10 min survey',
+    earnAmount: '$1.00',
+    images: ['https://i.imgur.com/lOANd2e.png'],
+  },
+];
+
+const siteBenefits = [
+   {
+    icon: <HighestPayoutsIcon />,
+    title: 'Highest payouts',
+    description: 'Earn way more than on other sites. It\'s our goal to help you make as much money as possible.',
+  },
+  {
+    icon: <InstantCashoutsIcon />,
+    title: 'Instant cashouts',
+    description: 'Ready to get your money? The minimum cashout varies by region, between as little as $5 and $20, and payouts are almost instant.',
+  },
+  {
+    icon: <DailyBonusesIcon />,
+    title: 'Daily bonuses',
+    description: 'Climb the daily bonus ladder, reach the leaderboard, or start a streak to earn extra rewards, for free.',
+  },
+];
 
 const HomePageContent: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -114,18 +190,13 @@ const HomePageContent: React.FC = () => {
       return () => clearTimeout(timer);
   }, []);
 
-  const [howItWorksRef, isHowItWorksInView] = useInView({ threshold: 0.15 });
+  const [bestWaysRef, isBestWaysInView] = useInView({ threshold: 0.1 });
+  const [whyUsRef, isWhyUsInView] = useInView({ threshold: 0.1 });
   const [rewardsRef, isRewardsInView] = useInView({ threshold: 0.15 });
   const [testimonialsRef, isTestimonialsInView] = useInView({ threshold: 0.15 });
   const [statsRef, isStatsInView] = useInView({ threshold: 0.15 });
   const [faqRef, isFaqInView] = useInView({ threshold: 0.15 });
   
-  const howItWorksItems = [
-    { text: 'Easily Sign up' },
-    { text: 'Complete Tasks' },
-    { text: 'Get Paid' }
-  ];
-
   return (
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300 overflow-x-hidden">
         {/* Hero Section */}
@@ -218,25 +289,45 @@ const HomePageContent: React.FC = () => {
             </div>
         </section>
 
-
-        {/* How it works Section */}
-        <section ref={howItWorksRef} className="py-20 bg-slate-50 dark:bg-[#141c2f] text-center">
-            <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Your Simple Path To Extra Income</h2>
-            <p className="max-w-3xl mx-auto mb-12 text-slate-600 dark:text-slate-400">Complete easy tasks in your spare time and start earning today. Join EarnLab and turn every moment into a rewarding opportunity.</p>
+        {/* Best ways to earn Section */}
+        <section ref={bestWaysRef} className="py-20 text-center bg-white dark:bg-[#0b111e]">
+            <h2 className={`text-4xl font-bold text-slate-900 dark:text-white mb-12 transition-opacity duration-700 ${isBestWaysInView ? 'opacity-100' : 'opacity-0'}`}>Best ways to earn</h2>
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
-                 {howItWorksItems.map((item, i) => (
-                    <div key={i} className={`bg-white dark:bg-[#1e293b] rounded-lg overflow-hidden shadow-lg relative transition-all duration-500 ease-out hover:-translate-y-2 ${isHowItWorksInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${i * 150}ms` }}>
-                        <img src={HOW_IT_WORKS_IMAGES[i]} alt={item.text} className="w-full h-auto object-cover aspect-[4/5]" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-                            <h3 className="text-2xl font-bold text-white">{item.text}</h3>
+                {earningMethods.map((method, i) => (
+                    <div key={i} className={`bg-slate-50 dark:bg-[#141c2f] p-8 rounded-lg text-left flex flex-col transition-all duration-500 ease-out hover:-translate-y-2 ${isBestWaysInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">{method.title}</h3>
+                        <p className="text-slate-600 dark:text-slate-400 mb-6 flex-grow">{method.description}</p>
+                        <div className="border-t border-slate-200 dark:border-slate-700 my-6"></div>
+                        <div>
+                            <p className="text-sm text-slate-500 dark:text-slate-400">{method.earnLabel}</p>
+                            <p className="text-3xl font-bold text-slate-900 dark:text-white">{method.earnAmount}</p>
+                        </div>
+                        <div className="mt-auto pt-6">
+                            <img src={method.images[0]} alt={method.title} className="rounded-lg w-full h-auto" />
                         </div>
                     </div>
                 ))}
             </div>
         </section>
 
+        {/* Why Us Section */}
+        <section ref={whyUsRef} className="py-20 text-center bg-white dark:bg-[#0b111e]">
+            <h2 className={`text-4xl font-bold text-slate-900 dark:text-white mb-12 transition-opacity duration-700 ${isWhyUsInView ? 'opacity-100' : 'opacity-0'}`}>
+                We're the #1 site to make money. <span className="text-green-400">Here's why</span>
+            </h2>
+            <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
+                {siteBenefits.map((benefit, i) => (
+                    <div key={i} className={`bg-slate-50 dark:bg-[#141c2f] p-8 rounded-lg text-left transition-all duration-500 ease-out hover:-translate-y-2 ${isWhyUsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${i * 150}ms` }}>
+                        {benefit.icon}
+                        <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-4 mb-2">{benefit.title}</h3>
+                        <p className="text-slate-600 dark:text-slate-400">{benefit.description}</p>
+                    </div>
+                ))}
+            </div>
+        </section>
+
         {/* Rewards Section */}
-        <section ref={rewardsRef} className="py-20 bg-white dark:bg-[#0f172a] text-center">
+        <section ref={rewardsRef} className="py-20 bg-slate-50 dark:bg-[#141c2f] text-center">
             <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">Choose Your Reward, Your Way</h2>
             <p className="max-w-3xl mx-auto mb-12 text-slate-600 dark:text-slate-400">From PayPal and gift cards to crypto, EarnLab offers a wide range of withdrawal options. Select the method that works best for you and enjoy your earnings with ease.</p>
             <div className="container mx-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 px-8">
