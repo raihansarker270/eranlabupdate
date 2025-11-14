@@ -89,3 +89,11 @@ export interface Testimonial {
   author: string;
   rating: number;
 }
+
+export interface FeaturedOffer {
+  logo: string;
+  name: string;
+  description: string;
+  payout: number;
+  rating: number;
+}

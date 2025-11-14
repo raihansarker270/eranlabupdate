@@ -1,6 +1,4 @@
-
-
-import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial } from './types';
+import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial, FeaturedOffer } from './types';
 
 export const MOCK_USER: User = {
   username: 'raihansarker',
@@ -94,6 +92,36 @@ export const CHAT_MESSAGES: ChatMessage[] = [
     { id: 3, user: 'raihansarker', avatar: 'https://i.pravatar.cc/32?u=raihansarker', message: 'That\'s awesome! I was thinking of doing that one.', timestamp: '10:02 AM', isSelf: true },
     { id: 4, user: 'SurveyFan', avatar: 'https://i.pravatar.cc/32?u=surveyfan', message: 'Any good surveys today?', timestamp: '10:03 AM', isSelf: false },
     { id: 5, user: 'CryptoKing', avatar: 'https://i.pravatar.cc/32?u=cryptoking', message: 'CPX Research is pretty good right now.', timestamp: '10:05 AM', isSelf: false },
+];
+
+export const FEATURED_OFFERS: FeaturedOffer[] = [
+  {
+    logo: 'https://i.imgur.com/39m2h4X.png',
+    name: 'Netflix',
+    description: 'Start a trial month',
+    payout: 5.00,
+    rating: 5.0,
+  },
+  {
+    logo: 'https://i.imgur.com/uTq8sOK.png',
+    name: 'Dice Dreams',
+    description: 'Reach level 10',
+    payout: 200.00,
+    rating: 5.0,
+  },
+  {
+    logo: 'https://i.imgur.com/pB3aL3o.png',
+    name: 'TikTok',
+    description: 'Sign up',
+    payout: 2.00,
+    rating: 5.0,
+  }
+];
+
+export const HOW_IT_WORKS_IMAGES: string[] = [
+    'https://i.imgur.com/T0bC2zZ.jpeg',
+    'https://i.imgur.com/4l3z4P4.jpeg',
+    'https://i.imgur.com/uJgJa8Z.jpeg'
 ];
 
 export const TESTIMONIALS: Testimonial[] = [

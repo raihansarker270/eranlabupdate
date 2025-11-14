@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS } from '../../constants';
+import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS, FEATURED_OFFERS, HOW_IT_WORKS_IMAGES } from '../../constants';
 import type { FaqItem } from '../../types';
-import { generateHeroImage, generateHowItWorksImages } from '../../lib/gemini';
 import SignupModal from '../SignupModal';
 
 interface HomePageProps {
@@ -102,15 +101,11 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
 
 const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   const [mounted, setMounted] = useState(false);
-  const [heroImageUrl, setHeroImageUrl] = useState('');
-  const [isHeroImageLoading, setIsHeroImageLoading] = useState(true);
-  const [howItWorksImages, setHowItWorksImages] = useState<string[]>(['', '', '']);
-  const [isHowItWorksLoading, setIsHowItWorksLoading] = useState(true);
-
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [email, setEmail] = useState('');
 
-  const handleStartEarning = () => {
+  const handleStartEarning = (e: React.FormEvent) => {
+    e.preventDefault();
     if (email.trim() && email.includes('@')) {
         setIsSignupModalOpen(true);
     } else {
@@ -121,24 +116,6 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   useEffect(() => {
       const timer = setTimeout(() => setMounted(true), 100);
       return () => clearTimeout(timer);
-  }, []);
-
-  useEffect(() => {
-    const fetchImages = async () => {
-      setIsHeroImageLoading(true);
-      setIsHowItWorksLoading(true);
-
-      const [heroUrl, workImages] = await Promise.all([
-        generateHeroImage(),
-        generateHowItWorksImages(),
-      ]);
-      
-      setHeroImageUrl(heroUrl);
-      setIsHeroImageLoading(false);
-      setHowItWorksImages(workImages);
-      setIsHowItWorksLoading(false);
-    };
-    fetchImages();
   }, []);
 
   const [howItWorksRef, isHowItWorksInView] = useInView({ threshold: 0.15 });
@@ -156,39 +133,95 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
   return (
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300 overflow-x-hidden">
         {/* Hero Section */}
-        <section className="relative min-h-[calc(100vh-120px)] flex items-center justify-center bg-cover bg-center py-16 transition-all duration-500" style={{ backgroundImage: heroImageUrl ? `url(${heroImageUrl})` : 'none', backgroundColor: '#0f172a' }}>
-            {isHeroImageLoading && (
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center z-20">
-                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-400"></div>
-                </div>
-            )}
-            <div className="absolute inset-0 bg-black bg-opacity-60"></div>
-            <div className="relative z-10 text-white p-8 max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-                <div className="flex-1 text-center lg:text-left">
-                    <h1 className={`text-5xl md:text-7xl font-bold mb-4 leading-tight transition-all duration-700 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>Earn rewards. Anywhere, Anytime.</h1>
-                    <p className={`text-lg md:text-xl mb-8 text-slate-300 transition-all duration-700 ease-out delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>EarnLab makes earning money online easy and secure. Complete simple, engaging tasks tailored to your schedule and start earning rewards today – anytime, anywhere.</p>
-                    <button onClick={onLogin} className={`bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition-all duration-700 ease-out delay-300 ${mounted ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>Get Started</button>
-                </div>
-                <div className={`w-full lg:w-auto lg:flex-1 bg-slate-900/50 backdrop-blur-sm p-8 rounded-lg shadow-2xl border border-slate-700 max-w-md transition-all duration-1000 ease-out delay-200 ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
-                    <h2 className="text-3xl font-bold mb-4 text-center">Get Started!</h2>
-                    <p className="mb-6 text-slate-300 text-center">It's free! Sign up and start to earn money!</p>
-                    <input 
-                      type="email" 
-                      placeholder="Email Address" 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-slate-800 text-white p-3 rounded-lg mb-4 border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500" 
-                    />
-                    <button onClick={handleStartEarning} className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg mb-4">Start Earning Now</button>
-                    <div className="text-center my-4 text-slate-400 text-sm">or</div>
-                    <div className="space-y-3">
-                         <button onClick={onLogin} className="w-full bg-[#4285F4] hover:bg-red-700 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-google"></i> Sign up via Google</button>
-                         <button onClick={onLogin} className="w-full bg-[#1877F2] hover:bg-blue-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-facebook"></i> Sign up via Facebook</button>
-                         <button onClick={onLogin} className="w-full bg-gray-700 hover:bg-gray-800 text-white font-bold py-3 rounded-lg flex items-center justify-center gap-2"><i className="fab fa-steam"></i> Sign up via Steam</button>
+        <section className="bg-[#1e2232] text-white relative overflow-hidden">
+            <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{backgroundImage: "url('https://i.imgur.com/yGik0w6.jpeg')"}}></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1e2232] via-[#1e2232]/80 to-transparent"></div>
+            
+            <div className="container mx-auto px-4 py-20 lg:py-24 relative z-10">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                    <div className={`transition-all duration-700 ease-out ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                        <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-4">
+                            <span className="text-[#34d399]">Get paid</span> for testing apps, games & surveys
+                        </h1>
+                        <p className="text-slate-300 mb-8 flex flex-wrap items-center gap-x-3 text-sm sm:text-base">
+                            <span>Earn up to <span className="font-bold text-white">$200</span> per offer</span>
+                            <span className="text-[#34d399] text-xl">&bull;</span>
+                            <span><span className="font-bold text-white">1624</span> Offers available now</span>
+                        </p>
+                        
+                        <div className="grid grid-cols-3 gap-4 mb-8">
+                            {FEATURED_OFFERS.map(offer => (
+                                <div key={offer.name} className="bg-[#2a2f44]/80 backdrop-blur-sm p-3 rounded-lg border border-slate-700 text-left">
+                                    <div className="bg-black/20 rounded-md mb-3 flex items-center justify-center aspect-video">
+                                        <img src={offer.logo} alt={offer.name} className="w-auto h-12 object-contain" />
+                                    </div>
+                                    <h3 className="font-semibold text-white truncate text-sm">{offer.name}</h3>
+                                    <p className="text-slate-400 text-xs truncate mb-2">{offer.description}</p>
+                                    <div className="flex justify-between items-center">
+                                      <p className="font-bold text-white text-sm">${offer.payout.toFixed(2)}</p>
+                                      <p className="text-yellow-400 text-xs flex items-center gap-1">
+                                          <i className="fas fa-star text-xs"></i> {offer.rating.toFixed(1)}
+                                      </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        <div>
+                            <p className="text-sm text-slate-400 mb-2">See our 246,851 reviews on</p>
+                            <div className="flex items-center gap-2">
+                                <i className="fas fa-star text-green-500"></i>
+                                <span className="text-xl font-bold text-white">Trustpilot</span>
+                                <div className="flex items-center ml-2 bg-green-500 p-1" style={{clipPath: 'polygon(0 0, 100% 0, 100% 70%, 95% 100%, 5% 100%, 0 70%)'}}>
+                                    {[...Array(5)].map((_, i) => <i key={i} className="fas fa-star text-white text-sm px-1"></i>)}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className={`bg-[#2a2f44] p-8 rounded-2xl shadow-lg border border-slate-700 transition-all duration-1000 ease-out delay-200 ${mounted ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'}`}>
+                        <h2 className="text-3xl font-bold mb-6 text-center">Sign Up for Free</h2>
+                        <form onSubmit={handleStartEarning}>
+                            <div className="relative mb-4">
+                                <i className="fas fa-envelope absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                <input 
+                                    type="email" 
+                                    placeholder="Email address" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full bg-[#1e2232] text-white p-3 pl-12 rounded-lg border border-slate-600 focus:outline-none focus:ring-2 focus:ring-green-400" 
+                                />
+                            </div>
+                            <a href="#" className="text-sm text-slate-400 hover:underline mb-4 block text-center">I have a referral code</a>
+                            <button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg mb-4 text-lg transition-colors">Start earning now</button>
+                        </form>
+                        
+                        <div className="flex items-center my-6">
+                            <hr className="flex-grow border-slate-600" />
+                            <span className="mx-4 text-slate-400 text-sm font-semibold">OR</span>
+                            <hr className="flex-grow border-slate-600" />
+                        </div>
+                        
+                        <div className="space-y-3">
+                            <button onClick={onLogin} className="w-full bg-white text-slate-800 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-5 h-5" /> Sign Up with Google
+                            </button>
+                            <button onClick={onLogin} className="w-full bg-[#1877F2] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition-colors">
+                                <i className="fab fa-facebook-f text-lg"></i> Sign Up with Facebook
+                            </button>
+                            <button onClick={onLogin} className="w-full bg-black text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-800 transition-colors">
+                                <i className="fab fa-apple text-xl"></i> Sign Up with Apple
+                            </button>
+                        </div>
+
+                        <p className="text-center text-sm text-slate-400 mt-6">
+                            <span className="font-bold text-white">477628+</span> sign ups in the past 24 hours
+                        </p>
                     </div>
                 </div>
             </div>
         </section>
+
 
         {/* How it works Section */}
         <section ref={howItWorksRef} className="py-20 bg-slate-50 dark:bg-[#141c2f] text-center">
@@ -197,11 +230,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
             <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-8">
                  {howItWorksItems.map((item, i) => (
                     <div key={i} className={`bg-white dark:bg-[#1e293b] rounded-lg overflow-hidden shadow-lg relative transition-all duration-500 ease-out hover:-translate-y-2 ${isHowItWorksInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: `${i * 150}ms` }}>
-                        {isHowItWorksLoading ? (
-                            <div className="aspect-[4/5] w-full bg-slate-200 dark:bg-slate-700 animate-pulse"></div>
-                        ) : (
-                            <img src={howItWorksImages[i]} alt={item.text} className="w-full h-auto object-cover aspect-[4/5]" />
-                        )}
+                        <img src={HOW_IT_WORKS_IMAGES[i]} alt={item.text} className="w-full h-auto object-cover aspect-[4/5]" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
                             <h3 className="text-2xl font-bold text-white">{item.text}</h3>
                         </div>
