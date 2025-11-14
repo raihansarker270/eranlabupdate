@@ -135,21 +135,21 @@ const earningMethods = [
     description: 'In order to attract more players, gaming companies want to pay you to play their games, let\'s play!',
     earnLabel: 'Earn per game',
     earnAmount: '$1.00 - $120.00',
-    images: ['https://i.imgur.com/G5s4e6A.png'],
+    images: ['https://i.imgur.com/YB9NpXZ.png'],
   },
   {
     title: 'Complete offers',
     description: 'Get to know new companies by trying their apps while you earn money. It\'s time to get paid for using apps!',
     earnLabel: 'Earn per app',
     earnAmount: '$1.00 - $75.00',
-    images: ['https://i.imgur.com/YggyL4g.png'],
+    images: ['https://i.imgur.com/g2bn5eQ.png'],
   },
   {
     title: 'Join surveys',
     description: 'Companies need your opinion to create better products and services. That\'s why they pay for your feedback.',
     earnLabel: 'Earn per 5-10 min survey',
     earnAmount: '$1.00',
-    images: ['https://i.imgur.com/lOANd2e.png'],
+    images: ['https://i.imgur.com/tcAqi0j.png'],
   },
 ];
 
