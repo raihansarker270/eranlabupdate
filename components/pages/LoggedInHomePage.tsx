@@ -38,7 +38,8 @@ const surveyWalls = [
     { name: 'Adscend Media Surveys', logo: 'https://i.imgur.com/iY9g04E.png' },
     { name: 'BitLabs Surveys', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
     { name: 'inBrain', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-    { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png' },
+    // FIX: Add `isLocked` and `unlocksAt` to the TheoremReach survey wall to match the data structure used in the component and prevent a TypeScript error.
+    { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
 ];
 
 interface AIRecommendation {
@@ -264,7 +265,7 @@ const LoggedInHomePage: React.FC = () => {
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-center z-20 p-2 text-white">
                                      <LockIcon />
                                      {wall.unlockRequirement && <p className="mt-1 font-semibold">{wall.unlockRequirement}</p>}
-                                     {wall.unlocksAt && <p className="mt-1">{wall.unlocksAt}</p>}
+                                     {'unlocksAt' in wall && wall.unlocksAt && <p className="mt-1">{wall.unlocksAt}</p>}
                                 </div>
                              )}
                          </a>
