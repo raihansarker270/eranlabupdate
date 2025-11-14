@@ -96,21 +96,21 @@ export const CHAT_MESSAGES: ChatMessage[] = [
 
 export const FEATURED_OFFERS: FeaturedOffer[] = [
   {
-    logo: 'https://i.imgur.com/39m2h4X.png',
+    logo: 'https://i.imgur.com/sUwOUgD.png',
     name: 'Netflix',
     description: 'Start a trial month',
     payout: 5.00,
     rating: 5.0,
   },
   {
-    logo: 'https://i.imgur.com/uTq8sOK.png',
+    logo: 'https://i.imgur.com/U16jVoT.png',
     name: 'Dice Dreams',
     description: 'Reach level 10',
     payout: 200.00,
     rating: 5.0,
   },
   {
-    logo: 'https://i.imgur.com/pB3aL3o.png',
+    logo: 'https://i.imgur.com/SkxpAOW.png',
     name: 'TikTok',
     description: 'Sign up',
     payout: 2.00,

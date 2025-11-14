@@ -134,7 +134,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
     <div className="bg-white dark:bg-[#0b111e] text-slate-700 dark:text-slate-300 overflow-x-hidden">
         {/* Hero Section */}
         <section className="bg-[#1e2232] text-white relative overflow-hidden">
-            <div className="absolute inset-0 bg-cover bg-center opacity-20" style={{backgroundImage: "url('https://i.imgur.com/yGik0w6.jpeg')"}}></div>
+            <div className="absolute inset-0 bg-cover bg-center opacity-30" style={{backgroundImage: "url('https://i.imgur.com/7GVjh0M.png')"}}></div>
             <div className="absolute inset-0 bg-gradient-to-t from-[#1e2232] via-[#1e2232]/80 to-transparent"></div>
             
             <div className="container mx-auto px-4 py-20 lg:py-24 relative z-10">
@@ -152,8 +152,8 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                         <div className="grid grid-cols-3 gap-4 mb-8">
                             {FEATURED_OFFERS.map(offer => (
                                 <div key={offer.name} className="bg-[#2a2f44]/80 backdrop-blur-sm p-3 rounded-lg border border-slate-700 text-left">
-                                    <div className="bg-black/20 rounded-md mb-3 flex items-center justify-center aspect-video">
-                                        <img src={offer.logo} alt={offer.name} className="w-auto h-12 object-contain" />
+                                    <div className="bg-black/20 rounded-md mb-3 flex items-center justify-center aspect-square overflow-hidden">
+                                        <img src={offer.logo} alt={offer.name} className="w-full h-full object-cover" />
                                     </div>
                                     <h3 className="font-semibold text-white truncate text-sm">{offer.name}</h3>
                                     <p className="text-slate-400 text-xs truncate mb-2">{offer.description}</p>
