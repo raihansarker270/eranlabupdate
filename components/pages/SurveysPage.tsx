@@ -47,7 +47,12 @@ const SurveysPage: React.FC = () => {
 
 const SurveyProviderCard: React.FC<{provider: SurveyProvider}> = ({ provider }) => {
     return (
-        <div className={`bg-white dark:bg-[#1e293b] p-4 rounded-lg text-center flex flex-col items-center justify-center h-40 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${provider.isLocked ? '' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+        <a 
+            href={provider.isLocked ? '#' : `/?page=${encodeURIComponent(provider.name)}`}
+            target={provider.isLocked ? '_self' : '_blank'}
+            rel="noopener noreferrer"
+            onClick={(e) => { if (provider.isLocked) e.preventDefault(); }}
+            className={`bg-white dark:bg-[#1e293b] p-4 rounded-lg text-center flex flex-col items-center justify-center h-40 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${provider.isLocked ? 'cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
             {provider.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>}
             
             <div className={`relative z-10 flex flex-col items-center justify-center ${provider.isLocked ? 'opacity-50' : ''}`}>
@@ -62,7 +67,7 @@ const SurveyProviderCard: React.FC<{provider: SurveyProvider}> = ({ provider }) 
                     {provider.unlocksAt && <p className="mt-1">{provider.unlocksAt}</p>}
                 </div>
             )}
-        </div>
+        </a>
     );
 }
 

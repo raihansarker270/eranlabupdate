@@ -35,7 +35,7 @@ const surveyWalls = [
     { name: 'CPX Research', logo: 'https://i.imgur.com/bKj926D.png' },
     { name: 'Adscend Media Surveys', logo: 'https://i.imgur.com/iY9g04E.png' },
     { name: 'BitLabs Surveys', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-    { name: 'InBrain', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
+    { name: 'inBrain', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
     { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
 ];
 
@@ -58,6 +58,7 @@ const StarIcon: React.FC = () => (
 );
 
 const LoggedInHomePage: React.FC = () => {
+
     return (
         <div className="space-y-12">
             {/* Top Banners */}
@@ -105,7 +106,13 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                      {offerWalls.map((wall, index) => (
-                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-36 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <a 
+                            key={index}
+                            href={wall.isLocked ? '#' : `/?page=${encodeURIComponent(wall.name)}`}
+                            target={wall.isLocked ? '_self' : '_blank'}
+                            rel="noopener noreferrer"
+                            onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
+                            className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-36 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${wall.isLocked ? 'cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                             {wall.bonus && <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full z-20 ${wall.isLocked ? 'bg-gray-500/30 text-gray-300' : 'bg-green-500/20 text-green-300'}`}>{wall.bonus}</div>}
                             
@@ -120,7 +127,7 @@ const LoggedInHomePage: React.FC = () => {
                                     {wall.unlockRequirement && <p className="mt-1 font-semibold">{wall.unlockRequirement}</p>}
                                 </div>
                             )}
-                        </div>
+                        </a>
                     ))}
                 </div>
             </section>
@@ -130,7 +137,13 @@ const LoggedInHomePage: React.FC = () => {
                 <SectionHeader title="Survey Walls" description="Each survey wall contains hundreds of surveys to complete" />
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
                      {surveyWalls.map((wall, index) => (
-                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <a 
+                            key={index}
+                            href={wall.isLocked ? '#' : `/?page=${encodeURIComponent(wall.name)}`}
+                            target={wall.isLocked ? '_self' : '_blank'}
+                            rel="noopener noreferrer"
+                            onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
+                            className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${wall.isLocked ? 'cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                              {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                              
                              <div className={`relative flex flex-col items-center justify-center flex-1 ${wall.isLocked ? 'opacity-50' : ''}`}>
@@ -145,7 +158,7 @@ const LoggedInHomePage: React.FC = () => {
                                      {wall.unlocksAt && <p className="mt-1">{wall.unlocksAt}</p>}
                                 </div>
                              )}
-                         </div>
+                         </a>
                     ))}
                 </div>
             </section>

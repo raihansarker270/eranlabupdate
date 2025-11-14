@@ -21,6 +21,26 @@ import AchievementsPage from './components/pages/AchievementsPage';
 import ChatPage from './components/pages/ChatPage';
 import SigninModal from './components/SigninModal';
 import SignupModal from './components/SignupModal';
+import PrimeSurveysPage from './components/pages/survey/PrimeSurveysPage';
+import CPXResearchPage from './components/pages/survey/CPXResearchPage';
+import AdscendMediaSurveysPage from './components/pages/survey/AdscendMediaSurveysPage';
+import BitLabsSurveysPage from './components/pages/survey/BitLabsSurveysPage';
+import InBrainPage from './components/pages/survey/InBrainPage';
+import TheoremReachPage from './components/pages/survey/TheoremReachPage';
+import ToroxPage from './components/pages/offers/ToroxPage';
+import AdscendMediaPage from './components/pages/offers/AdscendMediaPage';
+import AdToWallPage from './components/pages/offers/AdToWallPage';
+import RevUPage from './components/pages/offers/RevUPage';
+import AdGateMediaPage from './components/pages/offers/AdGateMediaPage';
+import MyChipsPage from './components/pages/offers/MyChipsPage';
+import MMWallPage from './components/pages/offers/MMWallPage';
+import AyeTStudiosPage from './components/pages/offers/AyeTStudiosPage';
+import MonlixPage from './components/pages/offers/MonlixPage';
+import HangMyAdsPage from './components/pages/offers/HangMyAdsPage';
+import LootablyPage from './components/pages/offers/LootablyPage';
+import TimeWallPage from './components/pages/offers/TimeWallPage';
+import AdGemPage from './components/pages/offers/AdGemPage';
+
 
 export const AppContext = React.createContext<{
   isLoggedIn: boolean;
@@ -64,6 +84,11 @@ export const AppContext = React.createContext<{
   setTheme: () => {},
 });
 
+const getPageFromURL = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('page');
+};
+
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user] = useState<User | null>(MOCK_USER);
@@ -72,7 +97,7 @@ const App: React.FC = () => {
   const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [signupInitialEmail, setSignupInitialEmail] = useState('');
-  const [currentPage, setCurrentPage] = useState('Home');
+  const [currentPage, setCurrentPage] = useState(getPageFromURL() || 'Home');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -129,6 +154,47 @@ const App: React.FC = () => {
         return <div className={pagePadding}><TasksPage /></div>;
       case 'Surveys':
         return <div className={pagePadding}><SurveysPage /></div>;
+      // Survey Pages
+      case 'Prime Surveys':
+        return <div className={pagePadding}><PrimeSurveysPage /></div>;
+      case 'CPX Research':
+        return <div className={pagePadding}><CPXResearchPage /></div>;
+      case 'Adscend Media Surveys':
+        return <div className={pagePadding}><AdscendMediaSurveysPage /></div>;
+      case 'BitLabs Surveys':
+        return <div className={pagePadding}><BitLabsSurveysPage /></div>;
+      case 'inBrain':
+        return <div className={pagePadding}><InBrainPage /></div>;
+      case 'TheoremReach':
+        return <div className={pagePadding}><TheoremReachPage /></div>;
+      // Offer Pages
+      case 'Torox':
+        return <div className={pagePadding}><ToroxPage /></div>;
+      case 'Adscend Media':
+        return <div className={pagePadding}><AdscendMediaPage /></div>;
+      case 'AdToWall':
+        return <div className={pagePadding}><AdToWallPage /></div>;
+      case 'RevU':
+        return <div className={pagePadding}><RevUPage /></div>;
+      case 'AdGate Media':
+        return <div className={pagePadding}><AdGateMediaPage /></div>;
+      case 'MyChips':
+        return <div className={pagePadding}><MyChipsPage /></div>;
+      case 'MM Wall':
+        return <div className={pagePadding}><MMWallPage /></div>;
+      case 'Aye-T Studios':
+        return <div className={pagePadding}><AyeTStudiosPage /></div>;
+      case 'Monlix':
+        return <div className={pagePadding}><MonlixPage /></div>;
+      case 'Hang My Ads':
+        return <div className={pagePadding}><HangMyAdsPage /></div>;
+      case 'Lootably':
+        return <div className={pagePadding}><LootablyPage /></div>;
+      case 'Time Wall':
+        return <div className={pagePadding}><TimeWallPage /></div>;
+      case 'AdGem':
+        return <div className={pagePadding}><AdGemPage /></div>;
+      // Other Pages
       case 'Referrals':
         return <div className={pagePadding}><ReferralsPage /></div>;
       case 'Leaderboard':
@@ -148,11 +214,26 @@ const App: React.FC = () => {
     }
   };
   
+  const appContextValue = { isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, setIsSigninModalOpen, isSignupModalOpen, openSignupModal, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme };
+  const pageFromUrl = getPageFromURL();
+
+  if (pageFromUrl) {
+    // Render dedicated page view (no layout)
+    return (
+      <AppContext.Provider value={appContextValue}>
+        <div className="bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300 min-h-screen">
+          {isLoggedIn ? renderPage() : <HomePageContent />}
+        </div>
+      </AppContext.Provider>
+    );
+  }
+
+  // Render full app view
   const headerContent = isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader />;
   const mainContent = isLoggedIn ? renderPage() : <HomePageContent />;
 
   return (
-    <AppContext.Provider value={{ isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, setIsSigninModalOpen, isSignupModalOpen, openSignupModal, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme }}>
+    <AppContext.Provider value={appContextValue}>
       <div className="flex h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
         {isLoggedIn ? <Sidebar /> : <LoggedOutSidebar />}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">

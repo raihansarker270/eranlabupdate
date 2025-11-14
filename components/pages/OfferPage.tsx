@@ -22,7 +22,6 @@ const SectionHeader: React.FC<{ title: string, description: string }> = ({ title
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{title}</h2>
             <p className="text-slate-500 dark:text-slate-400">{description}</p>
         </div>
-        <a href="#" className="text-blue-500 dark:text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
     </div>
 );
 
@@ -38,7 +37,13 @@ const OfferPage: React.FC = () => {
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
                      {offerWalls.map((wall, index) => (
-                        <div key={index} className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-40 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${!wall.isLocked && 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
+                        <a 
+                            key={index}
+                            href={wall.isLocked ? '#' : `/?page=${encodeURIComponent(wall.name)}`}
+                            target={wall.isLocked ? '_self' : '_blank'}
+                            rel="noopener noreferrer"
+                            onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
+                            className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-40 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${wall.isLocked ? 'cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
                             {wall.bonus && <div className={`absolute top-2 right-2 text-xs font-bold px-2 py-0.5 rounded-full z-20 ${wall.isLocked ? 'bg-gray-500/30 text-gray-300' : 'bg-green-500/20 text-green-300'}`}>{wall.bonus}</div>}
                             
@@ -53,7 +58,7 @@ const OfferPage: React.FC = () => {
                                     {wall.unlockRequirement && <p className="mt-1 font-semibold">{wall.unlockRequirement}</p>}
                                 </div>
                             )}
-                        </div>
+                        </a>
                     ))}
                 </div>
             </section>
