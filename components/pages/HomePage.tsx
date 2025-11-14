@@ -1,11 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { AppContext } from '../../App';
 import { FAQ_ITEMS, REWARD_OPTIONS, TESTIMONIALS, FEATURED_OFFERS, HOW_IT_WORKS_IMAGES } from '../../constants';
 import type { FaqItem } from '../../types';
-import SignupModal from '../SignupModal';
-
-interface HomePageProps {
-    onLogin: () => void;
-}
 
 // Custom hook to detect when an element is in view
 const useInView = (options?: IntersectionObserverInit) => {
@@ -99,15 +95,15 @@ const FaqAccordionItem: React.FC<{ item: FaqItem }> = ({ item }) => {
 };
 
 
-const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
+const HomePageContent: React.FC = () => {
   const [mounted, setMounted] = useState(false);
-  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const { openSignupModal } = useContext(AppContext);
   const [email, setEmail] = useState('');
 
   const handleStartEarning = (e: React.FormEvent) => {
     e.preventDefault();
     if (email.trim() && email.includes('@')) {
-        setIsSignupModalOpen(true);
+        openSignupModal(email);
     } else {
         alert('Please enter a valid email address.');
     }
@@ -203,13 +199,13 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                         </div>
                         
                         <div className="space-y-3">
-                            <button onClick={onLogin} className="w-full bg-white text-slate-800 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors">
+                            <button onClick={() => openSignupModal()} className="w-full bg-white text-slate-800 font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-slate-200 transition-colors">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="Google" className="w-5 h-5" /> Sign Up with Google
                             </button>
-                            <button onClick={onLogin} className="w-full bg-[#1877F2] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition-colors">
+                            <button onClick={() => openSignupModal()} className="w-full bg-[#1877F2] text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-blue-700 transition-colors">
                                 <i className="fab fa-facebook-f text-lg"></i> Sign Up with Facebook
                             </button>
-                            <button onClick={onLogin} className="w-full bg-black text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-800 transition-colors">
+                            <button onClick={() => openSignupModal()} className="w-full bg-black text-white font-semibold py-3 rounded-lg flex items-center justify-center gap-3 hover:bg-gray-800 transition-colors">
                                 <i className="fab fa-apple text-xl"></i> Sign Up with Apple
                             </button>
                         </div>
@@ -300,7 +296,7 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                     <div className="text-slate-600 dark:text-slate-400 mt-2">Total Earned</div>
                 </div>
              </div>
-             <button onClick={onLogin} className="mt-12 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">Join Us</button>
+             <button onClick={() => openSignupModal()} className="mt-12 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg">Join Us</button>
         </section>
 
         {/* FAQ Section */}
@@ -312,16 +308,6 @@ const HomePageContent: React.FC<HomePageProps> = ({ onLogin }) => {
                 </div>
             </div>
         </section>
-
-        <SignupModal
-            isOpen={isSignupModalOpen}
-            onClose={() => setIsSignupModalOpen(false)}
-            initialEmail={email}
-            onSignupSuccess={() => {
-                setIsSignupModalOpen(false);
-                onLogin();
-            }}
-        />
     </div>
   );
 };

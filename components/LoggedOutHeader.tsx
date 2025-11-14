@@ -3,12 +3,8 @@ import { AppContext } from '../App';
 import { MenuIcon } from './icons/HeaderIcons';
 import { MoonIcon, SunIcon } from './icons/FooterIcons';
 
-interface LoggedOutHeaderProps {
-    onLogin: () => void;
-}
-
-const LoggedOutHeader: React.FC<LoggedOutHeaderProps> = ({ onLogin }) => {
-    const { isSidebarCollapsed, setIsSidebarCollapsed, setIsMobileSidebarOpen, theme, setTheme } = useContext(AppContext);
+const LoggedOutHeader: React.FC = () => {
+    const { isSidebarCollapsed, setIsSidebarCollapsed, setIsMobileSidebarOpen, theme, setTheme, setIsSigninModalOpen, openSignupModal } = useContext(AppContext);
 
     const toggleTheme = () => {
         setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
@@ -43,8 +39,8 @@ const LoggedOutHeader: React.FC<LoggedOutHeaderProps> = ({ onLogin }) => {
                 >
                     {theme === 'light' ? <MoonIcon /> : <SunIcon />}
                 </button>
-                <button onClick={onLogin} className="bg-slate-200 text-slate-800 font-semibold py-2 px-4 rounded-lg hover:bg-slate-300">Sign In</button>
-                <button onClick={onLogin} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Sign Up</button>
+                <button onClick={() => setIsSigninModalOpen(true)} className="border border-blue-600 text-blue-500 font-semibold py-2 px-4 rounded-lg hover:bg-blue-600/10 dark:text-white dark:border-white dark:hover:bg-white/10">Sign In</button>
+                <button onClick={() => openSignupModal()} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg">Sign Up</button>
             </div>
         </header>
     );
