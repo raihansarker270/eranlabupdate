@@ -60,7 +60,7 @@ export const AppContext = React.createContext<{
   setIsSidebarCollapsed: () => {},
   isMobileSidebarOpen: false,
   setIsMobileSidebarOpen: () => {},
-  theme: 'light',
+  theme: 'dark',
   setTheme: () => {},
 });
 
@@ -77,7 +77,7 @@ const App: React.FC = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     const storedTheme = localStorage.getItem('theme');
-    return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'light';
+    return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
   });
 
   useEffect(() => {
