@@ -38,7 +38,7 @@ const surveyWalls = [
     { name: 'Adscend Media Surveys', logo: 'https://i.imgur.com/iY9g04E.png' },
     { name: 'BitLabs Surveys', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
     { name: 'inBrain', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-    { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
+    { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png' },
 ];
 
 interface AIRecommendation {
