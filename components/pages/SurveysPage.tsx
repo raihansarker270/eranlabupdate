@@ -3,18 +3,6 @@ import { SURVEY_PROVIDERS } from '../../constants';
 import type { SurveyProvider } from '../../types';
 import { StarIcon, LockIcon } from '../icons/SurveyIcons';
 
-const getPageKey = (name: string): string => {
-    const mapping: { [key: string]: string } = {
-        'Prime Surveys': 'Prime',
-        'CPX Research': 'CPX',
-        'Adscend Media Surveys': 'AdscendSurveys',
-        'BitLabs Surveys': 'BitLabs',
-        'inBrain': 'inBrain',
-        'TheoremReach': 'TheoremReach',
-    };
-    return mapping[name] || name.replace(/\s+/g, '');
-};
-
 const SurveysPage: React.FC = () => {
     return (
         <div className="space-y-8">
@@ -60,7 +48,7 @@ const SurveysPage: React.FC = () => {
 const SurveyProviderCard: React.FC<{provider: SurveyProvider}> = ({ provider }) => {
     return (
         <a 
-            href={provider.isLocked ? '#' : `/${getPageKey(provider.name)}`}
+            href={provider.isLocked ? '#' : `/?page=${encodeURIComponent(provider.name)}&view=dedicated`}
             target={provider.isLocked ? '_self' : '_blank'}
             rel="noopener noreferrer"
             onClick={(e) => { if (provider.isLocked) e.preventDefault(); }}

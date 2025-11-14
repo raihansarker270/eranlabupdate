@@ -16,22 +16,6 @@ const offerWalls = [
     { name: 'AdGem', logo: 'https://i.imgur.com/r9f5k2Z.png' },
 ];
 
-const getPageKey = (name: string): string => {
-    const mapping: { [key: string]: string } = {
-        'Prime Surveys': 'Prime',
-        'CPX Research': 'CPX',
-        'Adscend Media Surveys': 'AdscendSurveys',
-        'BitLabs Surveys': 'BitLabs',
-        'Adscend Media': 'Adscend',
-        'MM Wall': 'MMWall',
-        'Time Wall': 'TimeWall',
-        'Aye-T Studios': 'AyeTStudios',
-        'Hang My Ads': 'HangMyAds',
-        'AdGate Media': 'AdGate',
-    };
-    return mapping[name] || name.replace(/\s+/g, '');
-};
-
 const SectionHeader: React.FC<{ title: string, description: string }> = ({ title, description }) => (
     <div className="flex justify-between items-center mb-6">
         <div>
@@ -55,7 +39,7 @@ const OfferPage: React.FC = () => {
                      {offerWalls.map((wall, index) => (
                         <a 
                             key={index}
-                            href={wall.isLocked ? '#' : `/${getPageKey(wall.name)}`}
+                            href={wall.isLocked ? '#' : `/?page=${encodeURIComponent(wall.name)}&view=dedicated`}
                             target={wall.isLocked ? '_self' : '_blank'}
                             rel="noopener noreferrer"
                             onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
