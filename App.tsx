@@ -1,3 +1,4 @@
+
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -95,9 +96,14 @@ export const AppContext = React.createContext<{
   setIsSupportChatModalOpen: () => {},
 });
 
-const getPageFromURL = () => {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('page');
+const getPageFromPathname = () => {
+    const pathname = window.location.pathname;
+    // Remove leading slash and decode
+    const pageName = decodeURIComponent(pathname.substring(1));
+    if (pageName === '') {
+        return 'Home';
+    }
+    return pageName;
 };
 
 const getPageFromHash = () => {
@@ -170,7 +176,7 @@ const App: React.FC = () => {
   const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [signupInitialEmail, setSignupInitialEmail] = useState('');
-  const [currentPage, setCurrentPage] = useState(dedicatedPageName || getPageFromURL() || 'Home');
+  const [currentPage, setCurrentPage] = useState(dedicatedPageName || getPageFromPathname());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -194,8 +200,7 @@ const App: React.FC = () => {
       if (dedicatedPage) {
           setCurrentPage(dedicatedPage);
       } else {
-          const newParams = new URLSearchParams(window.location.search);
-          const newPage = newParams.get('page') || 'Home';
+          const newPage = getPageFromPathname();
           setCurrentPage(newPage);
       }
     };
@@ -230,14 +235,13 @@ const App: React.FC = () => {
 
   const setCurrentPageAndUpdateUrl = (pageName: string) => {
     setCurrentPage(pageName);
-    const url = new URL(window.location.href);
-    url.hash = ''; // Clear hash for internal app navigation
+    const url = new URL(window.location.origin);
     if (pageName === 'Home') {
-        url.searchParams.delete('page');
+        url.pathname = '/';
     } else {
-        url.searchParams.set('page', pageName);
+        url.pathname = `/${encodeURIComponent(pageName)}`;
     }
-    window.history.pushState({ page: pageName }, '', url);
+    window.history.pushState({ page: pageName }, '', url.toString());
   };
 
   const handleLogin = useCallback(() => {
