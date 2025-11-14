@@ -106,6 +106,41 @@ const PageLoader: React.FC = () => (
     </div>
 );
 
+// Storing the static page components outside the App component prevents them from being recreated on every render.
+const pageComponentsMap: { [key: string]: React.ReactNode } = {
+    'Profile': <DashboardPage />,
+    'Offer': <OfferPage />,
+    'Tasks': <TasksPage />,
+    'Surveys': <SurveysPage />,
+    'Prime Surveys': <PrimeSurveysPage />,
+    'CPX Research': <CPXResearchPage />,
+    'Adscend Media Surveys': <AdscendMediaSurveysPage />,
+    'BitLabs Surveys': <BitLabsSurveysPage />,
+    'inBrain': <InBrainPage />,
+    'TheoremReach': <TheoremReachPage />,
+    'Torox': <ToroxPage />,
+    'Adscend Media': <AdscendMediaPage />,
+    'AdToWall': <AdToWallPage />,
+    'RevU': <RevUPage />,
+    'AdGate Media': <AdGateMediaPage />,
+    'MyChips': <MyChipsPage />,
+    'MM Wall': <MMWallPage />,
+    'Aye-T Studios': <AyeTStudiosPage />,
+    'Monlix': <MonlixPage />,
+    'Hang My Ads': <HangMyAdsPage />,
+    'Lootably': <LootablyPage />,
+    'Time Wall': <TimeWallPage />,
+    'AdGem': <AdGemPage />,
+    'Referrals': <ReferralsPage />,
+    'Leaderboard': <LeaderboardPage />,
+    'Daily Bonus': <DailyBonusPage />,
+    'Achievements': <AchievementsPage />,
+    'Chat': <ChatPage />,
+    'Boxes': <div className="text-slate-900 dark:text-white text-3xl font-bold">Boxes Page</div>,
+    'Battles': <div className="text-slate-900 dark:text-white text-3xl font-bold">Battles Page</div>,
+};
+
+
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user] = useState<User | null>(MOCK_USER);
@@ -180,44 +215,22 @@ const App: React.FC = () => {
       setIsSigninModalOpen(true);
   };
   
- const pageComponents: { [key: string]: React.ReactNode } = {
-    'Home': isLoggedIn ? <LoggedInHomePage /> : <HomePageContent />,
-    'Profile': <DashboardPage />,
-    'Offer': <OfferPage />,
-    'Tasks': <TasksPage />,
-    'Surveys': <SurveysPage />,
-    'Prime Surveys': <PrimeSurveysPage />,
-    'CPX Research': <CPXResearchPage />,
-    'Adscend Media Surveys': <AdscendMediaSurveysPage />,
-    'BitLabs Surveys': <BitLabsSurveysPage />,
-    'inBrain': <InBrainPage />,
-    'TheoremReach': <TheoremReachPage />,
-    'Torox': <ToroxPage />,
-    'Adscend Media': <AdscendMediaPage />,
-    'AdToWall': <AdToWallPage />,
-    'RevU': <RevUPage />,
-    'AdGate Media': <AdGateMediaPage />,
-    'MyChips': <MyChipsPage />,
-    'MM Wall': <MMWallPage />,
-    'Aye-T Studios': <AyeTStudiosPage />,
-    'Monlix': <MonlixPage />,
-    'Hang My Ads': <HangMyAdsPage />,
-    'Lootably': <LootablyPage />,
-    'Time Wall': <TimeWallPage />,
-    'AdGem': <AdGemPage />,
-    'Referrals': <ReferralsPage />,
-    'Leaderboard': <LeaderboardPage />,
-    'Daily Bonus': <DailyBonusPage />,
-    'Achievements': <AchievementsPage />,
-    'Chat': <ChatPage />,
-    'Boxes': <div className="text-slate-900 dark:text-white text-3xl font-bold">Boxes Page</div>,
-    'Battles': <div className="text-slate-900 dark:text-white text-3xl font-bold">Battles Page</div>,
-  };
-
   const renderPage = () => {
     const pagePadding = "p-4 sm:p-6 lg:p-8";
-    const Component = pageComponents[currentPage] || pageComponents['Home'];
-    return <div className={pagePadding}>{Component}</div>;
+    let componentToRender;
+
+    if (currentPage === 'Home') {
+        componentToRender = isLoggedIn ? <LoggedInHomePage /> : <HomePageContent />;
+    } else {
+        componentToRender = pageComponentsMap[currentPage];
+    }
+    
+    // Fallback to the homepage if the page is not found
+    if (!componentToRender) {
+        componentToRender = isLoggedIn ? <LoggedInHomePage /> : <HomePageContent />;
+    }
+
+    return <div className={pagePadding}>{componentToRender}</div>;
   };
   
   const appContextValue = { 
