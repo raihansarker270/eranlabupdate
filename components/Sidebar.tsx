@@ -22,19 +22,23 @@ const SIDEBAR_MENU_ITEMS_BOTTOM: SidebarMenuItem[] = [
   { name: 'Referrals', icon: <AffiliateIcon /> },
   { name: 'Blog', icon: <BlogIcon /> },
   { name: 'Guides', icon: <GuideIcon /> },
-  { name: 'Live Support', icon: <SupportIcon /> },
+  { name: 'Live Support', icon: <SupportIcon />, action: 'openSupportChat' },
 ];
 
 const Sidebar: React.FC = () => {
-    const { currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen } = useContext(AppContext);
+    const { currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, setIsSupportChatModalOpen } = useContext(AppContext);
 
     const handleClose = () => {
         setIsSidebarCollapsed(true);
         setIsMobileSidebarOpen(false);
     };
     
-    const handleLinkClick = (pageName: string) => {
-        setCurrentPage(pageName);
+    const handleLinkClick = (pageName: string, action?: string) => {
+        if (action === 'openSupportChat') {
+            setIsSupportChatModalOpen(true);
+        } else {
+            setCurrentPage(pageName);
+        }
         setIsMobileSidebarOpen(false);
     };
 
@@ -54,7 +58,7 @@ const Sidebar: React.FC = () => {
         return (
             <li key={item.name}>
                 <button
-                    onClick={() => handleLinkClick(item.name)}
+                    onClick={() => handleLinkClick(item.name, item.action)}
                     className={`${baseClasses} ${stateClasses}`}
                 >
                     <div className="flex items-center space-x-3">

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { GoogleGenAI, Type } from '@google/genai';
+import SkeletonLoader from '../SkeletonLoader';
 
 // Mock data for the new sections
 const featuredTasks = [
@@ -39,6 +41,13 @@ const surveyWalls = [
     { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
 ];
 
+interface AIRecommendation {
+    title: string;
+    description: string;
+    payout: number;
+    icon: string;
+}
+
 const SectionHeader: React.FC<{ title: string, description: string }> = ({ title, description }) => (
     <div className="flex justify-between items-center mb-6">
         <div>
@@ -58,6 +67,67 @@ const StarIcon: React.FC = () => (
 );
 
 const LoggedInHomePage: React.FC = () => {
+    const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
+    const [isLoadingRecs, setIsLoadingRecs] = useState(true);
+    const [errorRecs, setErrorRecs] = useState<string | null>(null);
+    const aiRef = useRef<GoogleGenAI | null>(null);
+
+    useEffect(() => {
+        if (process.env.API_KEY) {
+            aiRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            fetchRecommendations();
+        } else {
+            setIsLoadingRecs(false);
+            setErrorRecs("API key not found.");
+        }
+    }, []);
+
+    const fetchRecommendations = async () => {
+        if (!aiRef.current) return;
+        setIsLoadingRecs(true);
+        setErrorRecs(null);
+        try {
+            const prompt = "Based on a user who enjoys mobile games and quick surveys, generate 3 fictional but realistic and engaging task recommendations for an earning website. Include a title, short description, a plausible payout as a number, and a relevant Font Awesome icon class name (e.g., 'fas fa-gamepad').";
+            
+            const response = await aiRef.current.models.generateContent({
+                model: "gemini-2.5-flash",
+                contents: prompt,
+                config: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: Type.OBJECT,
+                        properties: {
+                            recommendations: {
+                                type: Type.ARRAY,
+                                items: {
+                                    type: Type.OBJECT,
+                                    properties: {
+                                        title: { type: Type.STRING },
+                                        description: { type: Type.STRING },
+                                        payout: { type: Type.NUMBER },
+                                        icon: { type: Type.STRING }
+                                    },
+                                    required: ["title", "description", "payout", "icon"],
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const jsonResponse = JSON.parse(response.text);
+            if (jsonResponse.recommendations) {
+                setRecommendations(jsonResponse.recommendations);
+            } else {
+                throw new Error("Invalid response format from AI.");
+            }
+        } catch (err) {
+            console.error("Error fetching AI recommendations:", err);
+            setErrorRecs("Could not load recommendations.");
+        } finally {
+            setIsLoadingRecs(false);
+        }
+    };
 
     return (
         <div className="space-y-12">
@@ -67,6 +137,45 @@ const LoggedInHomePage: React.FC = () => {
                 <img src="https://i.imgur.com/s6n5s7H.png" alt="Monthly Race" className="rounded-lg w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity" />
                 <img src="https://i.imgur.com/uN83F9y.png" alt="Rewards" className="rounded-lg w-full h-auto object-cover cursor-pointer hover:opacity-90 transition-opacity" />
             </div>
+
+            {/* Recommended for you */}
+            <section>
+                <div className="mb-6">
+                    <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Recommended for You</h2>
+                    <p className="text-slate-500 dark:text-slate-400">AI-powered suggestions based on your activity</p>
+                </div>
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    {isLoadingRecs ? (
+                        [...Array(3)].map((_, i) => (
+                            <div key={i} className="bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800 flex gap-4">
+                                <SkeletonLoader className="w-12 h-12 rounded-lg flex-shrink-0" />
+                                <div className="flex-1">
+                                    <SkeletonLoader className="h-5 w-3/4 mb-2" />
+                                    <SkeletonLoader className="h-4 w-full mb-3" />
+                                    <SkeletonLoader className="h-6 w-1/2" />
+                                </div>
+                            </div>
+                        ))
+                    ) : errorRecs ? (
+                         <div className="col-span-full text-center py-8 bg-white dark:bg-[#1e293b] rounded-lg border border-slate-200 dark:border-slate-800">
+                             <p className="text-red-500">{errorRecs}</p>
+                         </div>
+                    ) : (
+                        recommendations.map((rec, index) => (
+                            <div key={index} className="bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800 flex gap-4 items-start hover:-translate-y-1 transition-transform cursor-pointer">
+                                <div className="bg-blue-500/10 text-blue-500 dark:text-blue-400 w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <i className={`${rec.icon} text-2xl`}></i>
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="font-bold text-slate-900 dark:text-white">{rec.title}</h3>
+                                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 mb-3">{rec.description}</p>
+                                    <p className="font-bold text-green-500 dark:text-green-400 text-lg">${rec.payout.toFixed(2)}</p>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+            </section>
 
             {/* Featured Tasks */}
             <section>

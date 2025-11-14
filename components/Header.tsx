@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
         <div className="flex items-center gap-4">
             <button 
                 onClick={() => setIsMobileSidebarOpen(true)}
-                className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 lg:hidden"
+                className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 lg:hidden transition-transform active:scale-95"
                 aria-label="Open menu"
             >
                 <MenuIcon />
@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
             {isSidebarCollapsed && (
                 <button 
                     onClick={() => setIsSidebarCollapsed(false)} 
-                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hidden lg:block"
+                    className="p-2 rounded-md text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white hidden lg:block transition-transform active:scale-95"
                     aria-label="Open sidebar"
                 >
                     <MenuIcon />
@@ -43,22 +43,22 @@ const Header: React.FC<HeaderProps> = ({ onLogout }) => {
                 <i className="fas fa-dollar-sign"></i>
                 <span>{balance.toFixed(2)}</span>
             </div>
-            <button onClick={() => setIsWalletModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+            <button onClick={() => setIsWalletModalOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-3 sm:px-4 rounded-lg flex items-center gap-2 text-sm sm:text-base transition-transform active:scale-95">
                 <WalletIcon />
                 <span className="hidden sm:inline">Wallet</span>
             </button>
             <button 
                 onClick={toggleTheme}
-                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-transform active:scale-95"
                 aria-label="Toggle theme"
             >
                 {theme === 'light' ? <MoonIcon /> : <SunIcon />}
             </button>
-            <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+            <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-2 transition-transform active:scale-95">
                 <BellIcon />
             </button>
             <div className="relative">
-                <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2">
+                <button onClick={() => setIsDropdownOpen(!isDropdownOpen)} className="flex items-center gap-2 transition-transform active:scale-95">
                     <img src={user.avatarUrl} alt={user.username} className="w-8 h-8 rounded-full" />
                     <span className="font-semibold text-slate-900 dark:text-white hidden sm:block">{user.username}</span>
                     <ChevronDownIcon />

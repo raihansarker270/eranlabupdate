@@ -2,20 +2,53 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { CHAT_MESSAGES } from '../../constants';
 import type { ChatMessage } from '../../types';
 import { AppContext } from '../../App';
+import { GoogleGenAI } from '@google/genai';
 
 const ChatPage: React.FC = () => {
     const { user } = useContext(AppContext);
     const [messages, setMessages] = useState<ChatMessage[]>(CHAT_MESSAGES);
     const [newMessage, setNewMessage] = useState('');
+    const [isSending, setIsSending] = useState(false);
     const chatEndRef = useRef<HTMLDivElement>(null);
+    const aiRef = useRef<GoogleGenAI | null>(null);
 
     useEffect(() => {
         chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
+
+    useEffect(() => {
+      if (process.env.API_KEY) {
+        aiRef.current = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      }
+    }, []);
     
-    const handleSendMessage = (e: React.FormEvent) => {
+    const handleSendMessage = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (newMessage.trim() === '' || !user) return;
+        if (newMessage.trim() === '' || !user || isSending) return;
+
+        setIsSending(true);
+
+        // AI Content Moderation
+        if (aiRef.current) {
+            try {
+                const moderationPrompt = `Is the following message appropriate for a community chat? Message: "${newMessage}". Respond with only 'YES' or 'NO'.`;
+                const response = await aiRef.current.models.generateContent({
+                  model: 'gemini-2.5-flash',
+                  contents: moderationPrompt,
+                });
+                
+                if (!response.text.includes('YES')) {
+                    alert('This message has been flagged as inappropriate and cannot be sent.');
+                    setIsSending(false);
+                    setNewMessage('');
+                    return;
+                }
+            } catch (error) {
+                console.error('Error with content moderation:', error);
+                // Fail open: if moderation fails, allow the message.
+            }
+        }
+
 
         const message: ChatMessage = {
             id: messages.length + 1,
@@ -28,6 +61,7 @@ const ChatPage: React.FC = () => {
 
         setMessages([...messages, message]);
         setNewMessage('');
+        setIsSending(false);
     };
 
     return (
@@ -61,10 +95,15 @@ const ChatPage: React.FC = () => {
                             value={newMessage}
                             onChange={(e) => setNewMessage(e.target.value)}
                             placeholder="Type your message..."
-                            className="flex-1 bg-slate-100 dark:bg-slate-700 border border-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white"
+                            disabled={isSending}
+                            className="flex-1 bg-slate-100 dark:bg-slate-700 border border-transparent rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-900 dark:text-white disabled:opacity-50"
                         />
-                        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2">
-                            <span>Send</span>
+                        <button 
+                            type="submit" 
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-transform active:scale-95 disabled:bg-slate-500 disabled:cursor-not-allowed"
+                            disabled={isSending}
+                        >
+                            <span>{isSending ? 'Checking...' : 'Send'}</span>
                             <i className="fas fa-paper-plane"></i>
                         </button>
                     </form>

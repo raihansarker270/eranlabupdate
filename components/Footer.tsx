@@ -66,9 +66,9 @@ const Footer: React.FC = () => {
                 <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row justify-between items-center text-slate-500 dark:text-slate-400 text-sm">
                     <p className="mb-4 sm:mb-0">&copy; {new Date().getFullYear()} EarnLab &bull; All rights reserved.</p>
                     <div className="flex space-x-4 text-lg">
-                        <a href="#" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-discord"></i></a>
-                        <a href="#" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-twitter"></i></a>
-                        <a href="#" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-tiktok"></i></a>
+                        <a href="#" aria-label="Discord" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-discord"></i></a>
+                        <a href="#" aria-label="Twitter" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="TikTok" className="hover:text-slate-900 dark:hover:text-white"><i className="fab fa-tiktok"></i></a>
                     </div>
                 </div>
             </div>

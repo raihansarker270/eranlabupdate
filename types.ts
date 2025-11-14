@@ -44,6 +44,7 @@ export interface SidebarMenuItem {
   icon: ReactNode;
   isHot?: boolean;
   isSpecial?: boolean;
+  action?: string;
 }
 
 export interface FaqItem {

@@ -91,7 +91,7 @@ const DailyBonusPage: React.FC = () => {
                  <button 
                     onClick={handleClaim}
                     disabled={!isClaimable}
-                    className="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg text-lg disabled:bg-slate-500 dark:disabled:bg-slate-700 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+                    className="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg text-lg disabled:bg-slate-500 dark:disabled:bg-slate-700 disabled:cursor-not-allowed hover:bg-blue-700 transition-all active:scale-95"
                 >
                     {isClaimable ? `Claim Day ${currentStreak + 1} Reward` : 'Come back tomorrow!'}
                 </button>

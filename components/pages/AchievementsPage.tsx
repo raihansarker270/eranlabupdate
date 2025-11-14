@@ -1,13 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ACHIEVEMENTS_DATA } from '../../constants';
 import type { Achievement } from '../../types';
 
 const AchievementCard: React.FC<{ achievement: Achievement }> = ({ achievement }) => {
+    const [isClaimed, setIsClaimed] = useState(false);
+    const [showConfetti, setShowConfetti] = useState(false);
+    
     const isCompleted = achievement.progress >= achievement.goal;
     const percentage = isCompleted ? 100 : Math.round((achievement.progress / achievement.goal) * 100);
 
+    const handleClaim = () => {
+        setIsClaimed(true);
+        setShowConfetti(true);
+        setTimeout(() => setShowConfetti(false), 4000); // Hide confetti after animation
+    };
+
     return (
-        <div className={`bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-start gap-4 transition-all ${isCompleted ? 'opacity-50' : 'hover:-translate-y-1'}`}>
+        <div className={`relative bg-white dark:bg-[#1e293b] p-6 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-start gap-4 transition-all ${isCompleted && !isClaimed ? 'hover:-translate-y-1' : ''} ${(isCompleted && isClaimed) ? 'opacity-50' : ''}`}>
+            {showConfetti && (
+                <div className="confetti">
+                    {[...Array(13)].map((_, i) => <div key={i} className="confetti-piece"></div>)}
+                </div>
+            )}
             <div className={`text-3xl ${isCompleted ? 'text-green-500' : 'text-blue-500 dark:text-blue-400'}`}>
                 <i className={achievement.icon}></i>
             </div>
@@ -20,14 +34,19 @@ const AchievementCard: React.FC<{ achievement: Achievement }> = ({ achievement }
                         <span>{achievement.progress.toLocaleString()} / {achievement.goal.toLocaleString()}</span>
                     </div>
                     <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-                        <div className={`h-2 rounded-full ${isCompleted ? 'bg-green-500' : 'bg-blue-600'}`} style={{ width: `${percentage}%` }}></div>
+                        <div className={`h-2 rounded-full transition-all duration-500 ease-out ${isCompleted ? 'bg-green-500' : 'bg-blue-600'}`} style={{ width: `${percentage}%` }}></div>
                     </div>
                 </div>
             </div>
             <div className="w-full flex justify-between items-center mt-2">
                 <span className="text-sm font-semibold text-yellow-500 dark:text-yellow-400">+{achievement.xp} XP</span>
-                 {isCompleted && (
-                    <span className="text-sm font-semibold bg-green-500/20 text-green-500 px-2 py-1 rounded-md">Completed</span>
+                 {isCompleted && !isClaimed && (
+                    <button onClick={handleClaim} className="bg-green-500 text-white text-sm font-semibold px-3 py-1 rounded-md hover:bg-green-600 transition-transform active:scale-95">
+                        Claim Reward
+                    </button>
+                )}
+                {isCompleted && isClaimed && (
+                    <span className="text-sm font-semibold bg-slate-500/20 text-slate-500 px-2 py-1 rounded-md">Claimed</span>
                 )}
             </div>
         </div>

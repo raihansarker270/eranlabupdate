@@ -1,45 +1,52 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import LoggedOutHeader from './components/LoggedOutHeader';
-import HomePageContent from './components/pages/HomePage';
-import SurveysPage from './components/pages/SurveysPage';
-import DashboardPage from './components/pages/DashboardPage';
 import WalletModal from './components/WalletModal';
 import LiveEarningFeed from './components/LiveEarningFeed';
 import Footer from './components/Footer';
 import { MOCK_USER } from './constants';
 import type { User } from './types';
-import OfferPage from './components/pages/OfferPage';
-import TasksPage from './components/pages/TasksPage';
-import LoggedInHomePage from './components/pages/LoggedInHomePage';
 import LoggedOutSidebar from './components/LoggedOutSidebar';
-import ReferralsPage from './components/pages/ReferralsPage';
-import LeaderboardPage from './components/pages/LeaderboardPage';
-import DailyBonusPage from './components/pages/DailyBonusPage';
-import AchievementsPage from './components/pages/AchievementsPage';
-import ChatPage from './components/pages/ChatPage';
 import SigninModal from './components/SigninModal';
 import SignupModal from './components/SignupModal';
-import PrimeSurveysPage from './components/pages/survey/PrimeSurveysPage';
-import CPXResearchPage from './components/pages/survey/CPXResearchPage';
-import AdscendMediaSurveysPage from './components/pages/survey/AdscendMediaSurveysPage';
-import BitLabsSurveysPage from './components/pages/survey/BitLabsSurveysPage';
-import InBrainPage from './components/pages/survey/InBrainPage';
-import TheoremReachPage from './components/pages/survey/TheoremReachPage';
-import ToroxPage from './components/pages/offers/ToroxPage';
-import AdscendMediaPage from './components/pages/offers/AdscendMediaPage';
-import AdToWallPage from './components/pages/offers/AdToWallPage';
-import RevUPage from './components/pages/offers/RevUPage';
-import AdGateMediaPage from './components/pages/offers/AdGateMediaPage';
-import MyChipsPage from './components/pages/offers/MyChipsPage';
-import MMWallPage from './components/pages/offers/MMWallPage';
-import AyeTStudiosPage from './components/pages/offers/AyeTStudiosPage';
-import MonlixPage from './components/pages/offers/MonlixPage';
-import HangMyAdsPage from './components/pages/offers/HangMyAdsPage';
-import LootablyPage from './components/pages/offers/LootablyPage';
-import TimeWallPage from './components/pages/offers/TimeWallPage';
-import AdGemPage from './components/pages/offers/AdGemPage';
+import SupportChatModal from './components/SupportChatModal';
+
+// Lazy load page components
+const HomePageContent = React.lazy(() => import('./components/pages/HomePage'));
+const LoggedInHomePage = React.lazy(() => import('./components/pages/LoggedInHomePage'));
+const DashboardPage = React.lazy(() => import('./components/pages/DashboardPage'));
+const OfferPage = React.lazy(() => import('./components/pages/OfferPage'));
+const TasksPage = React.lazy(() => import('./components/pages/TasksPage'));
+const SurveysPage = React.lazy(() => import('./components/pages/SurveysPage'));
+const ReferralsPage = React.lazy(() => import('./components/pages/ReferralsPage'));
+const LeaderboardPage = React.lazy(() => import('./components/pages/LeaderboardPage'));
+const DailyBonusPage = React.lazy(() => import('./components/pages/DailyBonusPage'));
+const AchievementsPage = React.lazy(() => import('./components/pages/AchievementsPage'));
+const ChatPage = React.lazy(() => import('./components/pages/ChatPage'));
+
+// Lazy load survey provider pages
+const PrimeSurveysPage = React.lazy(() => import('./components/pages/survey/PrimeSurveysPage'));
+const CPXResearchPage = React.lazy(() => import('./components/pages/survey/CPXResearchPage'));
+const AdscendMediaSurveysPage = React.lazy(() => import('./components/pages/survey/AdscendMediaSurveysPage'));
+const BitLabsSurveysPage = React.lazy(() => import('./components/pages/survey/BitLabsSurveysPage'));
+const InBrainPage = React.lazy(() => import('./components/pages/survey/InBrainPage'));
+const TheoremReachPage = React.lazy(() => import('./components/pages/survey/TheoremReachPage'));
+
+// Lazy load offer provider pages
+const ToroxPage = React.lazy(() => import('./components/pages/offers/ToroxPage'));
+const AdscendMediaPage = React.lazy(() => import('./components/pages/offers/AdscendMediaPage'));
+const AdToWallPage = React.lazy(() => import('./components/pages/offers/AdToWallPage'));
+const RevUPage = React.lazy(() => import('./components/pages/offers/RevUPage'));
+const AdGateMediaPage = React.lazy(() => import('./components/pages/offers/AdGateMediaPage'));
+const MyChipsPage = React.lazy(() => import('./components/pages/offers/MyChipsPage'));
+const MMWallPage = React.lazy(() => import('./components/pages/offers/MMWallPage'));
+const AyeTStudiosPage = React.lazy(() => import('./components/pages/offers/AyeTStudiosPage'));
+const MonlixPage = React.lazy(() => import('./components/pages/offers/MonlixPage'));
+const HangMyAdsPage = React.lazy(() => import('./components/pages/offers/HangMyAdsPage'));
+const LootablyPage = React.lazy(() => import('./components/pages/offers/LootablyPage'));
+const TimeWallPage = React.lazy(() => import('./components/pages/offers/TimeWallPage'));
+const AdGemPage = React.lazy(() => import('./components/pages/offers/AdGemPage'));
 
 
 export const AppContext = React.createContext<{
@@ -62,6 +69,8 @@ export const AppContext = React.createContext<{
   setIsMobileSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
   theme: 'light' | 'dark';
   setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
+  isSupportChatModalOpen: boolean;
+  setIsSupportChatModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   isLoggedIn: false,
   user: null,
@@ -82,6 +91,8 @@ export const AppContext = React.createContext<{
   setIsMobileSidebarOpen: () => {},
   theme: 'dark',
   setTheme: () => {},
+  isSupportChatModalOpen: false,
+  setIsSupportChatModalOpen: () => {},
 });
 
 const getPageFromURL = () => {
@@ -89,11 +100,18 @@ const getPageFromURL = () => {
     return params.get('page');
 };
 
+const PageLoader: React.FC = () => (
+    <div className="flex items-center justify-center h-full w-full">
+        <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+);
+
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user] = useState<User | null>(MOCK_USER);
   const [balance, setBalance] = useState(125.50);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const [isSupportChatModalOpen, setIsSupportChatModalOpen] = useState(false);
   const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [signupInitialEmail, setSignupInitialEmail] = useState('');
@@ -141,80 +159,47 @@ const App: React.FC = () => {
       setIsSigninModalOpen(true);
   };
   
+ const pageComponents: { [key: string]: React.ReactNode } = {
+    'Home': <LoggedInHomePage />,
+    'Profile': <DashboardPage />,
+    'Offer': <OfferPage />,
+    'Tasks': <TasksPage />,
+    'Surveys': <SurveysPage />,
+    'Prime Surveys': <PrimeSurveysPage />,
+    'CPX Research': <CPXResearchPage />,
+    'Adscend Media Surveys': <AdscendMediaSurveysPage />,
+    'BitLabs Surveys': <BitLabsSurveysPage />,
+    'inBrain': <InBrainPage />,
+    'TheoremReach': <TheoremReachPage />,
+    'Torox': <ToroxPage />,
+    'Adscend Media': <AdscendMediaPage />,
+    'AdToWall': <AdToWallPage />,
+    'RevU': <RevUPage />,
+    'AdGate Media': <AdGateMediaPage />,
+    'MyChips': <MyChipsPage />,
+    'MM Wall': <MMWallPage />,
+    'Aye-T Studios': <AyeTStudiosPage />,
+    'Monlix': <MonlixPage />,
+    'Hang My Ads': <HangMyAdsPage />,
+    'Lootably': <LootablyPage />,
+    'Time Wall': <TimeWallPage />,
+    'AdGem': <AdGemPage />,
+    'Referrals': <ReferralsPage />,
+    'Leaderboard': <LeaderboardPage />,
+    'Daily Bonus': <DailyBonusPage />,
+    'Achievements': <AchievementsPage />,
+    'Chat': <ChatPage />,
+    'Boxes': <div className="text-slate-900 dark:text-white text-3xl font-bold">Boxes Page</div>,
+    'Battles': <div className="text-slate-900 dark:text-white text-3xl font-bold">Battles Page</div>,
+  };
+
   const renderPage = () => {
     const pagePadding = "p-4 sm:p-6 lg:p-8";
-    switch (currentPage) {
-      case 'Home':
-        return <div className={pagePadding}><LoggedInHomePage /></div>;
-      case 'Profile':
-        return <div className={pagePadding}><DashboardPage /></div>;
-      case 'Offer':
-        return <div className={pagePadding}><OfferPage /></div>;
-      case 'Tasks':
-        return <div className={pagePadding}><TasksPage /></div>;
-      case 'Surveys':
-        return <div className={pagePadding}><SurveysPage /></div>;
-      // Survey Pages
-      case 'Prime Surveys':
-        return <div className={pagePadding}><PrimeSurveysPage /></div>;
-      case 'CPX Research':
-        return <div className={pagePadding}><CPXResearchPage /></div>;
-      case 'Adscend Media Surveys':
-        return <div className={pagePadding}><AdscendMediaSurveysPage /></div>;
-      case 'BitLabs Surveys':
-        return <div className={pagePadding}><BitLabsSurveysPage /></div>;
-      case 'inBrain':
-        return <div className={pagePadding}><InBrainPage /></div>;
-      case 'TheoremReach':
-        return <div className={pagePadding}><TheoremReachPage /></div>;
-      // Offer Pages
-      case 'Torox':
-        return <div className={pagePadding}><ToroxPage /></div>;
-      case 'Adscend Media':
-        return <div className={pagePadding}><AdscendMediaPage /></div>;
-      case 'AdToWall':
-        return <div className={pagePadding}><AdToWallPage /></div>;
-      case 'RevU':
-        return <div className={pagePadding}><RevUPage /></div>;
-      case 'AdGate Media':
-        return <div className={pagePadding}><AdGateMediaPage /></div>;
-      case 'MyChips':
-        return <div className={pagePadding}><MyChipsPage /></div>;
-      case 'MM Wall':
-        return <div className={pagePadding}><MMWallPage /></div>;
-      case 'Aye-T Studios':
-        return <div className={pagePadding}><AyeTStudiosPage /></div>;
-      case 'Monlix':
-        return <div className={pagePadding}><MonlixPage /></div>;
-      case 'Hang My Ads':
-        return <div className={pagePadding}><HangMyAdsPage /></div>;
-      case 'Lootably':
-        return <div className={pagePadding}><LootablyPage /></div>;
-      case 'Time Wall':
-        return <div className={pagePadding}><TimeWallPage /></div>;
-      case 'AdGem':
-        return <div className={pagePadding}><AdGemPage /></div>;
-      // Other Pages
-      case 'Referrals':
-        return <div className={pagePadding}><ReferralsPage /></div>;
-      case 'Leaderboard':
-        return <div className={pagePadding}><LeaderboardPage /></div>;
-      case 'Daily Bonus':
-        return <div className={pagePadding}><DailyBonusPage /></div>;
-      case 'Achievements':
-        return <div className={pagePadding}><AchievementsPage /></div>;
-      case 'Chat':
-        return <div className={pagePadding}><ChatPage /></div>;
-      case 'Boxes':
-      case 'Battles':
-        // Placeholder for new pages
-        return <div className={`text-slate-900 dark:text-white text-3xl font-bold ${pagePadding}`}>{currentPage} Page</div>;
-      default:
-        return <div className={pagePadding}><LoggedInHomePage /></div>;
-    }
+    const Component = pageComponents[currentPage] || <LoggedInHomePage />;
+    return <div className={pagePadding}>{Component}</div>;
   };
   
-  const appContextValue = { isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, setIsSigninModalOpen, isSignupModalOpen, openSignupModal, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme };
+  const appContextValue = { isLoggedIn, user, balance, setBalance, setIsLoggedIn, isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, setIsSigninModalOpen, isSignupModalOpen, openSignupModal, currentPage, setCurrentPage, isSidebarCollapsed, setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen };
   const pageFromUrl = getPageFromURL();
 
   if (pageFromUrl) {
@@ -222,7 +207,9 @@ const App: React.FC = () => {
     return (
       <AppContext.Provider value={appContextValue}>
         <div className="bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300 min-h-screen">
-          {isLoggedIn ? renderPage() : <HomePageContent />}
+          <Suspense fallback={<PageLoader />}>
+            {isLoggedIn ? renderPage() : <HomePageContent />}
+          </Suspense>
         </div>
       </AppContext.Provider>
     );
@@ -243,12 +230,15 @@ const App: React.FC = () => {
             </header>
             <div className="flex-1 flex flex-col">
               <main className="flex-1">
-                  {mainContent}
+                  <Suspense fallback={<PageLoader />}>
+                    {mainContent}
+                  </Suspense>
               </main>
               <Footer />
             </div>
         </div>
         {isLoggedIn && <WalletModal />}
+        {isLoggedIn && <SupportChatModal isOpen={isSupportChatModalOpen} onClose={() => setIsSupportChatModalOpen(false)} />}
         {!isLoggedIn && (
             <>
                 <SigninModal
