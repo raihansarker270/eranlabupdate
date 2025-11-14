@@ -104,7 +104,7 @@ const getPageFromHash = () => {
     const hash = window.location.hash;
     if (hash.startsWith('#/')) {
         const pageName = hash.substring(2);
-        return pageName.split('?')[0]; // Remove any potential query params from hash
+        return decodeURIComponent(pageName.split('?')[0]); // Remove any potential query params from hash
     }
     return null;
 };
