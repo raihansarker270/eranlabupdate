@@ -166,16 +166,46 @@ const App: React.FC = () => {
     }
     localStorage.setItem('theme', theme);
   }, [theme]);
+  
+  const urlParams = new URLSearchParams(window.location.search);
+  const isDedicatedView = urlParams.get('view') === 'dedicated';
 
   useEffect(() => {
     const handlePopState = () => {
-      setCurrentPage(getPageFromURL() || 'Home');
+      // Re-check URL params on back/forward navigation
+      const newParams = new URLSearchParams(window.location.search);
+      const newPage = newParams.get('page') || 'Home';
+      setCurrentPage(newPage);
+      // This will cause a re-render, and isDedicatedView will be re-evaluated
     };
     window.addEventListener('popstate', handlePopState);
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
   }, []);
+
+  if (isDedicatedView) {
+      const pageName = urlParams.get('page');
+      const ComponentToRender = pageName ? pageComponentsMap[pageName] : null;
+
+      if (!ComponentToRender) {
+          return (
+              <div className="bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300 min-h-screen flex items-center justify-center">
+                  <h1 className="text-3xl font-bold">Page Not Found</h1>
+              </div>
+          );
+      }
+
+      return (
+          <div className="bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300 min-h-screen">
+              <Suspense fallback={<PageLoader />}>
+                  <div className="p-4 sm:p-6 lg:p-8">
+                      {ComponentToRender}
+                  </div>
+              </Suspense>
+          </div>
+      );
+  }
 
   const setCurrentPageAndUpdateUrl = (pageName: string) => {
     setCurrentPage(pageName);
