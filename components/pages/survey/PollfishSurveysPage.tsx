@@ -2,7 +2,7 @@ import React from 'react';
 import { SURVEY_PROVIDERS } from '../../../constants';
 
 const PollfishSurveysPage: React.FC = () => {
-    const provider = SURVEY_PROVIDERS.find(p => p.name === 'BitLabs');
+    const provider = SURVEY_PROVIDERS.find(p => p.name === 'Pollfish');
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-4">

@@ -32,6 +32,7 @@ const AdscendMediaSurveysPage = React.lazy(() => import('./components/pages/surv
 const BitLabsSurveysPage = React.lazy(() => import('./components/pages/survey/BitLabsSurveysPage'));
 const InBrainPage = React.lazy(() => import('./components/pages/survey/InBrainPage'));
 const TheoremReachPage = React.lazy(() => import('./components/pages/survey/TheoremReachPage'));
+const PollfishSurveysPage = React.lazy(() => import('./components/pages/survey/PollfishSurveysPage'));
 
 // Lazy load offer provider pages
 const ToroxPage = React.lazy(() => import('./components/pages/offers/ToroxPage'));
