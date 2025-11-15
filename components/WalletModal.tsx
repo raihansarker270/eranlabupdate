@@ -166,25 +166,43 @@ const TransactionHistory: React.FC = () => {
     };
     
     return (
-        <div className="space-y-4">
+        <div className="overflow-x-auto">
             {MOCK_TRANSACTIONS.length > 0 ? (
-                MOCK_TRANSACTIONS.map(tx => (
-                    <div key={tx.id} className="bg-slate-100 dark:bg-[#1e293b] p-3 rounded-lg flex justify-between items-center text-sm">
-                        <div className="flex items-center gap-3">
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${tx.type === 'Withdrawal' ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'}`}>
-                                <i className={`fas ${tx.type === 'Withdrawal' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
-                            </div>
-                            <div>
-                                <p className="font-bold text-slate-900 dark:text-white">{tx.type}</p>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">{tx.method} - {tx.date}</p>
-                            </div>
-                        </div>
-                        <div className="text-right">
-                            <p className={`font-bold ${tx.type === 'Withdrawal' ? 'text-red-500' : 'text-green-500'}`}>${tx.amount.toFixed(2)}</p>
-                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${getStatusBadge(tx.status)}`}>{tx.status}</span>
-                        </div>
-                    </div>
-                ))
+                <table className="w-full text-sm text-left">
+                    <thead className="text-xs text-slate-500 dark:text-slate-400 uppercase bg-slate-100 dark:bg-[#1e293b]">
+                        <tr>
+                            <th scope="col" className="px-4 py-3">ID</th>
+                            <th scope="col" className="px-4 py-3">Type</th>
+                            <th scope="col" className="px-4 py-3">Method</th>
+                            <th scope="col" className="px-4 py-3">Amount</th>
+                            <th scope="col" className="px-4 py-3">Status</th>
+                            <th scope="col" className="px-4 py-3">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody className="text-slate-700 dark:text-slate-300">
+                        {MOCK_TRANSACTIONS.map(tx => (
+                            <tr key={tx.id} className="border-b border-slate-200 dark:border-slate-800 last:border-b-0">
+                                <td className="px-4 py-3 font-mono text-xs">{tx.id}</td>
+                                <td className="px-4 py-3 whitespace-nowrap">
+                                    <div className="flex items-center gap-2">
+                                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-xs ${tx.type === 'Withdrawal' ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'}`}>
+                                            <i className={`fas ${tx.type === 'Withdrawal' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                                        </div>
+                                        <span className="font-semibold text-slate-800 dark:text-slate-200">{tx.type}</span>
+                                    </div>
+                                </td>
+                                <td className="px-4 py-3 whitespace-nowrap">{tx.method}</td>
+                                <td className={`px-4 py-3 font-semibold whitespace-nowrap ${tx.type === 'Withdrawal' ? 'text-red-500' : 'text-green-500'}`}>
+                                    ${tx.amount.toFixed(2)}
+                                </td>
+                                <td className="px-4 py-3">
+                                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${getStatusBadge(tx.status)}`}>{tx.status}</span>
+                                </td>
+                                <td className="px-4 py-3 text-xs whitespace-nowrap">{tx.date}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             ) : (
                  <div className="text-center py-12">
                      <i className="fas fa-file-invoice-dollar text-4xl text-slate-400 dark:text-slate-500 mb-4"></i>
@@ -294,7 +312,7 @@ const WalletModal: React.FC = () => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={closeModal}>
-            <div className="bg-white dark:bg-[#141c2f] rounded-lg shadow-xl w-full max-w-md text-slate-800 dark:text-slate-300" onClick={e => e.stopPropagation()}>
+            <div className="bg-white dark:bg-[#141c2f] rounded-lg shadow-xl w-full max-w-2xl text-slate-800 dark:text-slate-300" onClick={e => e.stopPropagation()}>
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex border-b border-slate-200 dark:border-slate-700">
