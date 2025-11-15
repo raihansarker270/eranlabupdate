@@ -139,7 +139,7 @@ const pageComponentsMap: { [key: string]: React.ReactNode } = {
     'Prime Surveys': <PrimeSurveysPage />,
     'CPX Research': <CPXResearchPage />,
     'Adscend Media Surveys': <AdscendMediaSurveysPage />,
-    'BitLabs Surveys': <BitLabsSurveysPage />,
+    'BitLabs': <BitLabsSurveysPage />,
     'inBrain': <InBrainPage />,
     'TheoremReach': <TheoremReachPage />,
     'Torox': <ToroxPage />,
