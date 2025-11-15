@@ -32,12 +32,11 @@ export const EARNING_FEED_ITEMS: EarningFeedItem[] = [
 ];
 
 export const SURVEY_PROVIDERS: SurveyProvider[] = [
-  { name: 'Prime Surveys', logo: 'https://i.imgur.com/example_prime.png', type: 'Prime Insights' },
-  { name: 'CPX Research', logo: 'https://i.imgur.com/example_cpx.png', type: 'CPX RESEARCH' },
-  { name: 'Adscend Media Surveys', logo: 'https://i.imgur.com/example_adscend.png', type: 'AdscendMedia' },
-  { name: 'BitLabs Surveys', logo: '', type: 'BitLabs', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-  { name: 'inBrain', logo: '', type: 'inBrain', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-  { name: 'TheoremReach', logo: '', type: 'TheoremReach', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
+  { name: 'BitLabs', logo: 'https://i.imgur.com/eLSf3a2.png', rating: 3, type: 'BitLabs' },
+  { name: 'CPX Research', logo: 'https://i.imgur.com/bKj926D.png', rating: 3, type: 'CPX RESEARCH' },
+  { name: 'Your-Surveys', logo: 'https://i.imgur.com/zW0S4Qx.png', rating: 4, type: 'Your-Surveys' },
+  { name: 'Pollfish', logo: 'https://i.imgur.com/Nl2aD2T.png', rating: 4, type: 'Pollfish' },
+  { name: 'Prime Surveys', logo: 'https://i.imgur.com/PtcE53F.png', rating: 2, type: 'Prime Surveys' },
 ];
 
 export const FAQ_ITEMS: FaqItem[] = [

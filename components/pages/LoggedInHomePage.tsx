@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI, Type } from '@google/genai';
 import SkeletonLoader from '../SkeletonLoader';
+import { SURVEY_PROVIDERS } from '../../constants';
+import SurveyProviderCard from '../SurveyProviderCard';
+import { LockIcon, StarIcon } from '../icons/SurveyIcons';
 
 // Mock data for the new sections
 const featuredTasks = [
@@ -32,16 +35,6 @@ const offerWalls = [
     { name: 'AdGem', logo: 'https://i.imgur.com/r9f5k2Z.png' },
 ];
 
-const surveyWalls = [
-    { name: 'Prime Surveys', logo: 'https://i.imgur.com/N8lqs65.png' },
-    { name: 'CPX Research', logo: 'https://i.imgur.com/bKj926D.png' },
-    { name: 'Adscend Media Surveys', logo: 'https://i.imgur.com/iY9g04E.png' },
-    { name: 'BitLabs Surveys', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-    { name: 'inBrain', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock' },
-    // FIX: Add `isLocked` and `unlocksAt` to the TheoremReach survey wall to match the data structure used in the component and prevent a TypeScript error.
-    { name: 'TheoremReach', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlocksAt: 'Unlocks 12/2/2025, 12:16 PM' },
-];
-
 interface AIRecommendation {
     title: string;
     description: string;
@@ -57,14 +50,6 @@ const SectionHeader: React.FC<{ title: string, description: string }> = ({ title
         </div>
         <a href="#" className="text-blue-500 dark:text-blue-400 font-semibold hover:underline flex-shrink-0">View All</a>
     </div>
-);
-
-const LockIcon: React.FC = () => (
-    <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-);
-
-const StarIcon: React.FC = () => (
-    <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
 );
 
 const LoggedInHomePage: React.FC = () => {
@@ -245,31 +230,10 @@ const LoggedInHomePage: React.FC = () => {
              {/* Survey Walls */}
             <section>
                 <SectionHeader title="Survey Walls" description="Each survey wall contains hundreds of surveys to complete" />
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-4">
-                     {surveyWalls.map((wall, index) => (
-                        <a 
-                            key={index}
-                            href={wall.isLocked ? '#' : `/#/${encodeURIComponent(wall.name.replace(/\s/g, ''))}`}
-                            target={wall.isLocked ? '_self' : '_blank'}
-                            rel="noopener noreferrer"
-                            onClick={(e) => { if (wall.isLocked) e.preventDefault(); }}
-                            className={`bg-white dark:bg-[#1e293b] rounded-lg p-4 flex flex-col items-center justify-center text-center h-32 relative overflow-hidden transition-all duration-300 border border-slate-200 dark:border-slate-800 ${wall.isLocked ? 'cursor-not-allowed' : 'hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer hover:-translate-y-1'}`}>
-                             {wall.isLocked && <div className="absolute inset-0 bg-black/60 backdrop-blur-sm z-10"></div>}
-                             
-                             <div className={`relative flex flex-col items-center justify-center flex-1 ${wall.isLocked ? 'opacity-50' : ''}`}>
-                                 <img src={wall.logo} alt={wall.name} className="h-8 max-w-full object-contain mb-2" />
-                                 <p className="font-semibold text-slate-900 dark:text-white text-sm mt-auto">{wall.name}</p>
-                             </div>
-                             
-                             {wall.isLocked && (
-                                <div className="absolute inset-0 flex flex-col items-center justify-center text-xs text-center z-20 p-2 text-white">
-                                     <LockIcon />
-                                     {wall.unlockRequirement && <p className="mt-1 font-semibold">{wall.unlockRequirement}</p>}
-                                     {'unlocksAt' in wall && wall.unlocksAt && <p className="mt-1">{wall.unlocksAt}</p>}
-                                </div>
-                             )}
-                         </a>
-                    ))}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                     {SURVEY_PROVIDERS.map((wall) => (
+                         <SurveyProviderCard key={wall.name} provider={wall} />
+                     ))}
                 </div>
             </section>
 

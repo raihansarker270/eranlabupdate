@@ -33,7 +33,9 @@ export interface EarningFeedItem {
 export interface SurveyProvider {
   name: string;
   logo: string;
-  type: string;
+  type?: string;
+  rating?: number;
+  isSpecial?: boolean;
   isLocked?: boolean;
   unlocksAt?: string;
   unlockRequirement?: string;
