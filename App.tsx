@@ -1,4 +1,5 @@
 
+
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -48,6 +49,9 @@ const HangMyAdsPage = React.lazy(() => import('./components/pages/offers/HangMyA
 const LootablyPage = React.lazy(() => import('./components/pages/offers/LootablyPage'));
 const TimeWallPage = React.lazy(() => import('./components/pages/offers/TimeWallPage'));
 const AdGemPage = React.lazy(() => import('./components/pages/offers/AdGemPage'));
+
+// Lazy load admin panel
+const AdminLayout = React.lazy(() => import('./components/admin/AdminLayout'));
 
 
 export const AppContext = React.createContext<{
@@ -100,7 +104,7 @@ const getPageFromPathname = () => {
     const pathname = window.location.pathname;
     // Remove leading slash and decode
     const pageName = decodeURIComponent(pathname.substring(1));
-    if (pageName === '') {
+    if (pageName === '' || pageName.toLowerCase() === 'admin') {
         return 'Home';
     }
     return pageName;
@@ -164,6 +168,14 @@ const pageKeyLookup = Object.keys(pageComponentsMap).reduce((lookup, key) => {
 
 
 const App: React.FC = () => {
+  if (window.location.pathname.startsWith('/admin')) {
+      return (
+          <Suspense fallback={<PageLoader />}>
+              <AdminLayout />
+          </Suspense>
+      );
+  }
+  
   const dedicatedPageNameFromHash = getPageFromHash();
   const dedicatedPageName = dedicatedPageNameFromHash ? pageKeyLookup[dedicatedPageNameFromHash] : null;
   const isDedicatedView = !!dedicatedPageName;
@@ -238,6 +250,8 @@ const App: React.FC = () => {
     const url = new URL(window.location.origin);
     if (pageName === 'Home') {
         url.pathname = '/';
+    } else if (pageName.toLowerCase() === 'admin') {
+        url.pathname = '/admin';
     } else {
         url.pathname = `/${encodeURIComponent(pageName)}`;
     }
