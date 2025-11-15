@@ -32,16 +32,16 @@ export const EARNING_FEED_ITEMS: EarningFeedItem[] = [
 ];
 
 export const SURVEY_PROVIDERS: SurveyProvider[] = [
-  { name: 'BitLabs', logo: 'https://i.imgur.com/eLSf3a2.png', rating: 3, type: 'BitLabs' },
-  { name: 'CPX Research', logo: 'https://i.imgur.com/bKj926D.png', rating: 3, type: 'CPX RESEARCH' },
-  { name: 'Your-Surveys', logo: 'https://i.imgur.com/zW0S4Qx.png', rating: 4, type: 'Your-Surveys' },
+  { name: 'BitLabs', logo: 'https://i.imgur.com/oZznueX.png', rating: 3, type: 'BitLabs' },
+  { name: 'CPX Research', logo: 'https://i.imgur.com/ssL8ALh.png', rating: 3, type: 'CPX RESEARCH' },
+  { name: 'Your-Surveys', logo: 'https://i.imgur.com/pLRnBU2.png', rating: 4, type: 'Your-Surveys' },
   { name: 'Pollfish', logo: 'https://i.imgur.com/OofFwSR.png', rating: 4, type: 'Pollfish' },
-  { name: 'Prime Surveys', logo: 'https://i.imgur.com/PtcE53F.png', rating: 2, type: 'Prime Surveys' },
-  { name: 'inBrain', logo: 'https://i.imgur.com/PtcE53.png', rating: 2, type: 'inBrain' },
+  { name: 'Prime Surveys', logo: 'https://i.imgur.com/0EGYRXz.png', rating: 2, type: 'Prime Surveys' },
+  { name: 'inBrain', logo: 'https://i.imgur.com/AaQPnwe.png', rating: 2, type: 'inBrain' },
 ];
 
 export const OFFER_WALLS: OfferWall[] = [
-    { name: 'Torox', logo: 'https://i.imgur.com/Y17wQmd.png', bonus: '+80%' },
+    { name: 'Torox', logo: 'https://i.imgur.com/zbyfSVW.png', bonus: '+20%' },
     { name: 'Adscend Media', logo: 'https://i.imgur.com/iY9g04E.png', bonus: '+50%' },
     { name: 'AdToWall', logo: 'https://i.imgur.com/x0iP1C9.png' },
     { name: 'RevU', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock', bonus: '+50%' },
