@@ -1,5 +1,6 @@
 
 
+
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -168,7 +169,19 @@ const pageKeyLookup = Object.keys(pageComponentsMap).reduce((lookup, key) => {
 
 
 const App: React.FC = () => {
-  if (window.location.pathname.startsWith('/admin')) {
+  const [hash, setHash] = useState(window.location.hash);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setHash(window.location.hash);
+    };
+    window.addEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+    };
+  }, []);
+
+  if (hash === '#/admin') {
       return (
           <Suspense fallback={<PageLoader />}>
               <AdminLayout />
@@ -251,7 +264,10 @@ const App: React.FC = () => {
     if (pageName === 'Home') {
         url.pathname = '/';
     } else if (pageName.toLowerCase() === 'admin') {
-        url.pathname = '/admin';
+        // This will now navigate to hash-based admin route.
+        // A full page reload might be better here if the app structures are very different.
+        window.location.hash = '/admin';
+        return;
     } else {
         url.pathname = `/${encodeURIComponent(pageName)}`;
     }
