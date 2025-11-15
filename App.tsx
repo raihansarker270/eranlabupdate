@@ -1,6 +1,3 @@
-
-
-
 import React, { useState, useCallback, useEffect, Suspense } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -53,6 +50,7 @@ const AdGemPage = React.lazy(() => import('./components/pages/offers/AdGemPage')
 
 // Lazy load admin panel
 const AdminLayout = React.lazy(() => import('./components/admin/AdminLayout'));
+const AdminLoginPage = React.lazy(() => import('./components/admin/AdminLoginPage'));
 
 
 export const AppContext = React.createContext<{
@@ -77,6 +75,8 @@ export const AppContext = React.createContext<{
   setTheme: React.Dispatch<React.SetStateAction<'light' | 'dark'>>;
   isSupportChatModalOpen: boolean;
   setIsSupportChatModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isAdmin: boolean;
+  setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
   isLoggedIn: false,
   user: null,
@@ -99,6 +99,8 @@ export const AppContext = React.createContext<{
   setTheme: () => {},
   isSupportChatModalOpen: false,
   setIsSupportChatModalOpen: () => {},
+  isAdmin: false,
+  setIsAdmin: () => {},
 });
 
 const getPageFromPathname = () => {
@@ -115,6 +117,8 @@ const getPageFromHash = () => {
     const hash = window.location.hash;
     if (hash.startsWith('#/')) {
         const pageName = hash.substring(2);
+        // Exclude 'admin' from being treated as a regular page from hash
+        if (pageName.toLowerCase() === 'admin') return null;
         return decodeURIComponent(pageName.split('?')[0]); // Remove any potential query params from hash
     }
     return null;
@@ -170,6 +174,7 @@ const pageKeyLookup = Object.keys(pageComponentsMap).reduce((lookup, key) => {
 
 const App: React.FC = () => {
   const [hash, setHash] = useState(window.location.hash);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -180,18 +185,6 @@ const App: React.FC = () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
-
-  if (hash === '#/admin') {
-      return (
-          <Suspense fallback={<PageLoader />}>
-              <AdminLayout />
-          </Suspense>
-      );
-  }
-  
-  const dedicatedPageNameFromHash = getPageFromHash();
-  const dedicatedPageName = dedicatedPageNameFromHash ? pageKeyLookup[dedicatedPageNameFromHash] : null;
-  const isDedicatedView = !!dedicatedPageName;
   
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user] = useState<User | null>(MOCK_USER);
@@ -201,7 +194,7 @@ const App: React.FC = () => {
   const [isSigninModalOpen, setIsSigninModalOpen] = useState(false);
   const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
   const [signupInitialEmail, setSignupInitialEmail] = useState('');
-  const [currentPage, setCurrentPage] = useState(dedicatedPageName || getPageFromPathname());
+  const [currentPage, setCurrentPage] = useState(getPageFromPathname());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
@@ -209,6 +202,43 @@ const App: React.FC = () => {
     return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
   });
 
+  // FIX: Moved `openSignupModal` before its use in `appContextValue`.
+  const openSignupModal = (email = '') => {
+      setSignupInitialEmail(email);
+      setIsSignupModalOpen(true);
+  };
+
+  const appContextValue = { 
+      isLoggedIn, user, balance, setBalance, setIsLoggedIn, 
+      isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, 
+      setIsSigninModalOpen, isSignupModalOpen, openSignupModal, 
+      currentPage, isSidebarCollapsed, 
+      setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, 
+      theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen,
+      isAdmin, setIsAdmin
+  };
+
+  if (hash.startsWith('#/admin')) {
+      if (!isAdmin) {
+          return (
+              <Suspense fallback={<PageLoader />}>
+                  <AdminLoginPage onLoginSuccess={() => setIsAdmin(true)} />
+              </Suspense>
+          );
+      }
+      return (
+          <AppContext.Provider value={{...appContextValue, setCurrentPage: () => {}}}>
+            <Suspense fallback={<PageLoader />}>
+                <AdminLayout />
+            </Suspense>
+          </AppContext.Provider>
+      );
+  }
+  
+  const dedicatedPageNameFromHash = getPageFromHash();
+  const dedicatedPageName = dedicatedPageNameFromHash ? pageKeyLookup[dedicatedPageNameFromHash] : null;
+  const isDedicatedView = !!dedicatedPageName;
+  
   useEffect(() => {
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
@@ -219,11 +249,16 @@ const App: React.FC = () => {
   }, [theme]);
   
   useEffect(() => {
+    const pageFromHash = getPageFromHash();
+    const dedicatedPage = pageFromHash ? pageKeyLookup[pageFromHash] : null;
+    const initialPage = dedicatedPage || getPageFromPathname();
+    setCurrentPage(initialPage);
+
     const handlePopState = () => {
-      const pageFromHash = getPageFromHash();
-      const dedicatedPage = pageFromHash ? pageKeyLookup[pageFromHash] : null;
-      if (dedicatedPage) {
-          setCurrentPage(dedicatedPage);
+      const newPageFromHash = getPageFromHash();
+      const newDedicatedPage = newPageFromHash ? pageKeyLookup[newPageFromHash] : null;
+      if (newDedicatedPage) {
+          setCurrentPage(newDedicatedPage);
       } else {
           const newPage = getPageFromPathname();
           setCurrentPage(newPage);
@@ -264,8 +299,6 @@ const App: React.FC = () => {
     if (pageName === 'Home') {
         url.pathname = '/';
     } else if (pageName.toLowerCase() === 'admin') {
-        // This will now navigate to hash-based admin route.
-        // A full page reload might be better here if the app structures are very different.
         window.location.hash = '/admin';
         return;
     } else {
@@ -285,11 +318,6 @@ const App: React.FC = () => {
     setIsLoggedIn(false);
     setCurrentPageAndUpdateUrl('Home');
   }, []);
-
-  const openSignupModal = (email = '') => {
-      setSignupInitialEmail(email);
-      setIsSignupModalOpen(true);
-  };
 
   const switchToSignup = () => {
       setIsSigninModalOpen(false);
@@ -319,20 +347,13 @@ const App: React.FC = () => {
     return <div className={pagePadding}>{componentToRender}</div>;
   };
   
-  const appContextValue = { 
-      isLoggedIn, user, balance, setBalance, setIsLoggedIn, 
-      isWalletModalOpen, setIsWalletModalOpen, isSigninModalOpen, 
-      setIsSigninModalOpen, isSignupModalOpen, openSignupModal, 
-      currentPage, setCurrentPage: setCurrentPageAndUpdateUrl, isSidebarCollapsed, 
-      setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, 
-      theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen 
-  };
+  const fullAppContextValue = { ...appContextValue, setCurrentPage: setCurrentPageAndUpdateUrl };
 
   const headerContent = isLoggedIn ? <Header onLogout={handleLogout} /> : <LoggedOutHeader />;
   const mainContent = renderPage();
 
   return (
-    <AppContext.Provider value={appContextValue}>
+    <AppContext.Provider value={fullAppContextValue}>
       <div className="flex h-screen bg-slate-100 dark:bg-[#0f172a] text-slate-800 dark:text-slate-300">
         {isLoggedIn ? <Sidebar /> : <LoggedOutSidebar />}
         <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
