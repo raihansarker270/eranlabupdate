@@ -1,4 +1,4 @@
-import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial, FeaturedOffer } from './types';
+import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial, FeaturedOffer, Transaction } from './types';
 
 export const MOCK_USER: User = {
   username: 'raihansarker',
@@ -140,4 +140,12 @@ export const TESTIMONIALS: Testimonial[] = [
     author: 'Gerd T.',
     rating: 5,
   },
+];
+
+export const MOCK_TRANSACTIONS: Transaction[] = [
+  { id: 'tx123', type: 'Withdrawal', method: 'Bitcoin (BTC)', amount: 25.00, status: 'Completed', date: '2025-11-01' },
+  { id: 'tx124', type: 'Task Reward', method: 'RevU Offer', amount: 5.50, status: 'Completed', date: '2025-10-28' },
+  { id: 'tx125', type: 'Withdrawal', method: 'Litecoin (LTC)', amount: 15.00, status: 'Pending', date: '2025-11-02' },
+  { id: 'tx126', type: 'Deposit', method: 'Visa', amount: 10.00, status: 'Failed', date: '2025-10-25' },
+  { id: 'tx127', type: 'Task Reward', method: 'Torox Offer', amount: 12.75, status: 'Completed', date: '2025-10-22' },
 ];

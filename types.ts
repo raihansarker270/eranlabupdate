@@ -98,3 +98,12 @@ export interface FeaturedOffer {
   payout: number;
   rating: number;
 }
+
+export interface Transaction {
+  id: string;
+  type: 'Withdrawal' | 'Deposit' | 'Task Reward';
+  method: string;
+  amount: number;
+  status: 'Completed' | 'Pending' | 'Failed';
+  date: string;
+}

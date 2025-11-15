@@ -1,16 +1,72 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../App';
+import { MOCK_TRANSACTIONS } from '../constants';
+import type { Transaction } from '../types';
+
+const WithdrawalConfirmation: React.FC<{
+    details: { cryptoName: string; address: string; amount: string };
+    onConfirm: () => void;
+    onBack: () => void;
+}> = ({ details, onConfirm, onBack }) => {
+    const amount = parseFloat(details.amount) || 0;
+    const fee = amount * 0.01; // Simulate a 1% fee
+    const totalDeducted = amount + fee;
+
+    return (
+        <div className="text-slate-700 dark:text-slate-300">
+             <h2 className="text-xl font-bold mb-4 text-slate-900 dark:text-white">Confirm Your Withdrawal</h2>
+             <div className="bg-slate-100 dark:bg-[#1e293b] p-4 rounded-lg space-y-3 text-sm">
+                <div className="flex justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Amount</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">${amount.toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Network Fee</span>
+                    <span className="font-semibold text-slate-900 dark:text-white">${fee.toFixed(2)}</span>
+                </div>
+                 <div className="flex justify-between text-base font-bold border-t border-slate-200 dark:border-slate-700 pt-3">
+                    <span className="text-slate-900 dark:text-white">Total Deducted</span>
+                    <span className="text-red-500 dark:text-red-400">${totalDeducted.toFixed(2)}</span>
+                </div>
+             </div>
+
+             <div className="mt-4 space-y-2 text-sm">
+                <p className="text-slate-500 dark:text-slate-400">You are withdrawing to the following address:</p>
+                <p className="font-mono bg-slate-100 dark:bg-[#1e293b] p-2 rounded break-all text-xs">{details.address}</p>
+                <p className="text-yellow-600 dark:text-yellow-400 text-xs font-semibold mt-2">Please double-check the address. Crypto transactions are irreversible.</p>
+             </div>
+
+            <div className="mt-8 flex items-center gap-3">
+                 <button onClick={onBack} className="flex-1 p-3 bg-slate-200 dark:bg-[#1e293b] hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg font-semibold">
+                    Back
+                 </button>
+                <button 
+                    onClick={onConfirm}
+                    className="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded-lg"
+                >
+                    Confirm & Withdraw
+                </button>
+            </div>
+        </div>
+    );
+};
+
 
 const WithdrawalForm: React.FC<{
     cryptoName: string;
     onBack: () => void;
-}> = ({ cryptoName, onBack }) => {
-    const { balance, setBalance } = useContext(AppContext);
+    onProceed: (address: string, amount: string) => void;
+}> = ({ cryptoName, onBack, onProceed }) => {
+    const { balance } = useContext(AppContext);
     const [address, setAddress] = useState('');
     const [amount, setAmount] = useState('0');
 
     const handleCreateWithdrawal = () => {
         const withdrawalAmount = parseFloat(amount);
+        if (!address.trim()) {
+            alert('Please enter a wallet address.');
+            return;
+        }
         if (isNaN(withdrawalAmount) || withdrawalAmount <= 0) {
             alert('Please enter a valid positive amount.');
             return;
@@ -19,10 +75,7 @@ const WithdrawalForm: React.FC<{
             alert('Insufficient funds.');
             return;
         }
-        
-        setBalance(prev => prev - withdrawalAmount);
-        alert(`Successfully created withdrawal of ${withdrawalAmount} ${cryptoName.split(' ')[0]}.`);
-        onBack(); // Go back to the main wallet view
+        onProceed(address, amount);
     };
 
     return (
@@ -88,7 +141,7 @@ const WithdrawalForm: React.FC<{
             </div>
 
             <div className="mt-8 flex items-center gap-3">
-                 <button onClick={onBack} className="p-3 bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg">
+                 <button onClick={onBack} className="p-3 bg-slate-200 dark:bg-[#1e293b] hover:bg-slate-300 dark:hover:bg-slate-700 rounded-lg">
                     <i className="fas fa-undo"></i>
                  </button>
                 <button 
@@ -102,17 +155,142 @@ const WithdrawalForm: React.FC<{
     );
 };
 
+const TransactionHistory: React.FC = () => {
+    const getStatusBadge = (status: Transaction['status']) => {
+        switch (status) {
+            case 'Completed': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+            case 'Pending': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+            case 'Failed': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300';
+            default: return 'bg-slate-100 text-slate-800 dark:bg-slate-700 dark:text-slate-300';
+        }
+    };
+    
+    return (
+        <div className="space-y-4">
+            {MOCK_TRANSACTIONS.length > 0 ? (
+                MOCK_TRANSACTIONS.map(tx => (
+                    <div key={tx.id} className="bg-slate-100 dark:bg-[#1e293b] p-3 rounded-lg flex justify-between items-center text-sm">
+                        <div className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${tx.type === 'Withdrawal' ? 'bg-red-500/20 text-red-500' : 'bg-green-500/20 text-green-500'}`}>
+                                <i className={`fas ${tx.type === 'Withdrawal' ? 'fa-arrow-up' : 'fa-arrow-down'}`}></i>
+                            </div>
+                            <div>
+                                <p className="font-bold text-slate-900 dark:text-white">{tx.type}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400">{tx.method} - {tx.date}</p>
+                            </div>
+                        </div>
+                        <div className="text-right">
+                            <p className={`font-bold ${tx.type === 'Withdrawal' ? 'text-red-500' : 'text-green-500'}`}>${tx.amount.toFixed(2)}</p>
+                            <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${getStatusBadge(tx.status)}`}>{tx.status}</span>
+                        </div>
+                    </div>
+                ))
+            ) : (
+                 <div className="text-center py-12">
+                     <i className="fas fa-file-invoice-dollar text-4xl text-slate-400 dark:text-slate-500 mb-4"></i>
+                     <p className="text-slate-500 dark:text-slate-400">No transaction history found.</p>
+                 </div>
+            )}
+        </div>
+    );
+};
+
 
 const WalletModal: React.FC = () => {
-    const { isWalletModalOpen, setIsWalletModalOpen } = useContext(AppContext);
-    const [selectedCrypto, setSelectedCrypto] = useState<string | null>(null);
+    const { isWalletModalOpen, setIsWalletModalOpen, setBalance } = useContext(AppContext);
+    const [activeTab, setActiveTab] = useState<'withdraw' | 'history'>('withdraw');
+    const [withdrawalStep, setWithdrawalStep] = useState<'select' | 'form' | 'confirm'>('select');
+    const [withdrawalDetails, setWithdrawalDetails] = useState({
+        cryptoName: '',
+        address: '',
+        amount: '0',
+    });
 
     const closeModal = () => {
         setIsWalletModalOpen(false);
-        setTimeout(() => setSelectedCrypto(null), 300); // Reset state after closing animation
+        setTimeout(() => {
+            setActiveTab('withdraw');
+            setWithdrawalStep('select');
+        }, 300);
+    };
+
+    const handleSelectCrypto = (cryptoName: string) => {
+        setWithdrawalDetails(prev => ({ ...prev, cryptoName }));
+        setWithdrawalStep('form');
+    };
+    
+    const handleProceedToConfirm = (address: string, amount: string) => {
+        setWithdrawalDetails(prev => ({ ...prev, address, amount }));
+        setWithdrawalStep('confirm');
+    };
+
+    const handleConfirmWithdrawal = () => {
+        const withdrawalAmount = parseFloat(withdrawalDetails.amount);
+        const fee = withdrawalAmount * 0.01;
+        setBalance(prev => prev - (withdrawalAmount + fee));
+        alert(`Successfully created withdrawal of ${withdrawalAmount.toFixed(2)} ${withdrawalDetails.cryptoName.split(' ')[0]}.`);
+        setWithdrawalStep('select'); // Go back to the main wallet view
     };
 
     if (!isWalletModalOpen) return null;
+
+    const renderWithdrawContent = () => {
+        switch (withdrawalStep) {
+            case 'confirm':
+                return <WithdrawalConfirmation 
+                            details={withdrawalDetails} 
+                            onConfirm={handleConfirmWithdrawal} 
+                            onBack={() => setWithdrawalStep('form')} 
+                       />;
+            case 'form':
+                return <WithdrawalForm 
+                            cryptoName={withdrawalDetails.cryptoName} 
+                            onBack={() => setWithdrawalStep('select')} 
+                            onProceed={handleProceedToConfirm}
+                        />;
+            case 'select':
+            default:
+                return (
+                    <div className="space-y-6">
+                        <div>
+                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Special</h3>
+                            <button className="w-full bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg flex justify-between items-center">
+                                <div className="flex items-center gap-3">
+                                    <i className="fas fa-dice text-green-400 text-xl"></i>
+                                    <span className="font-semibold">Gamdom</span>
+                                </div>
+                                <span className="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded">+25%</span>
+                            </button>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Cash</h3>
+                            <button className="w-full bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg flex items-center gap-3">
+                                <i className="fab fa-cc-visa text-blue-400 text-xl"></i>
+                                <span className="font-semibold">Virtual Visa Interna...</span>
+                            </button>
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Crypto</h3>
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                {['Bitcoin (BTC)', 'Ethereum (ETH)', 'Litecoin (LTC)', 'Solana (SOL)', 'Tether (USDT)', 'USD Coin (USDC)', 'Tron (TRX)', 'Ripple (XRP)'].map(crypto => (
+                                    <button 
+                                      key={crypto} 
+                                      onClick={() => handleSelectCrypto(crypto)}
+                                      className="bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg text-center flex flex-col items-center justify-center gap-2"
+                                    >
+                                        <i className={`fab fa-${crypto.split(' ')[0].toLowerCase()}`}></i>
+                                        <span className="block text-xs font-semibold">{crypto}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            <div className="text-center mt-4">
+                                <button className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 font-semibold">Show All</button>
+                            </div>
+                        </div>
+                    </div>
+                );
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50" onClick={closeModal}>
@@ -120,59 +298,21 @@ const WalletModal: React.FC = () => {
                 <div className="p-6">
                     <div className="flex justify-between items-center mb-6">
                         <div className="flex border-b border-slate-200 dark:border-slate-700">
-                           <button className={`px-4 py-2 font-semibold text-slate-900 dark:text-white border-b-2 border-blue-500`}>
+                           <button 
+                                onClick={() => setActiveTab('withdraw')}
+                                className={`px-4 py-2 font-semibold ${activeTab === 'withdraw' ? 'text-slate-900 dark:text-white border-b-2 border-blue-500' : 'text-slate-500 dark:text-slate-400'}`}>
                                 Withdraw
+                            </button>
+                             <button 
+                                onClick={() => setActiveTab('history')}
+                                className={`px-4 py-2 font-semibold ${activeTab === 'history' ? 'text-slate-900 dark:text-white border-b-2 border-blue-500' : 'text-slate-500 dark:text-slate-400'}`}>
+                                History
                             </button>
                         </div>
                         <button onClick={closeModal} className="text-3xl font-light text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">&times;</button>
                     </div>
 
-                    {selectedCrypto ? (
-                        <WithdrawalForm 
-                            cryptoName={selectedCrypto} 
-                            onBack={() => setSelectedCrypto(null)} 
-                        />
-                    ) : (
-                        <div>
-                            <div className="space-y-6">
-                                <div>
-                                    <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Special</h3>
-                                    <button className="w-full bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg flex justify-between items-center">
-                                        <div className="flex items-center gap-3">
-                                            <i className="fas fa-dice text-green-400 text-xl"></i>
-                                            <span className="font-semibold">Gamdom</span>
-                                        </div>
-                                        <span className="bg-green-500/20 text-green-400 text-xs font-bold px-2 py-1 rounded">+25%</span>
-                                    </button>
-                                </div>
-                                <div>
-                                    <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Cash</h3>
-                                    <button className="w-full bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg flex items-center gap-3">
-                                        <i className="fab fa-cc-visa text-blue-400 text-xl"></i>
-                                        <span className="font-semibold">Virtual Visa Interna...</span>
-                                    </button>
-                                </div>
-                                <div>
-                                    <h3 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-2">Crypto</h3>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                        {['Bitcoin (BTC)', 'Ethereum (ETH)', 'Litecoin (LTC)', 'Solana (SOL)', 'Tether (USDT)', 'USD Coin (USDC)', 'Tron (TRX)', 'Ripple (XRP)'].map(crypto => (
-                                            <button 
-                                              key={crypto} 
-                                              onClick={() => setSelectedCrypto(crypto)}
-                                              className="bg-slate-100 dark:bg-[#1e293b] hover:bg-slate-200 dark:hover:bg-slate-700 p-4 rounded-lg text-center flex flex-col items-center justify-center gap-2"
-                                            >
-                                                <i className={`fab fa-${crypto.split(' ')[0].toLowerCase()}`}></i>
-                                                <span className="block text-xs font-semibold">{crypto}</span>
-                                            </button>
-                                        ))}
-                                    </div>
-                                    <div className="text-center mt-4">
-                                        <button className="text-blue-500 dark:text-blue-400 hover:text-blue-600 dark:hover:text-blue-300 font-semibold">Show All</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                    {activeTab === 'withdraw' ? renderWithdrawContent() : <TransactionHistory />}
                 </div>
             </div>
         </div>

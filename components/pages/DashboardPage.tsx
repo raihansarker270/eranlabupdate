@@ -115,7 +115,7 @@ const DashboardPage: React.FC = () => {
              <div className="bg-white dark:bg-[#1e293b] rounded-lg border border-slate-200 dark:border-slate-800">
                  <div className="p-2 border-b border-slate-200 dark:border-slate-700">
                      <div className="flex items-center space-x-2 overflow-x-auto">
-                        {['Tasks', 'Settings', 'Transactions', 'Deposits', 'Withdrawals', 'Openings', 'Battles'].map(tab => (
+                        {['Tasks', 'Surveys', 'Offers', 'Withdrawals', 'Openings', 'Battles'].map(tab => (
                             <button key={tab} onClick={() => setActiveTab(tab)} className={`px-4 py-2 text-sm font-semibold rounded-md ${activeTab === tab ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}>
                                 {tab}
                             </button>
