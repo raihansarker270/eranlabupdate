@@ -1,4 +1,4 @@
-import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial, FeaturedOffer, Transaction } from './types';
+import type { User, EarningFeedItem, SurveyProvider, FaqItem, RewardOption, LeaderboardUser, Achievement, ChatMessage, Testimonial, FeaturedOffer, Transaction, OfferWall } from './types';
 
 export const MOCK_USER: User = {
   username: 'raihansarker',
@@ -35,8 +35,24 @@ export const SURVEY_PROVIDERS: SurveyProvider[] = [
   { name: 'BitLabs', logo: 'https://i.imgur.com/eLSf3a2.png', rating: 3, type: 'BitLabs' },
   { name: 'CPX Research', logo: 'https://i.imgur.com/bKj926D.png', rating: 3, type: 'CPX RESEARCH' },
   { name: 'Your-Surveys', logo: 'https://i.imgur.com/zW0S4Qx.png', rating: 4, type: 'Your-Surveys' },
-  { name: 'Pollfish', logo: 'https://i.imgur.com/Nl2aD2T.png', rating: 4, type: 'Pollfish' },
+  { name: 'Pollfish', logo: 'https://i.imgur.com/OofFwSR.png', rating: 4, type: 'Pollfish' },
   { name: 'Prime Surveys', logo: 'https://i.imgur.com/PtcE53F.png', rating: 2, type: 'Prime Surveys' },
+];
+
+export const OFFER_WALLS: OfferWall[] = [
+    { name: 'Torox', logo: 'https://i.imgur.com/Y17wQmd.png', bonus: '+80%' },
+    { name: 'Adscend Media', logo: 'https://i.imgur.com/iY9g04E.png', bonus: '+50%' },
+    { name: 'AdToWall', logo: 'https://i.imgur.com/x0iP1C9.png' },
+    { name: 'RevU', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock', bonus: '+50%' },
+    { name: 'AdGate Media', logo: 'https://i.imgur.com/Q2yG7nS.png' },
+    { name: 'MyChips', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $2.50 to unlock', bonus: '+50%' },
+    { name: 'MM Wall', logo: 'https://i.imgur.com/6XzWfP1.png' },
+    { name: 'Aye-T Studios', logo: 'https://i.imgur.com/J3t5e6E.png' },
+    { name: 'Monlix', logo: 'https://i.imgur.com/ePFr12w.png' },
+    { name: 'Hang My Ads', logo: 'https://i.imgur.com/yvC5YyW.png', isLocked: true, unlockRequirement: 'Earn $1.00 to unlock' },
+    { name: 'Lootably', logo: 'https://i.imgur.com/i9nO27d.png' },
+    { name: 'Time Wall', logo: 'https://i.imgur.com/nJgq1t7.png' },
+    { name: 'AdGem', logo: 'https://i.imgur.com/r9f5k2Z.png' },
 ];
 
 export const FAQ_ITEMS: FaqItem[] = [
