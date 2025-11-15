@@ -235,7 +235,7 @@ const HomePageContent: React.FC = () => {
                         </div>
 
                         <div>
-                            <p className="text-sm text-slate-400 mb-2">See our 246,851 reviews on</p>
+                            <p className="text-sm text-slate-400 mb-2">See our reviews on</p>
                             <div className="flex items-center gap-2">
                                 <i className="fas fa-star text-green-500"></i>
                                 <span className="text-xl font-bold text-white">Trustpilot</span>
@@ -282,7 +282,7 @@ const HomePageContent: React.FC = () => {
                         </div>
 
                         <p className="text-center text-sm text-slate-400 mt-6">
-                            <span className="font-bold text-white">477628+</span> sign ups in the past 24 hours
+                            <span className="font-bold text-white">100+</span> sign ups in the past 24 hours
                         </p>
                     </div>
                 </div>
