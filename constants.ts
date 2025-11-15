@@ -37,6 +37,7 @@ export const SURVEY_PROVIDERS: SurveyProvider[] = [
   { name: 'Your-Surveys', logo: 'https://i.imgur.com/zW0S4Qx.png', rating: 4, type: 'Your-Surveys' },
   { name: 'Pollfish', logo: 'https://i.imgur.com/OofFwSR.png', rating: 4, type: 'Pollfish' },
   { name: 'Prime Surveys', logo: 'https://i.imgur.com/PtcE53F.png', rating: 2, type: 'Prime Surveys' },
+  { name: 'inBrain', logo: 'https://i.imgur.com/PtcE53.png', rating: 2, type: 'inBrain' },
 ];
 
 export const OFFER_WALLS: OfferWall[] = [
