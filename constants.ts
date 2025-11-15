@@ -36,7 +36,7 @@ export const SURVEY_PROVIDERS: SurveyProvider[] = [
   { name: 'CPX Research', logo: 'https://i.imgur.com/ssL8ALh.png', rating: 3, type: 'CPX RESEARCH' },
   { name: 'Your-Surveys', logo: 'https://i.imgur.com/pLRnBU2.png', rating: 4, type: 'Your-Surveys' },
   { name: 'Pollfish', logo: 'https://i.imgur.com/OofFwSR.png', rating: 4, type: 'Pollfish' },
-  { name: 'Prime Surveys', logo: 'https://i.imgur.com/0EGYRXz.png', rating: 2, type: 'Prime Surveys' },
+  { name: 'Prime Surveys', logo: 'https://i.imgur.com/0EGYRXz.png', rating: 3, type: 'Prime Surveys' },
   { name: 'inBrain', logo: 'https://i.imgur.com/AaQPnwe.png', rating: 2, type: 'inBrain' },
 ];
 
