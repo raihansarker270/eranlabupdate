@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AppContext } from '../../App';
 
 const StatCard: React.FC<{ title: string, value: string, icon: string, color: string }> = ({ title, value, icon, color }) => (
     <div className={`p-5 rounded-lg text-white shadow-md`} style={{ background: color }}>
@@ -62,6 +63,80 @@ const recentSignups = [
     { email: 'alazarcherzav142@gmail.com', joined: '2025-06-20 16:27:39' },
 ];
 
+const SiteContentControl: React.FC = () => {
+  const { offerWalls, setOfferWalls, surveyProviders, setSurveyProviders } = useContext(AppContext);
+
+  const toggleOfferLock = (name: string) => {
+    setOfferWalls(walls =>
+      walls.map(wall =>
+        wall.name === name ? { ...wall, isLocked: !wall.isLocked } : wall
+      )
+    );
+  };
+
+  const toggleSurveyLock = (name: string) => {
+    setSurveyProviders(providers =>
+      providers.map(provider =>
+        provider.name === name ? { ...provider, isLocked: !provider.isLocked } : provider
+      )
+    );
+  };
+
+  return (
+    <div className="bg-white p-5 rounded-lg shadow-md">
+      <h3 className="font-bold text-lg mb-4 text-slate-800">Site Content Control</h3>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div>
+          <h4 className="font-semibold text-md mb-3 text-slate-600 border-b pb-2">Offer Walls</h4>
+          <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+            {offerWalls.map(wall => (
+              <div key={wall.name} className="flex items-center justify-between p-3 bg-slate-50 rounded-md border border-slate-200">
+                <div className="flex items-center gap-3 min-w-0">
+                  <img src={wall.logo} alt={wall.name} className="h-8 w-12 object-contain flex-shrink-0" />
+                  <span className="font-medium text-slate-800 truncate">{wall.name}</span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+                  <input
+                    type="checkbox"
+                    checked={!wall.isLocked}
+                    onChange={() => toggleOfferLock(wall.name)}
+                    className="sr-only peer"
+                    aria-label={`Toggle lock for ${wall.name}`}
+                  />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h4 className="font-semibold text-md mb-3 text-slate-600 border-b pb-2">Survey Providers</h4>
+          <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+            {surveyProviders.map(provider => (
+              <div key={provider.name} className="flex items-center justify-between p-3 bg-slate-50 rounded-md border border-slate-200">
+                <div className="flex items-center gap-3 min-w-0">
+                   <img src={provider.logo} alt={provider.name} className="h-8 w-12 object-contain flex-shrink-0" />
+                   <span className="font-medium text-slate-800 truncate">{provider.name}</span>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer flex-shrink-0 ml-4">
+                  <input
+                    type="checkbox"
+                    checked={!provider.isLocked}
+                    onChange={() => toggleSurveyLock(provider.name)}
+                    className="sr-only peer"
+                    aria-label={`Toggle lock for ${provider.name}`}
+                  />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-400 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 
 const AdminDashboardPage: React.FC = () => {
     return (
@@ -83,6 +158,8 @@ const AdminDashboardPage: React.FC = () => {
                 <CircleStat title="Tasks Completed (Last 30 days)" value="0" percentage={0} color="text-indigo-500" />
                 <CircleStat title="Tasks Completed (All Time)" value="12" percentage={100} color="text-green-500" />
             </div>
+
+            <SiteContentControl />
 
             {/* Data Tables */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

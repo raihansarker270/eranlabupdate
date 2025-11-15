@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { GoogleGenAI, Type } from '@google/genai';
 import SkeletonLoader from '../SkeletonLoader';
-import { SURVEY_PROVIDERS, OFFER_WALLS } from '../../constants';
 import SurveyProviderCard from '../SurveyProviderCard';
 import OfferWallCard from '../OfferWallCard';
 import { StarIcon } from '../icons/SurveyIcons';
+import { AppContext } from '../../App';
 
 // Mock data for the new sections
 const featuredTasks = [
@@ -38,6 +38,7 @@ const SectionHeader: React.FC<{ title: string, description: string }> = ({ title
 );
 
 const LoggedInHomePage: React.FC = () => {
+    const { offerWalls, surveyProviders } = useContext(AppContext);
     const [recommendations, setRecommendations] = useState<AIRecommendation[]>([]);
     const [isLoadingRecs, setIsLoadingRecs] = useState(true);
     const [errorRecs, setErrorRecs] = useState<string | null>(null);
@@ -185,7 +186,7 @@ const LoggedInHomePage: React.FC = () => {
             <section>
                 <SectionHeader title="Offer Walls" description="Each offer wall contains hundreds of offers to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-                     {OFFER_WALLS.map((wall) => (
+                     {offerWalls.map((wall) => (
                         <OfferWallCard key={wall.name} wall={wall} />
                     ))}
                 </div>
@@ -195,7 +196,7 @@ const LoggedInHomePage: React.FC = () => {
             <section>
                 <SectionHeader title="Survey Walls" description="Each survey wall contains hundreds of surveys to complete" />
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                     {SURVEY_PROVIDERS.map((wall) => (
+                     {surveyProviders.map((wall) => (
                          <SurveyProviderCard key={wall.name} provider={wall} />
                      ))}
                 </div>

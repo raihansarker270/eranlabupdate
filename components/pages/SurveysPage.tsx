@@ -1,8 +1,10 @@
-import React from 'react';
-import { SURVEY_PROVIDERS } from '../../constants';
+import React, { useContext } from 'react';
 import SurveyProviderCard from '../SurveyProviderCard';
+import { AppContext } from '../../App';
 
 const SurveysPage: React.FC = () => {
+    const { surveyProviders } = useContext(AppContext);
+
     return (
         <div className="space-y-8">
             <div className="flex flex-col items-start">
@@ -19,7 +21,7 @@ const SurveysPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-                {SURVEY_PROVIDERS.map((provider) => (
+                {surveyProviders.map((provider) => (
                     <SurveyProviderCard key={provider.name} provider={provider} />
                 ))}
             </div>

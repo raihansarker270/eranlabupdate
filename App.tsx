@@ -1,12 +1,12 @@
-import React, { useState, useCallback, useEffect, Suspense } from 'react';
+import React, { useState, useCallback, useEffect, Suspense, useContext } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import LoggedOutHeader from './components/LoggedOutHeader';
 import WalletModal from './components/WalletModal';
 import LiveEarningFeed from './components/LiveEarningFeed';
 import Footer from './components/Footer';
-import { MOCK_USER } from './constants';
-import type { User } from './types';
+import { MOCK_USER, OFFER_WALLS, SURVEY_PROVIDERS } from './constants';
+import type { User, OfferWall, SurveyProvider } from './types';
 import LoggedOutSidebar from './components/LoggedOutSidebar';
 import SigninModal from './components/SigninModal';
 import SignupModal from './components/SignupModal';
@@ -78,6 +78,10 @@ export const AppContext = React.createContext<{
   setIsSupportChatModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   isAdmin: boolean;
   setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+  offerWalls: OfferWall[];
+  setOfferWalls: React.Dispatch<React.SetStateAction<OfferWall[]>>;
+  surveyProviders: SurveyProvider[];
+  setSurveyProviders: React.Dispatch<React.SetStateAction<SurveyProvider[]>>;
 }>({
   isLoggedIn: false,
   user: null,
@@ -102,6 +106,10 @@ export const AppContext = React.createContext<{
   setIsSupportChatModalOpen: () => {},
   isAdmin: false,
   setIsAdmin: () => {},
+  offerWalls: [],
+  setOfferWalls: () => {},
+  surveyProviders: [],
+  setSurveyProviders: () => {},
 });
 
 const getPageFromPathname = () => {
@@ -204,6 +212,9 @@ const App: React.FC = () => {
     return (storedTheme === 'light' || storedTheme === 'dark') ? storedTheme : 'dark';
   });
 
+  const [offerWalls, setOfferWalls] = useState<OfferWall[]>(OFFER_WALLS);
+  const [surveyProviders, setSurveyProviders] = useState<SurveyProvider[]>(SURVEY_PROVIDERS);
+
   // FIX: Moved `openSignupModal` before its use in `appContextValue`.
   const openSignupModal = (email = '') => {
       setSignupInitialEmail(email);
@@ -217,7 +228,8 @@ const App: React.FC = () => {
       currentPage, isSidebarCollapsed, 
       setIsSidebarCollapsed, isMobileSidebarOpen, setIsMobileSidebarOpen, 
       theme, setTheme, isSupportChatModalOpen, setIsSupportChatModalOpen,
-      isAdmin, setIsAdmin
+      isAdmin, setIsAdmin,
+      offerWalls, setOfferWalls, surveyProviders, setSurveyProviders,
   };
 
   if (hash.startsWith('#/admin')) {
